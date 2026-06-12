@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nasser &amp; Farzana · 19.07.2026</title>
+  <link rel="icon" type="image/png" href="images/logo-removebg-preview.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
@@ -177,36 +178,37 @@
     #welcome::after {
       content: '';
       position: absolute;
-      width: 280px;
-      height: 280px;
+      width: 460px;
+      height: 460px;
       pointer-events: none;
       z-index: 0;
     }
     #welcome::before {
       top: 0; left: 0;
-      background: radial-gradient(ellipse at 0% 0%,
-        rgba(201,169,110,0.60) 0%,
-        rgba(232,213,163,0.38) 22%,
-        rgba(139,107,85,0.18) 48%,
-        transparent 68%);
+      background:
+        linear-gradient(118deg, rgba(255,252,195,0.92) 0%, rgba(255,248,170,0.65) 9%, transparent 30%),
+        linear-gradient(148deg, rgba(232,213,163,0.7) 0%, rgba(201,169,110,0.45) 18%, transparent 38%),
+        linear-gradient(74deg, rgba(255,245,155,0.58) 0%, rgba(232,213,163,0.38) 16%, transparent 36%),
+        linear-gradient(192deg, rgba(201,169,110,0.48) 0%, rgba(232,213,163,0.28) 20%, transparent 42%),
+        radial-gradient(ellipse at 0% 0%, rgba(201,169,110,0.95) 0%, rgba(232,213,163,0.62) 18%, rgba(139,107,85,0.25) 42%, transparent 64%);
     }
     #welcome::after {
       top: 0; right: 0;
-      background: radial-gradient(ellipse at 100% 0%,
-        rgba(201,169,110,0.60) 0%,
-        rgba(232,213,163,0.38) 22%,
-        rgba(139,107,85,0.18) 48%,
-        transparent 68%);
+      background:
+        linear-gradient(242deg, rgba(255,252,195,0.92) 0%, rgba(255,248,170,0.65) 9%, transparent 30%),
+        linear-gradient(212deg, rgba(232,213,163,0.7) 0%, rgba(201,169,110,0.45) 18%, transparent 38%),
+        linear-gradient(286deg, rgba(255,245,155,0.58) 0%, rgba(232,213,163,0.38) 16%, transparent 36%),
+        linear-gradient(348deg, rgba(201,169,110,0.48) 0%, rgba(232,213,163,0.28) 20%, transparent 42%),
+        radial-gradient(ellipse at 100% 0%, rgba(201,169,110,0.95) 0%, rgba(232,213,163,0.62) 18%, rgba(139,107,85,0.25) 42%, transparent 64%);
     }
 
     .welcome-inner { position: relative; z-index: 1; width: 100%; }
 
-    .eyebrow {
-      font-size: 0.72rem;
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.4rem;
+    .welcome-logo {
+      height: 90px;
+      width: auto;
+      margin: 0 auto 1.8rem;
+      filter: drop-shadow(0 0 28px rgba(201,169,110,0.55));
     }
     .welcome-h1 {
       font-family: 'Cormorant Garamond', serif;
@@ -766,7 +768,7 @@
 —————————————————————————————— -->
 <section id="welcome">
   <div class="welcome-inner">
-    <p class="eyebrow">You are invited to celebrate</p>
+    <img src="images/logo-removebg-preview.png" alt="Nasser &amp; Farzana" class="welcome-logo">
     <h1 class="welcome-h1">Nasser &amp; Farzana</h1>
     <p class="welcome-sub">19th July 2026 &middot; 12pm &middot; Quendon Hall, Essex</p>
 
@@ -1038,9 +1040,8 @@
     <h3>Where Should We Go Next?</h3>
     <p>We're always looking for new adventures — give us your best (and most rogue) travel recommendation!</p>
     <form id="rec-form">
-      <div class="fg"><label for="r-name">Your Name</label><input type="text" id="r-name" placeholder="Who's recommending…" required></div>
       <div class="fg"><label for="r-dest">Destination</label><input type="text" id="r-dest" placeholder="Where should we go?" required></div>
-      <div class="fg"><label for="r-why">Why You'd Love It</label><textarea id="r-why" placeholder="Sell it to us…" required></textarea></div>
+      <div class="fg"><label for="r-why">Specific Things to Do</label><textarea id="r-why" placeholder="Restaurants, spots, experiences…" required></textarea></div>
       <button type="submit" class="gold-btn">Send Your Rec</button>
     </form>
     <div class="thanks" id="rec-thanks"></div>
@@ -1212,10 +1213,17 @@ mstyle.textContent = `
 document.head.appendChild(mstyle);
 
 const map = L.map('map', { center:[30,15], zoom:2, zoomControl:true });
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_matter_all/{z}/{x}/{y}{r}.png', {
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_matter/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
   subdomains:'abcd', maxZoom:19
 }).addTo(map);
+
+// Force tile repaint once map section is revealed (reveal class delays visibility)
+setTimeout(() => map.invalidateSize(), 400);
+const mapRevealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { setTimeout(() => map.invalidateSize(), 650); mapRevealObs.unobserve(e.target); }});
+}, { threshold: 0.1 });
+mapRevealObs.observe(document.getElementById('map'));
 
 // Dashed polyline through non-honeymoon stops
 const polyCoords = locs.filter(l => !l.honeymoon).map(l => l.coords);
@@ -1250,9 +1258,8 @@ locs.forEach((loc, i) => {
 // ——— TRAVEL FORM ———
 document.getElementById('rec-form').addEventListener('submit', function(e) {
   e.preventDefault();
-  const name = document.getElementById('r-name').value.trim() || 'friend';
   const t = document.getElementById('rec-thanks');
-  t.textContent = `Thanks ${name}! We'll add it to the list 🌍`;
+  t.textContent = "Thanks! We'll add it to the list 🌍";
   t.style.display = 'block';
   this.style.display = 'none';
 });
