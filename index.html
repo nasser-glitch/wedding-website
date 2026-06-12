@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nasser &amp; Farzana · 19.07.2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #7D5E4A;
+      --accent: #C9A96E;
+      --accent-light: #E8D5A3;
+      --text: #F5EFE6;
+      --text-sec: #D4C4B0;
+      --card: #5C4033;
+      --error: #8B4A4A;
+      --pad: 100px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; display: block; }
+
+    /* ——— TYPOGRAPHY ——— */
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 0.8rem;
+    }
+    .section-sub {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      color: var(--text-sec);
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    /* ——— DIVIDER ——— */
+    .divider {
+      width: 60%;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.45;
+      margin: 0 auto;
+    }
+
+    /* ——— ARCH FRAME ——— */
+    .arch {
+      border-radius: 50% 50% 0 0 / 60% 60% 0 0;
+      overflow: hidden;
+      border: 2px solid var(--accent);
+    }
+    .arch img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ——— REVEAL ——— */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      * { animation: none !important; }
+    }
+
+    /* ——————————————————————————————
+       NAV
+    —————————————————————————————— */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      transition: background 0.35s, backdrop-filter 0.35s;
+    }
+    #nav.scrolled {
+      background: rgba(80, 57, 43, 0.92);
+      backdrop-filter: blur(14px);
+    }
+    .nav-logo { height: 46px; width: auto; object-fit: contain; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.88;
+      transition: color 0.2s, opacity 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); opacity: 1; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 102;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--text);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4.7px, 4.7px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4.7px, -4.7px); }
+
+    #mob-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(70, 49, 36, 0.97);
+      backdrop-filter: blur(20px);
+      z-index: 101;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+    #mob-menu.open { display: flex; }
+    #mob-menu a {
+      color: var(--text);
+      text-decoration: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+    #mob-menu a:hover { color: var(--accent); }
+
+    /* ——————————————————————————————
+       WELCOME
+    —————————————————————————————— */
+    #welcome {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 2rem 80px;
+      overflow: hidden;
+    }
+
+    /* Gold foil corners — top-left & top-right only */
+    #welcome::before,
+    #welcome::after {
+      content: '';
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    #welcome::before {
+      top: 0; left: 0;
+      background: radial-gradient(ellipse at 0% 0%,
+        rgba(201,169,110,0.60) 0%,
+        rgba(232,213,163,0.38) 22%,
+        rgba(139,107,85,0.18) 48%,
+        transparent 68%);
+    }
+    #welcome::after {
+      top: 0; right: 0;
+      background: radial-gradient(ellipse at 100% 0%,
+        rgba(201,169,110,0.60) 0%,
+        rgba(232,213,163,0.38) 22%,
+        rgba(139,107,85,0.18) 48%,
+        transparent 68%);
+    }
+
+    .welcome-inner { position: relative; z-index: 1; width: 100%; }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.4rem;
+    }
+    .welcome-h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.6rem, 9vw, 7rem);
+      font-weight: 400;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+    .welcome-sub {
+      font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+      letter-spacing: 0.16em;
+      color: var(--text-sec);
+      margin-bottom: 3rem;
+    }
+
+    /* Countdown */
+    .countdown {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 1.6rem;
+      margin-bottom: 3.5rem;
+      flex-wrap: wrap;
+    }
+    .cd-unit { display: flex; flex-direction: column; align-items: center; }
+    .cd-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 5rem);
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1;
+      min-width: 2ch;
+      text-align: center;
+    }
+    .cd-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      margin-top: 0.4rem;
+    }
+    .cd-sep {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      color: var(--accent);
+      opacity: 0.35;
+      line-height: 1;
+      padding-top: 0.05em;
+    }
+
+    /* Hero arch with shimmer border */
+    .hero-arch-wrap {
+      width: clamp(190px, 32vw, 310px);
+      aspect-ratio: 3/4;
+      padding: 3px;
+      border-radius: 50% 50% 0 0 / 60% 60% 0 0;
+      background: linear-gradient(135deg, #C9A96E 0%, #E8D5A3 30%, #9B7B5F 55%, #E8D5A3 78%, #C9A96E 100%);
+      background-size: 300% 300%;
+      animation: shimmerBorder 3.5s ease infinite;
+      margin: 0 auto;
+      box-shadow: 0 0 40px rgba(201,169,110,0.25), 0 20px 60px rgba(0,0,0,0.28);
+    }
+    .hero-arch-wrap .arch { width: 100%; height: 100%; border: none; }
+
+    @keyframes shimmerBorder {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ——————————————————————————————
+       OUR STORY
+    —————————————————————————————— */
+    #story { padding: var(--pad) 2.5rem; }
+
+    .timeline {
+      position: relative;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--accent) 8%, var(--accent) 92%, transparent);
+      transform: translateX(-50%);
+      opacity: 0.35;
+    }
+
+    .tl-item {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      margin-bottom: 5rem;
+      position: relative;
+    }
+    .tl-item:nth-child(even) { flex-direction: row-reverse; }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent);
+      z-index: 1;
+    }
+
+    .tl-img { flex: 0 0 44%; }
+    .tl-arch {
+      width: 100%;
+      max-width: 240px;
+      aspect-ratio: 3/4;
+      margin: 0 auto;
+    }
+    .tl-arch .arch { width: 100%; height: 100%; }
+
+    .tl-text { flex: 0 0 44%; text-align: center; }
+    .tl-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      color: var(--accent);
+      opacity: 0.18;
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .tl-caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-style: italic;
+      line-height: 1.45;
+      color: var(--text);
+    }
+
+    /* ——————————————————————————————
+       QUIZ
+    —————————————————————————————— */
+    #quiz { padding: var(--pad) 2.5rem; }
+
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.4rem;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .quiz-card {
+      background: var(--card);
+      border: 1px solid rgba(201,169,110,0.18);
+      border-radius: 8px;
+      padding: 1.7rem;
+    }
+    .quiz-q {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      line-height: 1.45;
+      margin-bottom: 1.1rem;
+    }
+    .quiz-opts { display: flex; gap: 0.75rem; }
+    .qbtn {
+      flex: 1;
+      padding: 0.55rem 0.9rem;
+      background: transparent;
+      border: 1px solid rgba(201,169,110,0.35);
+      color: var(--text-sec);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.82rem;
+      letter-spacing: 0.07em;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.22s, border-color 0.22s, color 0.22s, transform 0.18s;
+    }
+    .qbtn:hover:not(:disabled) { border-color: var(--accent); color: var(--text); }
+    .qbtn.correct { background: rgba(201,169,110,0.22); border-color: var(--accent); color: var(--accent); transform: scale(1.04); }
+    .qbtn.wrong   { background: rgba(139,74,74,0.22); border-color: var(--error); color: #c47b7b; }
+    .qbtn:disabled { cursor: default; }
+
+    #quiz-score {
+      display: none;
+      text-align: center;
+      margin-top: 3rem;
+      padding: 2.5rem;
+      background: var(--card);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      max-width: 780px;
+      margin-left: auto;
+      margin-right: auto;
+      animation: fadeUp 0.5s ease;
+    }
+    #quiz-score.show { display: block; }
+    .score-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .score-msg {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-style: italic;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ——————————————————————————————
+       STATS
+    —————————————————————————————— */
+    #stats { padding: var(--pad) 2.5rem; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.4rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid rgba(201,169,110,0.18);
+      border-radius: 8px;
+      padding: 1.4rem 1.7rem;
+    }
+    .stat-card.full { grid-column: 1 / -1; }
+
+    .stat-cat {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .stat-row {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.65rem;
+    }
+    .stat-name {
+      font-size: 0.78rem;
+      color: var(--text-sec);
+      min-width: 64px;
+    }
+    .bar-wrap {
+      flex: 1;
+      height: 5px;
+      background: rgba(255,255,255,0.09);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-light));
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+    .stat-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      min-width: 50px;
+      text-align: right;
+    }
+
+    /* Badge for text-only stats */
+    .stat-badge {
+      display: inline-block;
+      padding: 0.22rem 0.75rem;
+      background: rgba(201,169,110,0.1);
+      border: 1px solid rgba(201,169,110,0.25);
+      border-radius: 20px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--text-sec);
+      flex: 1;
+    }
+
+    /* VS row for text-only both-sides */
+    .vs-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 1rem;
+      padding-top: 0.3rem;
+    }
+    .vs-cell { text-align: center; }
+    .vs-who {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      margin-bottom: 0.4rem;
+    }
+    .vs-sep {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      color: rgba(201,169,110,0.3);
+    }
+
+    /* ——————————————————————————————
+       TRAVEL
+    —————————————————————————————— */
+    #travel { padding: var(--pad) 2.5rem; }
+
+    .trip-hero {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .trip-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.9rem, 4.5vw, 3.2rem);
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+    .trip-rule {
+      width: 220px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.55;
+      margin: 0 auto;
+    }
+
+    .map-wrap {
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 2.8rem 0;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.32);
+    }
+    #map { height: 500px; width: 100%; }
+
+    /* Leaflet popup override */
+    .leaflet-popup-content-wrapper {
+      background: var(--card) !important;
+      color: var(--text) !important;
+      border: 1px solid var(--accent) !important;
+      border-radius: 6px !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45) !important;
+    }
+    .leaflet-popup-tip { background: var(--card) !important; }
+    .leaflet-popup-close-button { color: var(--accent) !important; font-size: 1.1rem !important; }
+    .pop-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+    .pop-date {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .pop-note { font-size: 0.87rem; color: var(--text-sec); }
+
+    /* Marker CSS injected via JS */
+
+    /* Recs form */
+    .recs-wrap {
+      max-width: 580px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .recs-wrap h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem;
+      font-weight: 400;
+      margin-bottom: 0.8rem;
+    }
+    .recs-wrap p { color: var(--text-sec); font-size: 0.93rem; margin-bottom: 2rem; line-height: 1.65; }
+
+    .fg { margin-bottom: 1.1rem; text-align: left; }
+    .fg label {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.45rem;
+    }
+    .fg input, .fg textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--card);
+      border: 1px solid rgba(201,169,110,0.28);
+      border-radius: 4px;
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .fg input:focus, .fg textarea:focus { border-color: var(--accent); }
+    .fg textarea { height: 110px; resize: vertical; }
+
+    .gold-btn {
+      padding: 0.85rem 2.4rem;
+      background: transparent;
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.28s, color 0.28s;
+      margin-top: 0.4rem;
+    }
+    .gold-btn:hover { background: var(--accent); color: var(--bg); }
+
+    .thanks {
+      display: none;
+      margin-top: 1.4rem;
+      padding: 1.1rem;
+      background: var(--card);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+    }
+
+    /* ——————————————————————————————
+       Q&A
+    —————————————————————————————— */
+    #qa { padding: var(--pad) 2.5rem; }
+
+    .accordion { max-width: 680px; margin: 0 auto; }
+    .acc-item { border-bottom: 1px solid rgba(201,169,110,0.22); }
+    .acc-item:first-child { border-top: 1px solid rgba(201,169,110,0.22); }
+
+    .acc-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.35rem 0;
+      cursor: pointer;
+      user-select: none;
+    }
+    .acc-q {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.12rem;
+      flex: 1;
+      padding-right: 1rem;
+      line-height: 1.4;
+    }
+    .acc-arrow {
+      width: 18px;
+      height: 18px;
+      color: var(--accent);
+      flex-shrink: 0;
+      transition: transform 0.35s ease;
+    }
+    .acc-arrow.open { transform: rotate(180deg); }
+
+    .acc-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding-bottom 0.4s ease;
+    }
+    .acc-body.open { max-height: 200px; padding-bottom: 1.3rem; }
+    .acc-a { font-weight: 300; color: var(--text-sec); font-size: 0.93rem; line-height: 1.7; }
+
+    /* ——————————————————————————————
+       FOOTER
+    —————————————————————————————— */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem 4rem;
+      border-top: 1px solid rgba(201,169,110,0.2);
+    }
+    .foot-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.4rem;
+    }
+    .foot-logo { height: 38px; width: auto; object-fit: contain; margin: 0 auto 1.4rem; opacity: 0.75; }
+    .foot-love { font-size: 0.78rem; letter-spacing: 0.1em; color: var(--text-sec); }
+    .foot-love span { color: var(--accent); }
+
+    /* ——————————————————————————————
+       RESPONSIVE
+    —————————————————————————————— */
+    @media (max-width: 768px) {
+      :root { --pad: 60px; }
+      #nav { padding: 1rem 1.4rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .timeline::before { display: none; }
+      .tl-item, .tl-item:nth-child(even) {
+        flex-direction: column;
+        gap: 1.4rem;
+      }
+      .tl-item::before { display: none; }
+      .tl-img { width: 65%; max-width: 200px; margin: 0 auto; flex: none; }
+      .tl-text { flex: none; }
+
+      .quiz-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .stat-card.full { grid-column: 1; }
+
+      #map { height: 300px; }
+
+      section { padding: var(--pad) 1.3rem; }
+      #welcome, #story, #quiz, #stats, #travel, #qa { padding: var(--pad) 1.3rem; }
+    }
+
+    @media (max-width: 480px) {
+      .cd-sep { display: none; }
+      .countdown { gap: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ——— NAV ——— -->
+<nav id="nav">
+  <img src="images/logo-removebg-preview.png" alt="Nasser &amp; Farzana" class="nav-logo">
+  <ul class="nav-links">
+    <li><a href="#welcome">Welcome</a></li>
+    <li><a href="#story">Our Story</a></li>
+    <li><a href="#stats">Nasser vs Farzana</a></li>
+    <li><a href="#travel">Travel</a></li>
+    <li><a href="#qa">Q&amp;A</a></li>
+  </ul>
+  <button class="hamburger" id="ham" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div id="mob-menu">
+  <a href="#welcome">Welcome</a>
+  <a href="#story">Our Story</a>
+  <a href="#stats">Nasser vs Farzana</a>
+  <a href="#travel">Travel</a>
+  <a href="#qa">Q&amp;A</a>
+</div>
+
+<!-- ——————————————————————————————
+     1. WELCOME
+—————————————————————————————— -->
+<section id="welcome">
+  <div class="welcome-inner">
+    <p class="eyebrow">You are invited to celebrate</p>
+    <h1 class="welcome-h1">Nasser &amp; Farzana</h1>
+    <p class="welcome-sub">19th July 2026 &middot; 12pm &middot; Quendon Hall, Essex</p>
+
+    <div class="countdown" id="cd">
+      <div class="cd-unit"><span class="cd-num" id="cd-d">000</span><span class="cd-label">Days</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><span class="cd-num" id="cd-h">00</span><span class="cd-label">Hours</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><span class="cd-num" id="cd-m">00</span><span class="cd-label">Minutes</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><span class="cd-label">Seconds</span></div>
+    </div>
+
+    <div class="hero-arch-wrap">
+      <div class="arch">
+        <img src="images/story-proposal-DZoLDB8e.png" alt="Nasser and Farzana">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ——————————————————————————————
+     2. OUR STORY
+—————————————————————————————— -->
+<section id="story">
+  <h2 class="section-title reveal">Our Story</h2>
+  <div class="divider" style="margin-bottom:3.5rem;"></div>
+
+  <div class="timeline">
+
+    <div class="tl-item reveal">
+      <div class="tl-img"><div class="tl-arch"><div class="arch"><img src="images/story-0-first-met-Cm6GVSR3.png" alt="First met"></div></div></div>
+      <div class="tl-text"><div class="tl-num">01</div><p class="tl-caption">The first time we met, at Colonel Saab</p></div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-img"><div class="tl-arch"><div class="arch"><img src="images/story-1-first-meeting-B3S9t4nP.png" alt="First meeting family"></div></div></div>
+      <div class="tl-text"><div class="tl-num">02</div><p class="tl-caption">The first time Nasser met Farzana's family</p></div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-img"><div class="tl-arch"><div class="arch"><img src="images/story-2-family-meeting-BvdDXYb-.png" alt="Family meeting"></div></div></div>
+      <div class="tl-text"><div class="tl-num">03</div><p class="tl-caption">The first time Farzana met Nasser's family</p></div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-img"><div class="tl-arch"><div class="arch"><img src="images/story-proposal-DZoLDB8e.png" alt="Proposal"></div></div></div>
+      <div class="tl-text"><div class="tl-num">04</div><p class="tl-caption">The proposal — St John's College, Cambridge</p></div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-img"><div class="tl-arch"><div class="arch"><img src="images/story-3-nikkah-CBoetaIk.png" alt="Nikkah"></div></div></div>
+      <div class="tl-text"><div class="tl-num">05</div><p class="tl-caption">Our Nikkah at Cambridge Central Mosque</p></div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-img"><div class="tl-arch"><div class="arch"><img src="images/story-4-sicily-DQdG4XAA.png" alt="Sicily"></div></div></div>
+      <div class="tl-text"><div class="tl-num">06</div><p class="tl-caption">Our first holiday together — Sicily</p></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ——————————————————————————————
+     3. QUIZ
+—————————————————————————————— -->
+<section id="quiz">
+  <h2 class="section-title reveal">Who's Who?</h2>
+  <p class="section-sub reveal">Think you know us? See if you agree…</p>
+
+  <div class="quiz-grid" id="qgrid">
+
+    <div class="quiz-card reveal" data-ans="Nasser">
+      <p class="quiz-q">Who likes to plan things more?</p>
+      <div class="quiz-opts">
+        <button class="qbtn" data-c="Nasser">Nasser</button>
+        <button class="qbtn" data-c="Farzana">Farzana</button>
+      </div>
+    </div>
+
+    <div class="quiz-card reveal" data-ans="Farzana">
+      <p class="quiz-q">Who is funnier?</p>
+      <div class="quiz-opts">
+        <button class="qbtn" data-c="Nasser">Nasser</button>
+        <button class="qbtn" data-c="Farzana">Farzana</button>
+      </div>
+    </div>
+
+    <div class="quiz-card reveal" data-ans="Nasser">
+      <p class="quiz-q">Who is more outgoing?</p>
+      <div class="quiz-opts">
+        <button class="qbtn" data-c="Nasser">Nasser</button>
+        <button class="qbtn" data-c="Farzana">Farzana</button>
+      </div>
+    </div>
+
+    <div class="quiz-card reveal" data-ans="Nasser">
+      <p class="quiz-q">Who takes nicer photos?</p>
+      <div class="quiz-opts">
+        <button class="qbtn" data-c="Nasser">Nasser</button>
+        <button class="qbtn" data-c="Farzana">Farzana</button>
+      </div>
+    </div>
+
+    <div class="quiz-card reveal" data-ans="Farzana">
+      <p class="quiz-q">Who is more fashionable?</p>
+      <div class="quiz-opts">
+        <button class="qbtn" data-c="Nasser">Nasser</button>
+        <button class="qbtn" data-c="Farzana">Farzana</button>
+      </div>
+    </div>
+
+    <div class="quiz-card reveal" data-ans="Nasser">
+      <p class="quiz-q">Who is more organised?</p>
+      <div class="quiz-opts">
+        <button class="qbtn" data-c="Nasser">Nasser</button>
+        <button class="qbtn" data-c="Farzana">Farzana</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="quiz-score">
+    <div class="score-num" id="sc-num"></div>
+    <p class="score-msg" id="sc-msg"></p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ——————————————————————————————
+     4. NASSER VS FARZANA
+—————————————————————————————— -->
+<section id="stats">
+  <h2 class="section-title reveal">Nasser vs Farzana</h2>
+  <p class="section-sub reveal">The official stats. Independently verified. Mostly.</p>
+
+  <div class="stats-grid" id="sgrid">
+
+    <!-- PUNCTUALITY -->
+    <div class="stat-card reveal">
+      <div class="stat-cat">Punctuality</div>
+      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="95"></div></div><span class="stat-val">95%</span></div>
+      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="40"></div></div><span class="stat-val">40%</span></div>
+    </div>
+
+    <!-- OVERTHINKING -->
+    <div class="stat-card reveal">
+      <div class="stat-cat">Overthinking</div>
+      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="94"></div></div><span class="stat-val">94%</span></div>
+      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="61"></div></div><span class="stat-val">61%</span></div>
+    </div>
+
+    <!-- REMEMBERS ANNIVERSARIES -->
+    <div class="stat-card reveal">
+      <div class="stat-cat">Remembers Anniversaries</div>
+      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="100"></div></div><span class="stat-val">100%</span></div>
+      <div class="stat-row"><span class="stat-name">Nasser</span><span class="stat-badge">working on it</span></div>
+    </div>
+
+    <!-- SAYS SORRY FIRST -->
+    <div class="stat-card reveal">
+      <div class="stat-cat">Says Sorry First</div>
+      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="78"></div></div><span class="stat-val">78%</span></div>
+      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="22"></div></div><span class="stat-val">22%</span></div>
+    </div>
+
+    <!-- SNACK CONSUMPTION -->
+    <div class="stat-card reveal">
+      <div class="stat-cat">Snack Consumption</div>
+      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="100"></div></div><span class="stat-val">10/10</span></div>
+      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="60"></div></div><span class="stat-val">6/10</span></div>
+    </div>
+
+    <!-- STEPS PER DAY -->
+    <div class="stat-card reveal">
+      <div class="stat-cat">Steps Per Day</div>
+      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="100"></div></div><span class="stat-val">9,200</span></div>
+      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="45"></div></div><span class="stat-val">4,100</span></div>
+    </div>
+
+    <!-- MORNING PERSON -->
+    <div class="stat-card reveal">
+      <div class="stat-cat">Morning Person</div>
+      <div class="vs-row">
+        <div class="vs-cell"><div class="vs-who">Farzana</div><span class="stat-badge">☀️ Yes</span></div>
+        <div class="vs-sep">vs</div>
+        <div class="vs-cell"><div class="vs-who">Nasser</div><span class="stat-badge">🌙 Absolutely not</span></div>
+      </div>
+    </div>
+
+    <!-- PICKS THE RESTAURANT -->
+    <div class="stat-card reveal">
+      <div class="stat-cat">Picks the Restaurant</div>
+      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="80"></div></div><span class="stat-val">80%</span></div>
+      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="20"></div></div><span class="stat-val">20%</span></div>
+    </div>
+
+    <!-- VETOES THE RESTAURANT -->
+    <div class="stat-card reveal">
+      <div class="stat-cat">Vetoes the Restaurant</div>
+      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="100"></div></div><span class="stat-val">100%</span></div>
+      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="0"></div></div><span class="stat-val">0%</span></div>
+    </div>
+
+    <!-- WINS ARGUMENTS -->
+    <div class="stat-card reveal">
+      <div class="stat-cat">Wins Arguments</div>
+      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="71"></div></div><span class="stat-val">71%</span></div>
+      <div class="stat-row"><span class="stat-name">Nasser</span><span class="stat-badge">still thinks he does</span></div>
+    </div>
+
+    <!-- COOKING -->
+    <div class="stat-card reveal">
+      <div class="stat-cat">Cooking</div>
+      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="88"></div></div><span class="stat-val">88%</span></div>
+      <div class="stat-row"><span class="stat-name">Nasser</span><span class="stat-badge">makes great reservations</span></div>
+    </div>
+
+    <!-- PARALLEL PARKING -->
+    <div class="stat-card reveal">
+      <div class="stat-cat">Parallel Parking</div>
+      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="90"></div></div><span class="stat-val">90%</span></div>
+      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="34"></div></div><span class="stat-val">34%</span></div>
+    </div>
+
+    <!-- CRIES AT FILMS -->
+    <div class="stat-card reveal">
+      <div class="stat-cat">Cries at Films</div>
+      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="90"></div></div><span class="stat-val">9/10</span></div>
+      <div class="stat-row"><span class="stat-name">Nasser</span><span class="stat-badge">8/10 but denies it</span></div>
+    </div>
+
+    <!-- DIRECTIONS WITHOUT GOOGLE MAPS — full width -->
+    <div class="stat-card full reveal">
+      <div class="stat-cat">Directions Without Google Maps</div>
+      <div style="text-align:center;padding:0.6rem 0;">
+        <span class="stat-badge" style="font-size:1rem;padding:0.35rem 1.2rem;">Both: 0%</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ——————————————————————————————
+     5. TRAVEL
+—————————————————————————————— -->
+<section id="travel">
+  <h2 class="section-title reveal">Our Adventures</h2>
+
+  <div class="trip-hero reveal">
+    <p class="trip-text">9 countries &middot; 1 forever to go</p>
+    <div class="trip-rule"></div>
+  </div>
+
+  <div class="map-wrap reveal">
+    <div id="map"></div>
+  </div>
+
+  <div class="divider" style="margin-bottom:3.5rem;"></div>
+
+  <div class="recs-wrap reveal">
+    <h3>Where Should We Go Next?</h3>
+    <p>We're always looking for new adventures — give us your best (and most rogue) travel recommendation!</p>
+    <form id="rec-form">
+      <div class="fg"><label for="r-name">Your Name</label><input type="text" id="r-name" placeholder="Who's recommending…" required></div>
+      <div class="fg"><label for="r-dest">Destination</label><input type="text" id="r-dest" placeholder="Where should we go?" required></div>
+      <div class="fg"><label for="r-why">Why You'd Love It</label><textarea id="r-why" placeholder="Sell it to us…" required></textarea></div>
+      <button type="submit" class="gold-btn">Send Your Rec</button>
+    </form>
+    <div class="thanks" id="rec-thanks"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ——————————————————————————————
+     6. Q&A
+—————————————————————————————— -->
+<section id="qa">
+  <h2 class="section-title reveal">Good to Know</h2>
+  <div class="divider" style="margin-bottom:2.8rem;"></div>
+
+  <div class="accordion">
+
+    <div class="acc-item reveal">
+      <div class="acc-head">
+        <span class="acc-q">What's the colour theme?</span>
+        <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="acc-body"><p class="acc-a">Women: Pastels (except Pink). Men: Western suits — the lighter the better!</p></div>
+    </div>
+
+    <div class="acc-item reveal">
+      <div class="acc-head">
+        <span class="acc-q">Is parking available?</span>
+        <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="acc-body"><p class="acc-a">Yes, Quendon Hall has ample parking for all guests. Follow the signage on arrival.</p></div>
+    </div>
+
+    <div class="acc-item reveal">
+      <div class="acc-head">
+        <span class="acc-q">Any dietary requirements?</span>
+        <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="acc-body"><p class="acc-a">All food will be Halal with vegetarian options available. If you have specific allergies, please mention them to the catering staff.</p></div>
+    </div>
+
+    <div class="acc-item reveal">
+      <div class="acc-head">
+        <span class="acc-q">Who won the Premier League?</span>
+        <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="acc-body"><p class="acc-a">ARSENAL. ⚽</p></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ——————————————————————————————
+     FOOTER
+—————————————————————————————— -->
+<footer>
+  <p class="foot-name">Nasser &amp; Farzana &middot; 19.07.2026</p>
+  <img src="images/logo-removebg-preview.png" alt="Logo" class="foot-logo">
+  <p class="foot-love">Made with <span>♥</span> love</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// ——— NAV scroll + hamburger ———
+const navEl = document.getElementById('nav');
+const ham = document.getElementById('ham');
+const mob = document.getElementById('mob-menu');
+
+window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', scrollY > 50));
+
+ham.addEventListener('click', () => {
+  ham.classList.toggle('open');
+  mob.classList.toggle('open');
+  document.body.style.overflow = mob.classList.contains('open') ? 'hidden' : '';
+});
+mob.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  ham.classList.remove('open');
+  mob.classList.remove('open');
+  document.body.style.overflow = '';
+}));
+
+// ——— COUNTDOWN ———
+function tick() {
+  const target = new Date('2026-07-19T12:00:00');
+  const diff = target - new Date();
+  if (diff <= 0) {
+    document.getElementById('cd').innerHTML = '<p style="font-family:\'Cormorant Garamond\',serif;font-size:2rem;color:var(--accent)">Today\'s the day! 🎉</p>';
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor(diff % 86400000 / 3600000);
+  const m = Math.floor(diff % 3600000 / 60000);
+  const s = Math.floor(diff % 60000 / 1000);
+  document.getElementById('cd-d').textContent = String(d).padStart(3,'0');
+  document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+}
+tick(); setInterval(tick, 1000);
+
+// ——— SCROLL REVEAL ———
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); }});
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// ——— STAT BARS ———
+const barObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.bar[data-w]').forEach(b => b.style.width = b.dataset.w + '%');
+      barObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.stat-card').forEach(c => barObs.observe(c));
+
+// ——— QUIZ ———
+let score = 0, answered = 0;
+document.querySelectorAll('.quiz-card').forEach(card => {
+  const ans = card.dataset.ans;
+  card.querySelectorAll('.qbtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (card.dataset.done) return;
+      card.dataset.done = '1';
+      card.querySelectorAll('.qbtn').forEach(b => b.disabled = true);
+      if (btn.dataset.c === ans) { btn.classList.add('correct'); score++; }
+      else {
+        btn.classList.add('wrong');
+        card.querySelectorAll('.qbtn').forEach(b => { if (b.dataset.c === ans) b.classList.add('correct'); });
+      }
+      answered++;
+      if (answered === 6) showScore();
+    });
+  });
+});
+function showScore() {
+  const box = document.getElementById('quiz-score');
+  document.getElementById('sc-num').textContent = score + ' / 6';
+  const msgs = ['Please re-read the invitation. And maybe this whole website.','Please re-read the invitation. And maybe this whole website.','Hmm. Did we even invite you?','Hmm. Did we even invite you?','Not bad — you\'ve clearly been paying attention','Not bad — you\'ve clearly been paying attention','You really know us! Save us a seat at the top table 👀'];
+  document.getElementById('sc-msg').textContent = msgs[score];
+  box.classList.add('show');
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ——— MAP ———
+const locs = [
+  { name:"Boston, USA",                 coords:[42.36,-71.06],  date:"May 2026",      note:"The trip that started it all 🇺🇸" },
+  { name:"Rome, Italy",                 coords:[41.90,12.50],   date:"May 2026",      note:"Pasta, piazzas, and very sore feet 🇮🇹" },
+  { name:"Haugesund, Norway",           coords:[59.41,5.27],    date:"August 2026",   note:"Midnight sun and fjord walks 🇳🇴" },
+  { name:"Cape Town & Kruger, South Africa", coords:[-29.0,25.0], date:"October 2026", note:"The honeymoon :)" },
+  { name:"Seychelles 🌴",              coords:[-4.68,55.49],   date:"October 2025",  note:"The honeymoon :)", honeymoon:true },
+  { name:"Sicily, Italy",               coords:[37.60,14.01],   date:"November 2025", note:"Arancini. Etna. More arancini 🍊" },
+  { name:"Dhaka, Bangladesh",           coords:[23.81,90.41],   date:"December 2025", note:"Family, food, and chaos (the good kind) 🇧🇩" },
+  { name:"Valencia, Spain",             coords:[39.47,-0.38],   date:"February 2026", note:"Paella at the source. Undefeated 🥘" },
+  { name:"Paris, France",               coords:[48.85,2.35],    date:"April 2026",    note:"Cliché? Yes. Perfect? Also yes 🗼" }
+];
+
+// Inject marker CSS
+const mstyle = document.createElement('style');
+mstyle.textContent = `
+.gm{width:28px;height:28px;position:relative;}
+.gm-dot{width:14px;height:14px;background:#C9A96E;border-radius:50%;border:2px solid #E8D5A3;position:absolute;top:7px;left:7px;box-shadow:0 0 8px rgba(201,169,110,.6);z-index:2;}
+.gm-pulse{width:28px;height:28px;background:rgba(201,169,110,.35);border-radius:50%;position:absolute;top:0;left:0;animation:gpulse 2s ease-out infinite;}
+.hm .gm-dot{width:18px;height:18px;background:#FFD700;border-color:#fff;box-shadow:0 0 16px rgba(255,215,0,.9);top:5px;left:5px;}
+.hm .gm-pulse{background:rgba(255,215,0,.35);animation:gpulse 1.4s ease-out infinite;}
+@keyframes gpulse{0%{transform:scale(.8);opacity:1}70%{transform:scale(2.2);opacity:0}100%{transform:scale(2.2);opacity:0}}
+`;
+document.head.appendChild(mstyle);
+
+const map = L.map('map', { center:[30,15], zoom:2, zoomControl:true });
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_matter_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  subdomains:'abcd', maxZoom:19
+}).addTo(map);
+
+// Dashed polyline through non-honeymoon stops
+const polyCoords = locs.filter(l => !l.honeymoon).map(l => l.coords);
+L.polyline(polyCoords, { color:'#C9A96E', weight:1.5, opacity:0.28, dashArray:'6,9' }).addTo(map);
+
+locs.forEach((loc, i) => {
+  setTimeout(() => {
+    const icon = L.divIcon({
+      className: loc.honeymoon ? 'gm hm' : 'gm',
+      html: '<div class="gm-pulse"></div><div class="gm-dot"></div>',
+      iconSize:[28,28], iconAnchor:[14,14], popupAnchor:[0,-16]
+    });
+    const marker = L.marker(loc.coords, { icon }).addTo(map);
+    marker.bindPopup(
+      `<div class="pop-name">${loc.name}</div><div class="pop-date">${loc.date}</div><div class="pop-note">${loc.note}</div>`,
+      { maxWidth:220 }
+    );
+    // Drop-in animation
+    const el = marker.getElement();
+    if (el) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(-18px)';
+      el.style.transition = 'opacity .5s ease, transform .5s ease';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }));
+    }
+  }, i * 200);
+});
+
+// ——— TRAVEL FORM ———
+document.getElementById('rec-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const name = document.getElementById('r-name').value.trim() || 'friend';
+  const t = document.getElementById('rec-thanks');
+  t.textContent = `Thanks ${name}! We'll add it to the list 🌍`;
+  t.style.display = 'block';
+  this.style.display = 'none';
+});
+
+// ——— ACCORDION ———
+document.querySelectorAll('.acc-head').forEach(head => {
+  head.addEventListener('click', () => {
+    const item = head.parentElement;
+    const body = item.querySelector('.acc-body');
+    const arrow = head.querySelector('.acc-arrow');
+    const isOpen = body.classList.contains('open');
+
+    document.querySelectorAll('.acc-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.acc-arrow').forEach(a => a.classList.remove('open'));
+
+    if (!isOpen) { body.classList.add('open'); arrow.classList.add('open'); }
+  });
+});
+</script>
+</body>
+</html>
