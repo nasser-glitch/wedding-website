@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="images/logo-removebg-preview.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -173,55 +173,27 @@
       overflow: hidden;
     }
 
-    /* Gold foil corners — top-left & top-right only */
-    #welcome::before,
-    #welcome::after {
-      content: '';
-      position: absolute;
-      width: 460px;
-      height: 460px;
-      pointer-events: none;
-      z-index: 0;
-    }
-    #welcome::before {
-      top: 0; left: 0;
-      background:
-        linear-gradient(118deg, rgba(255,252,195,0.92) 0%, rgba(255,248,170,0.65) 9%, transparent 30%),
-        linear-gradient(148deg, rgba(232,213,163,0.7) 0%, rgba(201,169,110,0.45) 18%, transparent 38%),
-        linear-gradient(74deg, rgba(255,245,155,0.58) 0%, rgba(232,213,163,0.38) 16%, transparent 36%),
-        linear-gradient(192deg, rgba(201,169,110,0.48) 0%, rgba(232,213,163,0.28) 20%, transparent 42%),
-        radial-gradient(ellipse at 0% 0%, rgba(201,169,110,0.95) 0%, rgba(232,213,163,0.62) 18%, rgba(139,107,85,0.25) 42%, transparent 64%);
-    }
-    #welcome::after {
-      top: 0; right: 0;
-      background:
-        linear-gradient(242deg, rgba(255,252,195,0.92) 0%, rgba(255,248,170,0.65) 9%, transparent 30%),
-        linear-gradient(212deg, rgba(232,213,163,0.7) 0%, rgba(201,169,110,0.45) 18%, transparent 38%),
-        linear-gradient(286deg, rgba(255,245,155,0.58) 0%, rgba(232,213,163,0.38) 16%, transparent 36%),
-        linear-gradient(348deg, rgba(201,169,110,0.48) 0%, rgba(232,213,163,0.28) 20%, transparent 42%),
-        radial-gradient(ellipse at 100% 0%, rgba(201,169,110,0.95) 0%, rgba(232,213,163,0.62) 18%, rgba(139,107,85,0.25) 42%, transparent 64%);
-    }
-
     .welcome-inner { position: relative; z-index: 1; width: 100%; }
 
     .welcome-logo {
-      height: 90px;
+      height: 140px;
       width: auto;
-      margin: 0 auto 1.8rem;
-      filter: drop-shadow(0 0 28px rgba(201,169,110,0.55));
+      margin: 0 auto 1.6rem;
+      filter: drop-shadow(0 0 20px rgba(201,169,110,0.4));
     }
     .welcome-h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.6rem, 9vw, 7rem);
+      font-size: clamp(2.6rem, 6vw, 5rem);
       font-weight: 400;
       line-height: 1.05;
       margin-bottom: 1rem;
     }
     .welcome-sub {
-      font-size: clamp(0.85rem, 1.8vw, 1.05rem);
-      letter-spacing: 0.16em;
+      font-size: clamp(1rem, 2.2vw, 1.45rem);
+      letter-spacing: 0.06em;
       color: var(--text-sec);
-      margin-bottom: 3rem;
+      font-weight: 400;
+      margin-bottom: 2.5rem;
     }
 
     /* Countdown */
@@ -259,130 +231,159 @@
       padding-top: 0.05em;
     }
 
-    /* Hero arch with shimmer border */
+    /* Hero arch — large, clean */
     .hero-arch-wrap {
-      width: clamp(190px, 32vw, 310px);
+      width: clamp(280px, 50vw, 560px);
       aspect-ratio: 3/4;
-      padding: 3px;
-      border-radius: 50% 50% 0 0 / 60% 60% 0 0;
-      background: linear-gradient(135deg, #C9A96E 0%, #E8D5A3 30%, #9B7B5F 55%, #E8D5A3 78%, #C9A96E 100%);
-      background-size: 300% 300%;
-      animation: shimmerBorder 3.5s ease infinite;
-      margin: 0 auto;
-      box-shadow: 0 0 40px rgba(201,169,110,0.25), 0 20px 60px rgba(0,0,0,0.28);
+      border-radius: 50% 50% 0 0 / 55% 55% 0 0;
+      overflow: hidden;
+      border: 2px solid rgba(245, 239, 230, 0.4);
+      margin: 1.5rem auto 0;
+      box-shadow: 0 8px 70px rgba(0,0,0,0.35);
     }
-    .hero-arch-wrap .arch { width: 100%; height: 100%; border: none; }
-
-    @keyframes shimmerBorder {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+    .hero-arch-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* ——————————————————————————————
-       OUR STORY
+       OUR STORY — POLAROID PILE
     —————————————————————————————— */
-    #story { padding: var(--pad) 2.5rem; }
+    #story { padding: 0; }
 
-    .timeline {
+    .story-scroll-container {
+      height: 400vh;
       position: relative;
-      max-width: 860px;
-      margin: 0 auto;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 0; bottom: 0;
-      width: 1px;
-      background: linear-gradient(to bottom, transparent, var(--accent) 8%, var(--accent) 92%, transparent);
-      transform: translateX(-50%);
-      opacity: 0.35;
     }
 
-    .tl-item {
+    .story-sticky-panel {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 2.5rem;
-      margin-bottom: 5rem;
-      position: relative;
     }
-    .tl-item:nth-child(even) { flex-direction: row-reverse; }
 
-    .tl-item::before {
-      content: '';
+    .story-header {
+      padding: 90px 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+    .story-header .section-title { margin-bottom: 0.5rem; }
+    .story-header .section-sub { margin-bottom: 0; }
+
+    .polaroid-stage {
+      position: relative;
+      flex: 1;
+      width: 100%;
+    }
+
+    .polaroid {
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%);
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent);
-      z-index: 1;
+      background: #fff;
+      padding: 14px 14px 52px;
+      box-shadow: 4px 6px 24px rgba(0,0,0,0.38);
+      will-change: transform;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: default;
     }
 
-    .tl-img { flex: 0 0 44%; }
-    .tl-arch {
-      width: 100%;
-      max-width: 240px;
-      aspect-ratio: 3/4;
-      margin: 0 auto;
+    .polaroid img {
+      display: block;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      pointer-events: none;
     }
-    .tl-arch .arch { width: 100%; height: 100%; }
 
-    .tl-text { flex: 0 0 44%; text-align: center; }
-    .tl-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.8rem;
-      color: var(--accent);
-      opacity: 0.18;
-      line-height: 1;
-      margin-bottom: 0.4rem;
+    .polaroid-caption {
+      font-family: 'Caveat', cursive;
+      color: #2C1810;
+      font-size: 17px;
+      text-align: center;
+      margin-top: 8px;
+      line-height: 1.3;
     }
-    .tl-caption {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
-      font-style: italic;
-      line-height: 1.45;
-      color: var(--text);
+
+    /* Mobile — vertical fade-in stack */
+    @media (max-width: 768px) {
+      .story-scroll-container { height: auto; }
+      .story-sticky-panel { position: static; height: auto; overflow: visible; }
+      .story-header { padding: 60px 1.5rem 1rem; }
+      .polaroid-stage {
+        position: static;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.5rem;
+        padding: 2rem 1.5rem 3rem;
+        min-height: 0;
+      }
+      .polaroid {
+        position: static;
+        transform: none !important;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+      .polaroid.mob-visible { opacity: 1; }
     }
 
     /* ——————————————————————————————
-       QUIZ
+       QUIZ — ONE AT A TIME
     —————————————————————————————— */
     #quiz { padding: var(--pad) 2.5rem; }
 
-    .quiz-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.4rem;
-      max-width: 780px;
-      margin: 0 auto;
+    .quiz-wrap { max-width: 560px; margin: 0 auto; }
+
+    .quiz-prog-bar {
+      height: 2px;
+      background: rgba(201,169,110,0.2);
+      border-radius: 1px;
+      margin-bottom: 0.9rem;
     }
+    .quiz-prog-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      border-radius: 1px;
+      transition: width 0.4s ease;
+    }
+    .quiz-prog-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
     .quiz-card {
       background: var(--card);
       border: 1px solid rgba(201,169,110,0.18);
       border-radius: 8px;
-      padding: 1.7rem;
+      padding: 2.4rem;
+      animation: fadeUp 0.4s ease;
     }
     .quiz-q {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      line-height: 1.45;
-      margin-bottom: 1.1rem;
+      font-size: 1.55rem;
+      line-height: 1.4;
+      margin-bottom: 1.8rem;
+      text-align: center;
     }
-    .quiz-opts { display: flex; gap: 0.75rem; }
+    .quiz-opts { display: flex; gap: 1rem; }
     .qbtn {
       flex: 1;
-      padding: 0.55rem 0.9rem;
+      padding: 0.8rem 1rem;
       background: transparent;
       border: 1px solid rgba(201,169,110,0.35);
       color: var(--text-sec);
       font-family: 'Jost', sans-serif;
       font-weight: 300;
-      font-size: 0.82rem;
+      font-size: 0.88rem;
       letter-spacing: 0.07em;
       cursor: pointer;
       border-radius: 4px;
@@ -396,14 +397,10 @@
     #quiz-score {
       display: none;
       text-align: center;
-      margin-top: 3rem;
       padding: 2.5rem;
       background: var(--card);
       border: 1px solid var(--accent);
       border-radius: 8px;
-      max-width: 780px;
-      margin-left: auto;
-      margin-right: auto;
       animation: fadeUp 0.5s ease;
     }
     #quiz-score.show { display: block; }
@@ -439,31 +436,31 @@
       background: var(--card);
       border: 1px solid rgba(201,169,110,0.18);
       border-radius: 8px;
-      padding: 1.4rem 1.7rem;
+      padding: 1.6rem 2rem;
     }
     .stat-card.full { grid-column: 1 / -1; }
 
     .stat-cat {
-      font-size: 0.62rem;
-      letter-spacing: 0.3em;
+      font-size: 0.75rem;
+      letter-spacing: 0.26em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 1rem;
+      margin-bottom: 1.1rem;
     }
     .stat-row {
       display: flex;
       align-items: center;
-      gap: 0.8rem;
-      margin-bottom: 0.65rem;
+      gap: 0.9rem;
+      margin-bottom: 0.8rem;
     }
     .stat-name {
-      font-size: 0.78rem;
+      font-size: 0.92rem;
       color: var(--text-sec);
-      min-width: 64px;
+      min-width: 70px;
     }
     .bar-wrap {
       flex: 1;
-      height: 5px;
+      height: 6px;
       background: rgba(255,255,255,0.09);
       border-radius: 3px;
       overflow: hidden;
@@ -477,21 +474,21 @@
     }
     .stat-val {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      min-width: 50px;
+      font-size: 1.15rem;
+      min-width: 54px;
       text-align: right;
     }
 
     /* Badge for text-only stats */
     .stat-badge {
       display: inline-block;
-      padding: 0.22rem 0.75rem;
+      padding: 0.28rem 0.9rem;
       background: rgba(201,169,110,0.1);
       border: 1px solid rgba(201,169,110,0.25);
       border-radius: 20px;
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: var(--text-sec);
       flex: 1;
     }
@@ -506,11 +503,11 @@
     }
     .vs-cell { text-align: center; }
     .vs-who {
-      font-size: 0.72rem;
+      font-size: 0.8rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--text-sec);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
     }
     .vs-sep {
       font-family: 'Cormorant Garamond', serif;
@@ -575,6 +572,11 @@
       margin-bottom: 0.4rem;
     }
     .pop-note { font-size: 0.87rem; color: var(--text-sec); }
+
+    /* Dark map — invert only tile layer, not markers */
+    #map .leaflet-tile-pane {
+      filter: invert(100%) hue-rotate(180deg) brightness(0.85) saturate(0.7);
+    }
 
     /* Marker CSS injected via JS */
 
@@ -713,23 +715,16 @@
       .nav-links { display: none; }
       .hamburger { display: flex; }
 
-      .timeline::before { display: none; }
-      .tl-item, .tl-item:nth-child(even) {
-        flex-direction: column;
-        gap: 1.4rem;
-      }
-      .tl-item::before { display: none; }
-      .tl-img { width: 65%; max-width: 200px; margin: 0 auto; flex: none; }
-      .tl-text { flex: none; }
+      .welcome-logo { height: 100px; }
+      .hero-arch-wrap { width: clamp(240px, 80vw, 380px); }
 
-      .quiz-grid { grid-template-columns: 1fr; }
       .stats-grid { grid-template-columns: 1fr; }
       .stat-card.full { grid-column: 1; }
 
       #map { height: 300px; }
 
       section { padding: var(--pad) 1.3rem; }
-      #welcome, #story, #quiz, #stats, #travel, #qa { padding: var(--pad) 1.3rem; }
+      #welcome, #quiz, #stats, #travel, #qa { padding: var(--pad) 1.3rem; }
     }
 
     @media (max-width: 480px) {
@@ -783,8 +778,48 @@
     </div>
 
     <div class="hero-arch-wrap">
-      <div class="arch">
-        <img src="images/story-proposal-DZoLDB8e.png" alt="Nasser and Farzana">
+      <img src="images/story-proposal-DZoLDB8e.png" alt="Nasser and Farzana">
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ——————————————————————————————
+     2. OUR STORY — POLAROID PILE
+—————————————————————————————— -->
+<section id="story">
+  <div class="story-scroll-container">
+    <div class="story-sticky-panel">
+      <div class="story-header">
+        <h2 class="section-title">Our Story</h2>
+        <p class="section-sub">A few moments that made us, us.</p>
+      </div>
+      <div class="polaroid-stage">
+        <div class="polaroid" id="pol-0">
+          <img src="images/story-0-first-met-Cm6GVSR3.png" alt="Colonel Saab">
+          <p class="polaroid-caption">Colonel Saab, London</p>
+        </div>
+        <div class="polaroid" id="pol-1">
+          <img src="images/story-1-first-meeting-B3S9t4nP.png" alt="Meeting family">
+          <p class="polaroid-caption">Meeting the fam 👨‍👩‍👧‍👦</p>
+        </div>
+        <div class="polaroid" id="pol-2">
+          <img src="images/story-2-family-meeting-BvdDXYb-.png" alt="Meeting Nasser's family">
+          <p class="polaroid-caption">Meeting Nasser's crew 🏡</p>
+        </div>
+        <div class="polaroid" id="pol-3">
+          <img src="images/story-proposal-DZoLDB8e.png" alt="The proposal">
+          <p class="polaroid-caption">The Proposal ✨</p>
+        </div>
+        <div class="polaroid" id="pol-4">
+          <img src="images/story-3-nikkah-CBoetaIk.png" alt="Our Nikkah">
+          <p class="polaroid-caption">Our Nikkah 🕌</p>
+        </div>
+        <div class="polaroid" id="pol-5">
+          <img src="images/story-4-sicily-DQdG4XAA.png" alt="Sicily">
+          <p class="polaroid-caption">Sicily, baby 🍊</p>
+        </div>
       </div>
     </div>
   </div>
@@ -793,111 +828,28 @@
 <div class="divider"></div>
 
 <!-- ——————————————————————————————
-     2. OUR STORY
-—————————————————————————————— -->
-<section id="story">
-  <h2 class="section-title reveal">Our Story</h2>
-  <div class="divider" style="margin-bottom:3.5rem;"></div>
-
-  <div class="timeline">
-
-    <div class="tl-item reveal">
-      <div class="tl-img"><div class="tl-arch"><div class="arch"><img src="images/story-0-first-met-Cm6GVSR3.png" alt="First met"></div></div></div>
-      <div class="tl-text"><div class="tl-num">01</div><p class="tl-caption">The first time we met, at Colonel Saab</p></div>
-    </div>
-
-    <div class="tl-item reveal">
-      <div class="tl-img"><div class="tl-arch"><div class="arch"><img src="images/story-1-first-meeting-B3S9t4nP.png" alt="First meeting family"></div></div></div>
-      <div class="tl-text"><div class="tl-num">02</div><p class="tl-caption">The first time Nasser met Farzana's family</p></div>
-    </div>
-
-    <div class="tl-item reveal">
-      <div class="tl-img"><div class="tl-arch"><div class="arch"><img src="images/story-2-family-meeting-BvdDXYb-.png" alt="Family meeting"></div></div></div>
-      <div class="tl-text"><div class="tl-num">03</div><p class="tl-caption">The first time Farzana met Nasser's family</p></div>
-    </div>
-
-    <div class="tl-item reveal">
-      <div class="tl-img"><div class="tl-arch"><div class="arch"><img src="images/story-proposal-DZoLDB8e.png" alt="Proposal"></div></div></div>
-      <div class="tl-text"><div class="tl-num">04</div><p class="tl-caption">The proposal — St John's College, Cambridge</p></div>
-    </div>
-
-    <div class="tl-item reveal">
-      <div class="tl-img"><div class="tl-arch"><div class="arch"><img src="images/story-3-nikkah-CBoetaIk.png" alt="Nikkah"></div></div></div>
-      <div class="tl-text"><div class="tl-num">05</div><p class="tl-caption">Our Nikkah at Cambridge Central Mosque</p></div>
-    </div>
-
-    <div class="tl-item reveal">
-      <div class="tl-img"><div class="tl-arch"><div class="arch"><img src="images/story-4-sicily-DQdG4XAA.png" alt="Sicily"></div></div></div>
-      <div class="tl-text"><div class="tl-num">06</div><p class="tl-caption">Our first holiday together — Sicily</p></div>
-    </div>
-
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ——————————————————————————————
-     3. QUIZ
+     3. QUIZ — ONE AT A TIME
 —————————————————————————————— -->
 <section id="quiz">
   <h2 class="section-title reveal">Who's Who?</h2>
   <p class="section-sub reveal">Think you know us? See if you agree…</p>
 
-  <div class="quiz-grid" id="qgrid">
+  <div class="quiz-wrap reveal">
+    <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="quiz-prog-fill"></div></div>
+    <p class="quiz-prog-label" id="quiz-prog-label">Question 1 of 6</p>
 
-    <div class="quiz-card reveal" data-ans="Nasser">
-      <p class="quiz-q">Who likes to plan things more?</p>
+    <div class="quiz-card" id="quiz-card">
+      <p class="quiz-q" id="quiz-q-text"></p>
       <div class="quiz-opts">
-        <button class="qbtn" data-c="Nasser">Nasser</button>
-        <button class="qbtn" data-c="Farzana">Farzana</button>
+        <button class="qbtn" id="qbtn-nasser">Nasser</button>
+        <button class="qbtn" id="qbtn-farzana">Farzana</button>
       </div>
     </div>
 
-    <div class="quiz-card reveal" data-ans="Farzana">
-      <p class="quiz-q">Who is funnier?</p>
-      <div class="quiz-opts">
-        <button class="qbtn" data-c="Nasser">Nasser</button>
-        <button class="qbtn" data-c="Farzana">Farzana</button>
-      </div>
+    <div id="quiz-score">
+      <div class="score-num" id="sc-num"></div>
+      <p class="score-msg" id="sc-msg"></p>
     </div>
-
-    <div class="quiz-card reveal" data-ans="Nasser">
-      <p class="quiz-q">Who is more outgoing?</p>
-      <div class="quiz-opts">
-        <button class="qbtn" data-c="Nasser">Nasser</button>
-        <button class="qbtn" data-c="Farzana">Farzana</button>
-      </div>
-    </div>
-
-    <div class="quiz-card reveal" data-ans="Nasser">
-      <p class="quiz-q">Who takes nicer photos?</p>
-      <div class="quiz-opts">
-        <button class="qbtn" data-c="Nasser">Nasser</button>
-        <button class="qbtn" data-c="Farzana">Farzana</button>
-      </div>
-    </div>
-
-    <div class="quiz-card reveal" data-ans="Farzana">
-      <p class="quiz-q">Who is more fashionable?</p>
-      <div class="quiz-opts">
-        <button class="qbtn" data-c="Nasser">Nasser</button>
-        <button class="qbtn" data-c="Farzana">Farzana</button>
-      </div>
-    </div>
-
-    <div class="quiz-card reveal" data-ans="Nasser">
-      <p class="quiz-q">Who is more organised?</p>
-      <div class="quiz-opts">
-        <button class="qbtn" data-c="Nasser">Nasser</button>
-        <button class="qbtn" data-c="Farzana">Farzana</button>
-      </div>
-    </div>
-
-  </div>
-
-  <div id="quiz-score">
-    <div class="score-num" id="sc-num"></div>
-    <p class="score-msg" id="sc-msg"></p>
   </div>
 </section>
 
@@ -1159,33 +1111,59 @@ const barObs = new IntersectionObserver(entries => {
 }, { threshold: 0.2 });
 document.querySelectorAll('.stat-card').forEach(c => barObs.observe(c));
 
-// ——— QUIZ ———
-let score = 0, answered = 0;
-document.querySelectorAll('.quiz-card').forEach(card => {
-  const ans = card.dataset.ans;
-  card.querySelectorAll('.qbtn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (card.dataset.done) return;
-      card.dataset.done = '1';
-      card.querySelectorAll('.qbtn').forEach(b => b.disabled = true);
-      if (btn.dataset.c === ans) { btn.classList.add('correct'); score++; }
-      else {
-        btn.classList.add('wrong');
-        card.querySelectorAll('.qbtn').forEach(b => { if (b.dataset.c === ans) b.classList.add('correct'); });
-      }
-      answered++;
-      if (answered === 6) showScore();
-    });
+// ——— QUIZ — ONE AT A TIME ———
+const QUESTIONS = [
+  { q: 'Who likes to plan things more?', ans: 'Nasser' },
+  { q: 'Who is funnier?', ans: 'Farzana' },
+  { q: 'Who is more outgoing?', ans: 'Nasser' },
+  { q: 'Who takes nicer photos?', ans: 'Nasser' },
+  { q: 'Who is more fashionable?', ans: 'Farzana' },
+  { q: 'Who is more organised?', ans: 'Nasser' },
+];
+let qIdx = 0, quizScore = 0;
+
+function showQuestion(i) {
+  const q = QUESTIONS[i];
+  const cardEl = document.getElementById('quiz-card');
+  document.getElementById('quiz-q-text').textContent = q.q;
+  document.getElementById('quiz-prog-label').textContent = 'Question ' + (i + 1) + ' of ' + QUESTIONS.length;
+  document.getElementById('quiz-prog-fill').style.width = ((i / QUESTIONS.length) * 100) + '%';
+  ['qbtn-nasser', 'qbtn-farzana'].forEach(id => {
+    const b = document.getElementById(id);
+    b.className = 'qbtn'; b.disabled = false;
   });
-});
-function showScore() {
-  const box = document.getElementById('quiz-score');
-  document.getElementById('sc-num').textContent = score + ' / 6';
-  const msgs = ['Please re-read the invitation. And maybe this whole website.','Please re-read the invitation. And maybe this whole website.','Hmm. Did we even invite you?','Hmm. Did we even invite you?','Not bad — you\'ve clearly been paying attention','Not bad — you\'ve clearly been paying attention','You really know us! Save us a seat at the top table 👀'];
-  document.getElementById('sc-msg').textContent = msgs[score];
-  box.classList.add('show');
-  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  cardEl.style.animation = 'none';
+  void cardEl.offsetHeight;
+  cardEl.style.animation = 'fadeUp 0.4s ease';
 }
+
+function handleQuizAnswer(chosen) {
+  const q = QUESTIONS[qIdx];
+  if (chosen === q.ans) quizScore++;
+  document.getElementById('qbtn-nasser').className = 'qbtn ' + (q.ans === 'Nasser' ? 'correct' : 'wrong');
+  document.getElementById('qbtn-farzana').className = 'qbtn ' + (q.ans === 'Farzana' ? 'correct' : 'wrong');
+  ['qbtn-nasser', 'qbtn-farzana'].forEach(id => { document.getElementById(id).disabled = true; });
+  setTimeout(() => {
+    qIdx++;
+    if (qIdx < QUESTIONS.length) {
+      showQuestion(qIdx);
+    } else {
+      document.getElementById('quiz-prog-fill').style.width = '100%';
+      document.getElementById('quiz-prog-label').textContent = 'Complete!';
+      document.getElementById('quiz-card').style.display = 'none';
+      const msgs = ['Please re-read the invitation. And maybe this whole website.','Please re-read the invitation. And maybe this whole website.','Hmm. Did we even invite you?','Hmm. Did we even invite you?','Not bad — you\'ve clearly been paying attention','Not bad — you\'ve clearly been paying attention','You really know us! Save us a seat at the top table 👀'];
+      document.getElementById('sc-num').textContent = quizScore + ' / ' + QUESTIONS.length;
+      document.getElementById('sc-msg').textContent = msgs[quizScore];
+      const box = document.getElementById('quiz-score');
+      box.classList.add('show');
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, 1100);
+}
+
+document.getElementById('qbtn-nasser').addEventListener('click', () => handleQuizAnswer('Nasser'));
+document.getElementById('qbtn-farzana').addEventListener('click', () => handleQuizAnswer('Farzana'));
+showQuestion(0);
 
 // ——— MAP ———
 const locs = [
@@ -1213,17 +1191,11 @@ mstyle.textContent = `
 document.head.appendChild(mstyle);
 
 const map = L.map('map', { center:[30,15], zoom:2, zoomControl:true });
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_matter/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-  subdomains:'abcd', maxZoom:19
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  maxZoom: 19
 }).addTo(map);
-
-// Force tile repaint once map section is revealed (reveal class delays visibility)
-setTimeout(() => map.invalidateSize(), 400);
-const mapRevealObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { setTimeout(() => map.invalidateSize(), 650); mapRevealObs.unobserve(e.target); }});
-}, { threshold: 0.1 });
-mapRevealObs.observe(document.getElementById('map'));
+setTimeout(() => map.invalidateSize(), 300);
 
 // Dashed polyline through non-honeymoon stops
 const polyCoords = locs.filter(l => !l.honeymoon).map(l => l.coords);
@@ -1263,6 +1235,83 @@ document.getElementById('rec-form').addEventListener('submit', function(e) {
   t.style.display = 'block';
   this.style.display = 'none';
 });
+
+// ——— POLAROID PILE ———
+(function() {
+  const section = document.getElementById('story');
+  const sticky = section.querySelector('.story-sticky-panel');
+  const stage = section.querySelector('.polaroid-stage');
+  const pols = Array.from(stage.querySelectorAll('.polaroid'));
+
+  const initRots  = [-7,  4, -2,  8, -5,  3];
+  const initOffX  = [  0,  8, -6, 12, -4, 10];
+  const initOffY  = [  0,-12,  8,  4, -8, 10];
+
+  const FINAL = [
+    { rx:-0.28, ry:-0.24, rot:-6 },
+    { rx: 0.20, ry:-0.28, rot: 5 },
+    { rx:-0.18, ry: 0.06, rot:-3 },
+    { rx: 0.14, ry: 0.10, rot: 7 },
+    { rx:-0.30, ry: 0.26, rot:-8 },
+    { rx: 0.26, ry: 0.22, rot: 4 },
+  ];
+
+  const isMobile = () => window.innerWidth <= 768;
+
+  function setInitial() {
+    pols.forEach((p, i) => {
+      p.style.transition = 'none';
+      p.style.transform = `translate(calc(-50% + ${initOffX[i]}px), calc(-50% + ${initOffY[i]}px)) rotate(${initRots[i]}deg)`;
+      p.style.zIndex = String(pols.length - i);
+    });
+  }
+
+  const landed = new Array(pols.length).fill(false);
+
+  function onScroll() {
+    if (isMobile()) return;
+    const sTop = section.getBoundingClientRect().top + scrollY;
+    const sHeight = section.scrollHeight - window.innerHeight;
+    const progress = Math.max(0, Math.min(1, (scrollY - sTop) / sHeight));
+    const sw = stage.offsetWidth;
+    const sh = stage.offsetHeight;
+
+    pols.forEach((p, i) => {
+      const threshold = (i + 1) / (pols.length + 1);
+      const shouldLand = progress >= threshold;
+      if (shouldLand === landed[i]) return;
+      landed[i] = shouldLand;
+      p.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      if (shouldLand) {
+        const f = FINAL[i];
+        p.style.transform = `translate(calc(-50% + ${f.rx * sw}px), calc(-50% + ${f.ry * sh}px)) rotate(${f.rot}deg)`;
+        p.style.zIndex = String(i + 10);
+      } else {
+        p.style.transform = `translate(calc(-50% + ${initOffX[i]}px), calc(-50% + ${initOffY[i]}px)) rotate(${initRots[i]}deg)`;
+        p.style.zIndex = String(pols.length - i);
+      }
+    });
+  }
+
+  function initMobile() {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('mob-visible'); });
+    }, { threshold: 0.3 });
+    pols.forEach(p => obs.observe(p));
+  }
+
+  if (!isMobile()) {
+    setInitial();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  } else {
+    initMobile();
+  }
+
+  window.addEventListener('resize', () => {
+    if (!isMobile()) { setInitial(); onScroll(); }
+  });
+})();
 
 // ——— ACCORDION ———
 document.querySelectorAll('.acc-head').forEach(head => {
