@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nasser &amp; Farzana · 19.07.2026</title>
-  <link rel="icon" type="image/png" href="images/logo-removebg-preview.png">
+  <link rel="icon" type="image/png" href="images/Screenshot_2026-06-13_at_10.36.49-removebg-preview.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -61,14 +62,6 @@
       opacity: 0.45;
       margin: 0 auto;
     }
-
-    /* ——— ARCH FRAME ——— */
-    .arch {
-      border-radius: 50% 50% 0 0 / 60% 60% 0 0;
-      overflow: hidden;
-      border: 2px solid var(--accent);
-    }
-    .arch img { width: 100%; height: 100%; object-fit: cover; }
 
     /* ——— REVEAL ——— */
     .reveal {
@@ -175,7 +168,7 @@
     .welcome-inner { position: relative; z-index: 1; width: 100%; }
 
     .welcome-logo {
-      height: 200px;
+      height: 300px;
       width: auto;
       margin: 0 auto 1rem;
       filter: drop-shadow(0 0 20px rgba(201,169,110,0.4));
@@ -189,12 +182,10 @@
 
     /* ——— NAME TYPEWRITER ——— */
     .amp-gold { color: var(--accent); }
-    .amp-gold.amp-pulse {
-      animation: ampPulse 2s ease-in-out infinite;
-    }
+    .amp-gold.amp-pulse { animation: ampPulse 2s ease-in-out infinite; }
     @keyframes ampPulse {
       0%, 100% { color: var(--accent); text-shadow: none; }
-      50% { color: #FFD700; text-shadow: 0 0 22px rgba(255, 215, 0, 0.55); }
+      50% { color: #FFD700; text-shadow: 0 0 22px rgba(255,215,0,0.55); }
     }
 
     .welcome-h1 {
@@ -248,13 +239,13 @@
       padding-top: 0.05em;
     }
 
-    /* Hero arch — outer frame larger than photo, inner clips */
+    /* Hero arch */
     .arch-outer {
-      width: clamp(296px, 52vw, 580px);
+      width: clamp(200px, 30vw, 320px);
       aspect-ratio: 3/4;
       border-radius: 50% 50% 0 0 / 55% 55% 0 0;
-      border: 2px solid rgba(245, 239, 230, 0.5);
-      padding: 12px;
+      border: 2px solid rgba(245,239,230,0.5);
+      padding: 10px;
       margin: 1.5rem auto 0;
       box-shadow: 0 8px 70px rgba(0,0,0,0.35);
     }
@@ -267,100 +258,55 @@
     .hero-arch-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* ——————————————————————————————
-       OUR STORY — POLAROID PILE
+       OUR STORY — VERTICAL POLAROIDS
     —————————————————————————————— */
-    #story { padding: 0; }
+    #story { padding: var(--pad) 2.5rem; }
 
-    .story-scroll-container {
-      height: 400vh;
-      position: relative;
-    }
-
-    .story-sticky-panel {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow: hidden;
+    .polaroid-column {
       display: flex;
       flex-direction: column;
       align-items: center;
-    }
-
-    .story-header {
-      padding: 90px 2rem 1.5rem;
-      text-align: center;
-      position: relative;
-      z-index: 10;
-      flex-shrink: 0;
-    }
-    .story-header .section-title { margin-bottom: 0.5rem; }
-    .story-header .section-sub { margin-bottom: 0; }
-
-    .polaroid-stage {
-      position: relative;
-      flex: 1;
-      width: 100%;
+      gap: 3.5rem;
+      padding: 1rem 0 2rem;
     }
 
     .polaroid {
-      position: absolute;
-      left: 50%;
-      top: 50%;
       background: #fff;
-      padding: 14px 14px 52px;
-      box-shadow: 4px 6px 24px rgba(0,0,0,0.38);
-      will-change: transform;
-      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-      cursor: default;
+      padding: 16px 16px 64px;
+      box-shadow: 5px 8px 32px rgba(0,0,0,0.42);
     }
 
     .polaroid img {
       display: block;
-      width: 200px;
-      height: 200px;
+      width: 280px;
+      height: 280px;
       object-fit: cover;
-      pointer-events: none;
     }
 
     .polaroid-caption {
       font-family: 'Caveat', cursive;
       color: #2C1810;
-      font-size: 15px;
+      font-size: 17px;
       text-align: center;
-      margin-top: 8px;
+      margin-top: 10px;
       line-height: 1.3;
     }
 
-    /* Mobile — vertical fade-in stack */
-    @media (max-width: 768px) {
-      .story-scroll-container { height: auto; }
-      .story-sticky-panel { position: static; height: auto; overflow: visible; }
-      .story-header { padding: 60px 1.5rem 1rem; }
-      .polaroid-stage {
-        position: static;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2.5rem;
-        padding: 2rem 1.5rem 3rem;
-        min-height: 0;
-      }
-      .polaroid {
-        position: static;
-        transform: none !important;
-        opacity: 0;
-        transition: opacity 0.5s ease;
-      }
-      .polaroid.mob-visible { opacity: 1; }
+    .polaroid-column .polaroid {
+      opacity: 0;
+      transform: translateY(24px) var(--rot, rotate(0deg));
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .polaroid-column .polaroid.in {
+      opacity: 1;
+      transform: translateY(0) var(--rot, rotate(0deg));
     }
 
     /* ——————————————————————————————
        QUIZ — ONE AT A TIME
     —————————————————————————————— */
     #quiz { padding: var(--pad) 2.5rem; }
-
     .quiz-wrap { max-width: 560px; margin: 0 auto; perspective: 1200px; }
-
     .quiz-prog-bar {
       height: 2px;
       background: rgba(201,169,110,0.2);
@@ -382,7 +328,6 @@
       margin-bottom: 2rem;
       text-align: center;
     }
-
     .quiz-card {
       background: var(--card);
       border: 1px solid rgba(201,169,110,0.18);
@@ -420,7 +365,6 @@
     .qbtn.correct { background: rgba(201,169,110,0.22); border-color: var(--accent); color: var(--accent); transform: scale(1.04); }
     .qbtn.wrong   { background: rgba(139,74,74,0.22); border-color: var(--error); color: #c47b7b; }
     .qbtn:disabled { cursor: default; }
-
     #quiz-score {
       display: none;
       text-align: center;
@@ -451,7 +395,6 @@
        STATS — TOP TRUMPS
     —————————————————————————————— */
     #stats { padding: var(--pad) 2.5rem; }
-
     .trump-grid {
       display: flex;
       gap: 2.4rem;
@@ -460,7 +403,6 @@
       justify-content: center;
       align-items: flex-start;
     }
-
     .trump-card {
       flex: 1;
       min-width: 0;
@@ -472,7 +414,6 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .trump-card:hover { transform: translateY(-6px); box-shadow: 0 20px 80px rgba(0,0,0,0.45); }
-
     .trump-photo {
       width: 100%;
       aspect-ratio: 3/4;
@@ -485,7 +426,6 @@
     }
     .trump-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .trump-photo-ph { display: flex; align-items: center; justify-content: center; }
-
     .trump-name-bar {
       background: var(--accent);
       padding: 0.65rem 1.2rem;
@@ -499,9 +439,7 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
-
     .trump-stats { padding: 0.3rem 0 0.8rem; }
-
     .trump-row {
       display: flex;
       align-items: center;
@@ -510,7 +448,6 @@
       gap: 0.8rem;
     }
     .trump-row:last-child { border-bottom: none; }
-
     .trump-stat-name {
       font-size: 0.7rem;
       letter-spacing: 0.1em;
@@ -518,7 +455,6 @@
       color: var(--text-sec);
       flex: 1;
     }
-
     .trump-stat-val {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.1rem;
@@ -529,7 +465,6 @@
     }
     .trump-stat-val.trump-high { font-size: 1.2rem; }
     .trump-stat-val.trump-italic { font-style: italic; font-size: 0.88rem; }
-
     .trump-shared { text-align: center; margin-top: 2.5rem; }
     .trump-shared-badge {
       display: inline-block;
@@ -547,11 +482,7 @@
        TRAVEL
     —————————————————————————————— */
     #travel { padding: var(--pad) 2.5rem; }
-
-    .trip-hero {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
+    .trip-hero { text-align: center; margin-bottom: 1.5rem; }
     .trip-text {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(1.9rem, 4.5vw, 3.2rem);
@@ -566,54 +497,59 @@
       margin: 0 auto;
     }
 
-    /* ——— DESTINATIONS GRID ——— */
-    .destinations-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.2rem;
+    /* ——— TRAVEL MAP ——— */
+    #travel-map {
+      width: 100%;
       max-width: 860px;
+      height: 460px;
       margin: 2.8rem auto;
+      border-radius: 10px;
+      border: 1px solid rgba(201,169,110,0.3);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+      overflow: hidden;
     }
-    .dest-card {
-      background: var(--card);
-      border: 1px solid rgba(201,169,110,0.22);
-      border-radius: 8px;
-      padding: 1.3rem 1.5rem;
-      transition: transform 0.25s ease, border-color 0.25s ease;
-    }
-    .dest-card:hover { transform: translateY(-4px); border-color: var(--accent); }
-    .dest-emoji { font-size: 1.8rem; margin-bottom: 0.5rem; }
-    .dest-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.2rem;
-      line-height: 1.3;
-    }
-    .dest-date {
-      font-size: 0.65rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-    .dest-note { font-size: 0.83rem; color: var(--text-sec); line-height: 1.55; }
-    .dest-special { border-color: rgba(255,215,0,0.35); }
 
-    @media (max-width: 600px) {
-      .destinations-grid { grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+    .map-pin { background: none !important; border: none !important; }
+    .pin-inner {
+      width: 14px;
+      height: 14px;
+      background: #C9A96E;
+      border-radius: 50%;
+      border: 2.5px solid rgba(245,239,230,0.95);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.6);
+      cursor: pointer;
+      transition: transform 0.2s ease;
     }
-    @media (max-width: 420px) {
-      .destinations-grid { grid-template-columns: 1fr; }
+    .pin-inner:hover { transform: scale(1.5); }
+
+    .leaflet-popup-content-wrapper {
+      background: rgba(60,42,30,0.97) !important;
+      color: #F5EFE6 !important;
+      border: 1px solid rgba(201,169,110,0.45) !important;
+      border-radius: 8px !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
     }
+    .leaflet-popup-tip { background: rgba(60,42,30,0.97) !important; }
+    .leaflet-popup-content { margin: 12px 16px !important; min-width: 160px; }
+    .map-popup-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #F5EFE6;
+      margin-bottom: 4px;
+    }
+    .map-popup-date {
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #C9A96E;
+      margin-bottom: 6px;
+    }
+    .map-popup-note { font-size: 0.82rem; color: #D4C4B0; line-height: 1.5; }
+    .leaflet-control-attribution { display: none !important; }
 
     /* Recs form */
-    .recs-wrap {
-      max-width: 580px;
-      margin: 0 auto;
-      text-align: center;
-    }
+    .recs-wrap { max-width: 580px; margin: 0 auto; text-align: center; }
     .recs-wrap h3 {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.9rem;
@@ -621,7 +557,6 @@
       margin-bottom: 0.8rem;
     }
     .recs-wrap p { color: var(--text-sec); font-size: 0.93rem; margin-bottom: 2rem; line-height: 1.65; }
-
     .fg { margin-bottom: 1.1rem; text-align: left; }
     .fg label {
       display: block;
@@ -646,7 +581,6 @@
     }
     .fg input:focus, .fg textarea:focus { border-color: var(--accent); }
     .fg textarea { height: 110px; resize: vertical; }
-
     .gold-btn {
       padding: 0.85rem 2.4rem;
       background: transparent;
@@ -662,7 +596,6 @@
       margin-top: 0.4rem;
     }
     .gold-btn:hover { background: var(--accent); color: var(--bg); }
-
     .thanks {
       display: none;
       margin-top: 1.4rem;
@@ -679,11 +612,9 @@
        Q&A
     —————————————————————————————— */
     #qa { padding: var(--pad) 2.5rem; }
-
     .accordion { max-width: 680px; margin: 0 auto; }
     .acc-item { border-bottom: 1px solid rgba(201,169,110,0.22); }
     .acc-item:first-child { border-top: 1px solid rgba(201,169,110,0.22); }
-
     .acc-head {
       display: flex;
       align-items: center;
@@ -700,14 +631,12 @@
       line-height: 1.4;
     }
     .acc-arrow {
-      width: 18px;
-      height: 18px;
+      width: 18px; height: 18px;
       color: var(--accent);
       flex-shrink: 0;
       transition: transform 0.35s ease;
     }
     .acc-arrow.open { transform: rotate(180deg); }
-
     .acc-body {
       max-height: 0;
       overflow: hidden;
@@ -740,13 +669,11 @@
       #nav { padding: 1rem 1.4rem; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
-
-      .welcome-logo { height: 140px; }
-      .arch-outer { width: clamp(240px, 80vw, 380px); padding: 8px; }
-
+      .welcome-logo { height: 200px; }
+      .arch-outer { width: clamp(180px, 68vw, 260px); padding: 8px; }
+      #travel-map { height: 340px; }
       .trump-grid { flex-direction: column; align-items: center; }
       .trump-card { max-width: 320px; width: 100%; }
-
       section { padding: var(--pad) 1.3rem; }
       #welcome, #quiz, #stats, #travel, #qa { padding: var(--pad) 1.3rem; }
     }
@@ -754,6 +681,8 @@
     @media (max-width: 480px) {
       .cd-sep { display: none; }
       .countdown { gap: 1.2rem; }
+      .polaroid img { width: 240px; height: 240px; }
+      .polaroid { padding: 12px 12px 56px; }
     }
   </style>
 </head>
@@ -761,7 +690,7 @@
 
 <!-- ——— NAV ——— -->
 <nav id="nav">
-  <img src="images/logo-removebg-preview.png" alt="Nasser &amp; Farzana" class="nav-logo">
+  <img src="images/Screenshot_2026-06-13_at_10.36.49-removebg-preview.png" alt="Nasser &amp; Farzana" class="nav-logo">
   <ul class="nav-links">
     <li><a href="#welcome">Welcome</a></li>
     <li><a href="#story">Our Story</a></li>
@@ -787,7 +716,7 @@
 —————————————————————————————— -->
 <section id="welcome">
   <div class="welcome-inner">
-    <img src="images/logo-removebg-preview.png" alt="Nasser &amp; Farzana" class="welcome-logo">
+    <img src="images/Screenshot_2026-06-13_at_10.36.49-removebg-preview.png" alt="Nasser &amp; Farzana" class="welcome-logo">
     <img src="images/Screenshot_2026-06-13_at_10.17.49-removebg-preview.png" alt="Nasser &amp; Farzana" class="welcome-couple-img">
     <h1 class="welcome-h1"></h1>
     <p class="welcome-sub">19th July 2026 &middot; 12pm &middot; Quendon Hall, Essex</p>
@@ -804,7 +733,7 @@
 
     <div class="arch-outer">
       <div class="hero-arch-wrap">
-        <img src="images/story-proposal-DZoLDB8e.png" alt="Nasser and Farzana">
+        <img src="images/IMG_7308.JPG" alt="Nasser and Farzana">
       </div>
     </div>
   </div>
@@ -813,41 +742,36 @@
 <div class="divider"></div>
 
 <!-- ——————————————————————————————
-     2. OUR STORY — POLAROID PILE
+     2. OUR STORY — VERTICAL POLAROIDS
 —————————————————————————————— -->
 <section id="story">
-  <div class="story-scroll-container">
-    <div class="story-sticky-panel">
-      <div class="story-header">
-        <h2 class="section-title">Our Story</h2>
-        <p class="section-sub">A few moments that made us, us.</p>
-      </div>
-      <div class="polaroid-stage">
-        <div class="polaroid" id="pol-0">
-          <img src="images/story-0-first-met-Cm6GVSR3.png" alt="Colonel Saab">
-          <p class="polaroid-caption">The first time we met, at Colonel Saab</p>
-        </div>
-        <div class="polaroid" id="pol-1">
-          <img src="images/story-1-first-meeting-B3S9t4nP.png" alt="Meeting family">
-          <p class="polaroid-caption">The first time Nasser met Farzana's family</p>
-        </div>
-        <div class="polaroid" id="pol-2">
-          <img src="images/story-2-family-meeting-BvdDXYb-.png" alt="Meeting Nasser's family">
-          <p class="polaroid-caption">The first time Farzana met Nasser's family</p>
-        </div>
-        <div class="polaroid" id="pol-3">
-          <img src="images/story-proposal-DZoLDB8e.png" alt="The proposal">
-          <p class="polaroid-caption">The proposal — St John's College, Cambridge</p>
-        </div>
-        <div class="polaroid" id="pol-4">
-          <img src="images/story-3-nikkah-CBoetaIk.png" alt="Our Nikkah">
-          <p class="polaroid-caption">Our Nikkah at Cambridge Central Mosque</p>
-        </div>
-        <div class="polaroid" id="pol-5">
-          <img src="images/story-4-sicily-DQdG4XAA.png" alt="Sicily">
-          <p class="polaroid-caption">Our first holiday together - Sicily</p>
-        </div>
-      </div>
+  <h2 class="section-title reveal">Our Story</h2>
+  <p class="section-sub reveal">A few moments that made us, us.</p>
+
+  <div class="polaroid-column">
+    <div class="polaroid" id="pol-0" style="--rot: rotate(-2deg)">
+      <img src="images/story-0-first-met-Cm6GVSR3.png" alt="Colonel Saab">
+      <p class="polaroid-caption">The first time we met, at Colonel Saab</p>
+    </div>
+    <div class="polaroid" id="pol-1" style="--rot: rotate(1.5deg)">
+      <img src="images/story-1-first-meeting-B3S9t4nP.png" alt="Meeting family">
+      <p class="polaroid-caption">The first time Nasser met Farzana's family</p>
+    </div>
+    <div class="polaroid" id="pol-2" style="--rot: rotate(-1deg)">
+      <img src="images/story-2-family-meeting-BvdDXYb-.png" alt="Meeting Nasser's family">
+      <p class="polaroid-caption">The first time Farzana met Nasser's family</p>
+    </div>
+    <div class="polaroid" id="pol-3" style="--rot: rotate(2deg)">
+      <img src="images/story-proposal-DZoLDB8e.png" alt="The proposal">
+      <p class="polaroid-caption">The proposal — St John's College, Cambridge</p>
+    </div>
+    <div class="polaroid" id="pol-4" style="--rot: rotate(-2.5deg)">
+      <img src="images/story-3-nikkah-CBoetaIk.png" alt="Our Nikkah">
+      <p class="polaroid-caption">Our Nikkah at Cambridge Central Mosque</p>
+    </div>
+    <div class="polaroid" id="pol-5" style="--rot: rotate(1deg)">
+      <img src="images/story-4-sicily-DQdG4XAA.png" alt="Sicily">
+      <p class="polaroid-caption">Our first holiday together - Sicily</p>
     </div>
   </div>
 </section>
@@ -863,7 +787,7 @@
 
   <div class="quiz-wrap reveal">
     <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="quiz-prog-fill"></div></div>
-    <p class="quiz-prog-label" id="quiz-prog-label">Question 1 of 6</p>
+    <p class="quiz-prog-label" id="quiz-prog-label">Question 1 of 5</p>
 
     <div class="quiz-card" id="quiz-card">
       <p class="quiz-q" id="quiz-q-text"></p>
@@ -900,14 +824,15 @@
       </div>
       <div class="trump-name-bar"><span>Nasser</span></div>
       <div class="trump-stats">
-        <div class="trump-row"><span class="trump-stat-name">Punctuality</span><span class="trump-stat-val">40%</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Overthinking</span><span class="trump-stat-val trump-high">94%</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Snack Consumption</span><span class="trump-stat-val trump-high">10/10</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Steps Per Day</span><span class="trump-stat-val">4,100</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Parallel Parking</span><span class="trump-stat-val trump-high">90%</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Picks Restaurant</span><span class="trump-stat-val trump-high">80%</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Wins Arguments</span><span class="trump-stat-val trump-italic">still thinks he does</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Morning Person</span><span class="trump-stat-val trump-italic">🌙 No</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Crisp Addiction</span><span class="trump-stat-val trump-high">100</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Picks Restaurant</span><span class="trump-stat-val trump-high">80</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Arsenal Obsession</span><span class="trump-stat-val">78</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Wins Arguments</span><span class="trump-stat-val trump-italic">He can dream</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Avoiding Confrontation</span><span class="trump-stat-val trump-high">82</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Mayo Addiction</span><span class="trump-stat-val trump-high">100</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Lateness</span><span class="trump-stat-val">32</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Remembers Anniversaries</span><span class="trump-stat-val trump-italic">Occasionally</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Cooking</span><span class="trump-stat-val trump-italic">Makes good reservations</span></div>
       </div>
     </div>
 
@@ -920,14 +845,15 @@
       </div>
       <div class="trump-name-bar"><span>Farzana</span></div>
       <div class="trump-stats">
-        <div class="trump-row"><span class="trump-stat-name">Punctuality</span><span class="trump-stat-val trump-high">95%</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Overthinking</span><span class="trump-stat-val">61%</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Snack Consumption</span><span class="trump-stat-val">6/10</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Steps Per Day</span><span class="trump-stat-val trump-high">9,200</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Parallel Parking</span><span class="trump-stat-val">34%</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Vetoes Restaurant</span><span class="trump-stat-val trump-high">100%</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Wins Arguments</span><span class="trump-stat-val trump-high">71%</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Morning Person</span><span class="trump-stat-val trump-high">☀️ Yes</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Chocolate Addiction</span><span class="trump-stat-val trump-high">91</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Vetoes Restaurant</span><span class="trump-stat-val">65</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Arsenal Obsession</span><span class="trump-stat-val trump-high">93</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Wins Arguments</span><span class="trump-stat-val trump-high">99</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Avoiding Confrontation</span><span class="trump-stat-val">20</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Ketchup Addiction</span><span class="trump-stat-val">59</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Lateness</span><span class="trump-stat-val">72</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Remembers Anniversaries</span><span class="trump-stat-val trump-high">95</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Cooking</span><span class="trump-stat-val trump-high">85</span></div>
       </div>
     </div>
 
@@ -951,62 +877,7 @@
     <div class="trip-rule"></div>
   </div>
 
-  <div class="destinations-grid reveal">
-    <div class="dest-card">
-      <div class="dest-emoji">🇺🇸</div>
-      <div class="dest-name">Boston, USA</div>
-      <div class="dest-date">May 2026</div>
-      <div class="dest-note">The trip that started it all</div>
-    </div>
-    <div class="dest-card">
-      <div class="dest-emoji">🇮🇹</div>
-      <div class="dest-name">Rome, Italy</div>
-      <div class="dest-date">May 2026</div>
-      <div class="dest-note">Pasta, piazzas, and very sore feet</div>
-    </div>
-    <div class="dest-card">
-      <div class="dest-emoji">🇳🇴</div>
-      <div class="dest-name">Haugesund, Norway</div>
-      <div class="dest-date">August 2026</div>
-      <div class="dest-note">Midnight sun and fjord walks</div>
-    </div>
-    <div class="dest-card dest-special">
-      <div class="dest-emoji">🇿🇦</div>
-      <div class="dest-name">Cape Town &amp; Kruger, South Africa</div>
-      <div class="dest-date">October 2026</div>
-      <div class="dest-note">The honeymoon 🌅</div>
-    </div>
-    <div class="dest-card dest-special">
-      <div class="dest-emoji">🌴</div>
-      <div class="dest-name">Seychelles</div>
-      <div class="dest-date">October 2025</div>
-      <div class="dest-note">The honeymoon 🌅</div>
-    </div>
-    <div class="dest-card">
-      <div class="dest-emoji">🇮🇹</div>
-      <div class="dest-name">Sicily, Italy</div>
-      <div class="dest-date">November 2025</div>
-      <div class="dest-note">Arancini. Etna. More arancini 🍊</div>
-    </div>
-    <div class="dest-card">
-      <div class="dest-emoji">🇧🇩</div>
-      <div class="dest-name">Dhaka, Bangladesh</div>
-      <div class="dest-date">December 2025</div>
-      <div class="dest-note">Family, food, and chaos (the good kind)</div>
-    </div>
-    <div class="dest-card">
-      <div class="dest-emoji">🇪🇸</div>
-      <div class="dest-name">Valencia, Spain</div>
-      <div class="dest-date">February 2026</div>
-      <div class="dest-note">Paella at the source. Undefeated 🥘</div>
-    </div>
-    <div class="dest-card">
-      <div class="dest-emoji">🇫🇷</div>
-      <div class="dest-name">Paris, France</div>
-      <div class="dest-date">April 2026</div>
-      <div class="dest-note">Cliché? Yes. Perfect? Also yes 🗼</div>
-    </div>
-  </div>
+  <div id="travel-map"></div>
 
   <div class="divider" style="margin-bottom:3.5rem;"></div>
 
@@ -1086,17 +957,16 @@
 —————————————————————————————— -->
 <footer>
   <p class="foot-name">Nasser &amp; Farzana &middot; 19.07.2026</p>
-  <img src="images/logo-removebg-preview.png" alt="Logo" class="foot-logo">
+  <img src="images/Screenshot_2026-06-13_at_10.36.49-removebg-preview.png" alt="Logo" class="foot-logo">
 </footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-// ——— NAV scroll + hamburger ———
+// ——— NAV ———
 const navEl = document.getElementById('nav');
 const ham = document.getElementById('ham');
 const mob = document.getElementById('mob-menu');
-
 window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', scrollY > 50));
-
 ham.addEventListener('click', () => {
   ham.classList.toggle('open');
   mob.classList.toggle('open');
@@ -1108,11 +978,11 @@ mob.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   document.body.style.overflow = '';
 }));
 
-// ——— TYPEWRITER: "Nasser & Farzana" ———
+// ——— TYPEWRITER ———
 (function() {
   const h1 = document.querySelector('.welcome-h1');
   const full = 'Nasser & Farzana';
-  h1.innerHTML = ' '; // reserve height
+  h1.innerHTML = ' ';
   let ci = 0;
   const iv = setInterval(() => {
     ci++;
@@ -1156,13 +1026,20 @@ const ro = new IntersectionObserver(entries => {
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-// ——— QUIZ — ONE AT A TIME (card flip + confetti) ———
+// ——— POLAROID REVEAL ———
+(function() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }});
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.polaroid-column .polaroid').forEach(p => obs.observe(p));
+})();
+
+// ——— QUIZ ———
 const QUESTIONS = [
   { q: 'Who likes to plan things more?', ans: 'Nasser' },
   { q: 'Who is funnier?', ans: 'Farzana' },
   { q: 'Who is more outgoing?', ans: 'Nasser' },
   { q: 'Who takes nicer photos?', ans: 'Nasser' },
-  { q: 'Who is more fashionable?', ans: 'Farzana' },
   { q: 'Who is more organised?', ans: 'Nasser' },
 ];
 let qIdx = 0, quizScore = 0, quizRevealed = false;
@@ -1241,7 +1118,14 @@ function handleQuizAnswer(chosen) {
       document.getElementById('quiz-prog-fill').style.width = '100%';
       document.getElementById('quiz-prog-label').textContent = 'Complete!';
       document.getElementById('quiz-card').style.display = 'none';
-      const msgs = ['Please re-read the invitation. And maybe this whole website.','Please re-read the invitation. And maybe this whole website.','Hmm. Did we even invite you?','Hmm. Did we even invite you?','Not bad — you\'ve clearly been paying attention','Not bad — you\'ve clearly been paying attention','You really know us! Save us a seat at the top table 👀'];
+      const msgs = [
+        'Please re-read the invitation. And maybe this whole website.',
+        'Please re-read the invitation. And maybe this whole website.',
+        'Hmm. Did we even invite you?',
+        'Hmm. Did we even invite you?',
+        "Not bad — you've clearly been paying attention",
+        'You really know us! Save us a seat at the top table 👀'
+      ];
       document.getElementById('sc-num').textContent = quizScore+' / '+QUESTIONS.length;
       document.getElementById('sc-msg').textContent = msgs[quizScore];
       const box = document.getElementById('quiz-score'); box.classList.add('show');
@@ -1254,7 +1138,6 @@ document.getElementById('qbtn-nasser').addEventListener('click', () => handleQui
 document.getElementById('qbtn-farzana').addEventListener('click', () => handleQuizAnswer('Farzana'));
 showQuestion(0);
 
-// Flip card into view on scroll
 const quizRevealObs = new IntersectionObserver(entries => {
   if (entries[0].isIntersecting && !quizRevealed) {
     quizRevealed = true;
@@ -1264,80 +1147,49 @@ const quizRevealObs = new IntersectionObserver(entries => {
 }, { threshold: 0.3 });
 quizRevealObs.observe(document.getElementById('quiz'));
 
-// ——— POLAROID PILE ———
+// ——— TRAVEL MAP ———
 (function() {
-  const section = document.getElementById('story');
-  const sticky = section.querySelector('.story-sticky-panel');
-  const stage = section.querySelector('.polaroid-stage');
-  const pols = Array.from(stage.querySelectorAll('.polaroid'));
+  const map = L.map('travel-map', {
+    zoomAnimation: false,
+    markerZoomAnimation: false,
+    scrollWheelZoom: false
+  }).setView([25, 20], 2);
 
-  const initRots  = [-7,  4, -2,  8, -5,  3];
-  const initOffX  = [  0,  8, -6, 12, -4, 10];
-  const initOffY  = [  0,-12,  8,  4, -8, 10];
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 12
+  }).addTo(map);
 
-  const FINAL = [
-    { rx:-0.28, ry:-0.24, rot:-6 },
-    { rx: 0.20, ry:-0.28, rot: 5 },
-    { rx:-0.18, ry: 0.06, rot:-3 },
-    { rx: 0.14, ry: 0.10, rot: 7 },
-    { rx:-0.30, ry: 0.26, rot:-8 },
-    { rx: 0.26, ry: 0.22, rot: 4 },
+  map.getPanes().tilePane.style.filter =
+    'sepia(80%) hue-rotate(-15deg) saturate(1.3) brightness(0.55) contrast(1.1)';
+
+  const pinIcon = L.divIcon({
+    className: 'map-pin',
+    html: '<div class="pin-inner"></div>',
+    iconSize: [14, 14],
+    iconAnchor: [7, 7],
+    popupAnchor: [0, -10]
+  });
+
+  const places = [
+    { name: 'Boston, USA',                    lat: 42.36,  lng: -71.06, date: 'May 2026',      note: 'The trip that started it all',              flag: '🇺🇸' },
+    { name: 'Rome, Italy',                    lat: 41.90,  lng:  12.50, date: 'May 2026',      note: 'Pasta, piazzas, and very sore feet',         flag: '🇮🇹' },
+    { name: 'Haugesund, Norway',              lat: 59.41,  lng:   5.27, date: 'August 2026',   note: 'Midnight sun and fjord walks',               flag: '🇳🇴' },
+    { name: 'Cape Town & Kruger, S. Africa',  lat:-33.92,  lng:  18.42, date: 'October 2026',  note: 'The honeymoon 🌅',                           flag: '🇿🇦' },
+    { name: 'Seychelles',                     lat: -4.68,  lng:  55.49, date: 'October 2025',  note: 'The honeymoon 🌅',                           flag: '🌴' },
+    { name: 'Sicily, Italy',                  lat: 37.60,  lng:  14.01, date: 'November 2025', note: 'Arancini. Etna. More arancini 🍊',            flag: '🇮🇹' },
+    { name: 'Dhaka, Bangladesh',              lat: 23.81,  lng:  90.41, date: 'December 2025', note: 'Family, food, and chaos (the good kind)',    flag: '🇧🇩' },
+    { name: 'Valencia, Spain',                lat: 39.47,  lng:  -0.38, date: 'February 2026', note: 'Paella at the source. Undefeated 🥘',        flag: '🇪🇸' },
+    { name: 'Paris, France',                  lat: 48.86,  lng:   2.35, date: 'April 2026',    note: 'Cliché? Yes. Perfect? Also yes 🗼',          flag: '🇫🇷' },
   ];
 
-  const isMobile = () => window.innerWidth <= 768;
-
-  function setInitial() {
-    pols.forEach((p, i) => {
-      p.style.transition = 'none';
-      p.style.transform = `translate(calc(-50% + ${initOffX[i]}px), calc(-50% + ${initOffY[i]}px)) rotate(${initRots[i]}deg)`;
-      p.style.zIndex = String(pols.length - i);
-    });
-  }
-
-  const landed = new Array(pols.length).fill(false);
-
-  function onScroll() {
-    if (isMobile()) return;
-    const sTop = section.getBoundingClientRect().top + scrollY;
-    const sHeight = section.scrollHeight - window.innerHeight;
-    const progress = Math.max(0, Math.min(1, (scrollY - sTop) / sHeight));
-    const sw = stage.offsetWidth;
-    const sh = stage.offsetHeight;
-
-    pols.forEach((p, i) => {
-      const threshold = (i + 1) / (pols.length + 1);
-      const shouldLand = progress >= threshold;
-      if (shouldLand === landed[i]) return;
-      landed[i] = shouldLand;
-      p.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
-      if (shouldLand) {
-        const f = FINAL[i];
-        p.style.transform = `translate(calc(-50% + ${f.rx * sw}px), calc(-50% + ${f.ry * sh}px)) rotate(${f.rot}deg)`;
-        p.style.zIndex = String(i + 10);
-      } else {
-        p.style.transform = `translate(calc(-50% + ${initOffX[i]}px), calc(-50% + ${initOffY[i]}px)) rotate(${initRots[i]}deg)`;
-        p.style.zIndex = String(pols.length - i);
-      }
-    });
-  }
-
-  function initMobile() {
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('mob-visible'); });
-    }, { threshold: 0.3 });
-    pols.forEach(p => obs.observe(p));
-  }
-
-  if (!isMobile()) {
-    setInitial();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-  } else {
-    initMobile();
-  }
-
-  window.addEventListener('resize', () => {
-    if (!isMobile()) { setInitial(); onScroll(); }
+  places.forEach(p => {
+    L.marker([p.lat, p.lng], { icon: pinIcon })
+      .bindPopup(
+        '<div class="map-popup-name">' + p.flag + ' ' + p.name + '</div>' +
+        '<div class="map-popup-date">' + p.date + '</div>' +
+        '<div class="map-popup-note">' + p.note + '</div>'
+      )
+      .addTo(map);
   });
 })();
 
@@ -1359,7 +1211,7 @@ document.getElementById('date-form').addEventListener('submit', function(e) {
   this.style.display = 'none';
 });
 
-// ——— ACCORDION (typewriter on open) ———
+// ——— ACCORDION ———
 document.querySelectorAll('.acc-head').forEach(head => {
   head.addEventListener('click', () => {
     const item = head.parentElement;
