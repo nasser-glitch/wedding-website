@@ -336,7 +336,7 @@
     —————————————————————————————— */
     #quiz { padding: var(--pad) 2.5rem; }
 
-    .quiz-wrap { max-width: 560px; margin: 0 auto; }
+    .quiz-wrap { max-width: 560px; margin: 0 auto; perspective: 1200px; }
 
     .quiz-prog-bar {
       height: 2px;
@@ -365,8 +365,12 @@
       border: 1px solid rgba(201,169,110,0.18);
       border-radius: 8px;
       padding: 2.4rem;
-      animation: fadeUp 0.4s ease;
+      transform: rotateY(90deg);
+      transform-style: preserve-3d;
+      transition: transform 0.55s ease;
     }
+    .quiz-card.revealed { transform: rotateY(0deg); }
+    .quiz-card.flip-out { transform: rotateY(-90deg); }
     .quiz-q {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.55rem;
@@ -421,98 +425,99 @@
     }
 
     /* ——————————————————————————————
-       STATS
+       STATS — TOP TRUMPS
     —————————————————————————————— */
     #stats { padding: var(--pad) 2.5rem; }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.4rem;
-      max-width: 900px;
+    .trump-grid {
+      display: flex;
+      gap: 2.4rem;
+      max-width: 740px;
       margin: 0 auto;
+      justify-content: center;
+      align-items: flex-start;
     }
-    .stat-card {
-      background: var(--card);
-      border: 1px solid rgba(201,169,110,0.18);
-      border-radius: 8px;
-      padding: 1.6rem 2rem;
-    }
-    .stat-card.full { grid-column: 1 / -1; }
 
-    .stat-cat {
-      font-size: 0.75rem;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.1rem;
+    .trump-card {
+      flex: 1;
+      min-width: 0;
+      background: var(--card);
+      border: 2px solid rgba(201,169,110,0.45);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 12px 60px rgba(0,0,0,0.38);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .stat-row {
+    .trump-card:hover { transform: translateY(-6px); box-shadow: 0 20px 80px rgba(0,0,0,0.45); }
+
+    .trump-photo {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: linear-gradient(160deg, #6B4F3C 0%, #4A3328 100%);
       display: flex;
       align-items: center;
-      gap: 0.9rem;
-      margin-bottom: 0.8rem;
-    }
-    .stat-name {
-      font-size: 0.92rem;
-      color: var(--text-sec);
-      min-width: 70px;
-    }
-    .bar-wrap {
-      flex: 1;
-      height: 6px;
-      background: rgba(255,255,255,0.09);
-      border-radius: 3px;
+      justify-content: center;
+      border-bottom: 2px solid rgba(201,169,110,0.3);
       overflow: hidden;
     }
-    .bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--accent), var(--accent-light));
-      border-radius: 3px;
-      transition: width 1s ease;
+    .trump-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .trump-photo-ph { display: flex; align-items: center; justify-content: center; }
+
+    .trump-name-bar {
+      background: var(--accent);
+      padding: 0.65rem 1.2rem;
+      text-align: center;
     }
-    .stat-val {
+    .trump-name-bar span {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
-      min-width: 54px;
-      text-align: right;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--bg);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
 
-    /* Badge for text-only stats */
-    .stat-badge {
+    .trump-stats { padding: 0.3rem 0 0.8rem; }
+
+    .trump-row {
+      display: flex;
+      align-items: center;
+      padding: 0.65rem 1.3rem;
+      border-bottom: 1px solid rgba(201,169,110,0.1);
+      gap: 0.8rem;
+    }
+    .trump-row:last-child { border-bottom: none; }
+
+    .trump-stat-name {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      flex: 1;
+    }
+
+    .trump-stat-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--accent);
+      font-weight: 600;
+      flex-shrink: 0;
+      text-align: right;
+    }
+    .trump-stat-val.trump-high { font-size: 1.2rem; }
+    .trump-stat-val.trump-italic { font-style: italic; font-size: 0.88rem; }
+
+    .trump-shared { text-align: center; margin-top: 2.5rem; }
+    .trump-shared-badge {
       display: inline-block;
-      padding: 0.28rem 0.9rem;
-      background: rgba(201,169,110,0.1);
-      border: 1px solid rgba(201,169,110,0.25);
+      padding: 0.45rem 1.5rem;
+      background: rgba(201,169,110,0.08);
+      border: 1px solid rgba(201,169,110,0.28);
       border-radius: 20px;
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-size: 1rem;
       color: var(--text-sec);
-      flex: 1;
-    }
-
-    /* VS row for text-only both-sides */
-    .vs-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      gap: 1rem;
-      padding-top: 0.3rem;
-    }
-    .vs-cell { text-align: center; }
-    .vs-who {
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-sec);
-      margin-bottom: 0.5rem;
-    }
-    .vs-sep {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      color: rgba(201,169,110,0.3);
     }
 
     /* ——————————————————————————————
@@ -685,7 +690,7 @@
       overflow: hidden;
       transition: max-height 0.4s ease, padding-bottom 0.4s ease;
     }
-    .acc-body.open { max-height: 200px; padding-bottom: 1.3rem; }
+    .acc-body.open { max-height: 400px; padding-bottom: 1.3rem; }
     .acc-a { font-weight: 300; color: var(--text-sec); font-size: 0.93rem; line-height: 1.7; }
 
     /* ——————————————————————————————
@@ -718,8 +723,8 @@
       .welcome-logo { height: 100px; }
       .hero-arch-wrap { width: clamp(240px, 80vw, 380px); }
 
-      .stats-grid { grid-template-columns: 1fr; }
-      .stat-card.full { grid-column: 1; }
+      .trump-grid { flex-direction: column; align-items: center; }
+      .trump-card { max-width: 320px; width: 100%; }
 
       #map { height: 300px; }
 
@@ -862,110 +867,52 @@
   <h2 class="section-title reveal">Nasser vs Farzana</h2>
   <p class="section-sub reveal">The official stats. Independently verified. Mostly.</p>
 
-  <div class="stats-grid" id="sgrid">
+  <div class="trump-grid" id="sgrid">
 
-    <!-- PUNCTUALITY -->
-    <div class="stat-card reveal">
-      <div class="stat-cat">Punctuality</div>
-      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="95"></div></div><span class="stat-val">95%</span></div>
-      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="40"></div></div><span class="stat-val">40%</span></div>
-    </div>
-
-    <!-- OVERTHINKING -->
-    <div class="stat-card reveal">
-      <div class="stat-cat">Overthinking</div>
-      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="94"></div></div><span class="stat-val">94%</span></div>
-      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="61"></div></div><span class="stat-val">61%</span></div>
-    </div>
-
-    <!-- REMEMBERS ANNIVERSARIES -->
-    <div class="stat-card reveal">
-      <div class="stat-cat">Remembers Anniversaries</div>
-      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="100"></div></div><span class="stat-val">100%</span></div>
-      <div class="stat-row"><span class="stat-name">Nasser</span><span class="stat-badge">working on it</span></div>
-    </div>
-
-    <!-- SAYS SORRY FIRST -->
-    <div class="stat-card reveal">
-      <div class="stat-cat">Says Sorry First</div>
-      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="78"></div></div><span class="stat-val">78%</span></div>
-      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="22"></div></div><span class="stat-val">22%</span></div>
-    </div>
-
-    <!-- SNACK CONSUMPTION -->
-    <div class="stat-card reveal">
-      <div class="stat-cat">Snack Consumption</div>
-      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="100"></div></div><span class="stat-val">10/10</span></div>
-      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="60"></div></div><span class="stat-val">6/10</span></div>
-    </div>
-
-    <!-- STEPS PER DAY -->
-    <div class="stat-card reveal">
-      <div class="stat-cat">Steps Per Day</div>
-      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="100"></div></div><span class="stat-val">9,200</span></div>
-      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="45"></div></div><span class="stat-val">4,100</span></div>
-    </div>
-
-    <!-- MORNING PERSON -->
-    <div class="stat-card reveal">
-      <div class="stat-cat">Morning Person</div>
-      <div class="vs-row">
-        <div class="vs-cell"><div class="vs-who">Farzana</div><span class="stat-badge">☀️ Yes</span></div>
-        <div class="vs-sep">vs</div>
-        <div class="vs-cell"><div class="vs-who">Nasser</div><span class="stat-badge">🌙 Absolutely not</span></div>
+    <!-- NASSER -->
+    <div class="trump-card reveal">
+      <div class="trump-photo">
+        <div class="trump-photo-ph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.35)" stroke-width="1" width="80" height="80"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+      </div>
+      <div class="trump-name-bar"><span>Nasser</span></div>
+      <div class="trump-stats">
+        <div class="trump-row"><span class="trump-stat-name">Punctuality</span><span class="trump-stat-val">40%</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Overthinking</span><span class="trump-stat-val trump-high">94%</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Snack Consumption</span><span class="trump-stat-val trump-high">10/10</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Steps Per Day</span><span class="trump-stat-val">4,100</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Parallel Parking</span><span class="trump-stat-val trump-high">90%</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Picks Restaurant</span><span class="trump-stat-val trump-high">80%</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Wins Arguments</span><span class="trump-stat-val trump-italic">still thinks he does</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Morning Person</span><span class="trump-stat-val trump-italic">🌙 No</span></div>
       </div>
     </div>
 
-    <!-- PICKS THE RESTAURANT -->
-    <div class="stat-card reveal">
-      <div class="stat-cat">Picks the Restaurant</div>
-      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="80"></div></div><span class="stat-val">80%</span></div>
-      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="20"></div></div><span class="stat-val">20%</span></div>
-    </div>
-
-    <!-- VETOES THE RESTAURANT -->
-    <div class="stat-card reveal">
-      <div class="stat-cat">Vetoes the Restaurant</div>
-      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="100"></div></div><span class="stat-val">100%</span></div>
-      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="0"></div></div><span class="stat-val">0%</span></div>
-    </div>
-
-    <!-- WINS ARGUMENTS -->
-    <div class="stat-card reveal">
-      <div class="stat-cat">Wins Arguments</div>
-      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="71"></div></div><span class="stat-val">71%</span></div>
-      <div class="stat-row"><span class="stat-name">Nasser</span><span class="stat-badge">still thinks he does</span></div>
-    </div>
-
-    <!-- COOKING -->
-    <div class="stat-card reveal">
-      <div class="stat-cat">Cooking</div>
-      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="88"></div></div><span class="stat-val">88%</span></div>
-      <div class="stat-row"><span class="stat-name">Nasser</span><span class="stat-badge">makes great reservations</span></div>
-    </div>
-
-    <!-- PARALLEL PARKING -->
-    <div class="stat-card reveal">
-      <div class="stat-cat">Parallel Parking</div>
-      <div class="stat-row"><span class="stat-name">Nasser</span><div class="bar-wrap"><div class="bar" data-w="90"></div></div><span class="stat-val">90%</span></div>
-      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="34"></div></div><span class="stat-val">34%</span></div>
-    </div>
-
-    <!-- CRIES AT FILMS -->
-    <div class="stat-card reveal">
-      <div class="stat-cat">Cries at Films</div>
-      <div class="stat-row"><span class="stat-name">Farzana</span><div class="bar-wrap"><div class="bar" data-w="90"></div></div><span class="stat-val">9/10</span></div>
-      <div class="stat-row"><span class="stat-name">Nasser</span><span class="stat-badge">8/10 but denies it</span></div>
-    </div>
-
-    <!-- DIRECTIONS WITHOUT GOOGLE MAPS — full width -->
-    <div class="stat-card full reveal">
-      <div class="stat-cat">Directions Without Google Maps</div>
-      <div style="text-align:center;padding:0.6rem 0;">
-        <span class="stat-badge" style="font-size:1rem;padding:0.35rem 1.2rem;">Both: 0%</span>
+    <!-- FARZANA -->
+    <div class="trump-card reveal">
+      <div class="trump-photo">
+        <div class="trump-photo-ph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.35)" stroke-width="1" width="80" height="80"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+      </div>
+      <div class="trump-name-bar"><span>Farzana</span></div>
+      <div class="trump-stats">
+        <div class="trump-row"><span class="trump-stat-name">Punctuality</span><span class="trump-stat-val trump-high">95%</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Overthinking</span><span class="trump-stat-val">61%</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Snack Consumption</span><span class="trump-stat-val">6/10</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Steps Per Day</span><span class="trump-stat-val trump-high">9,200</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Parallel Parking</span><span class="trump-stat-val">34%</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Vetoes Restaurant</span><span class="trump-stat-val trump-high">100%</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Wins Arguments</span><span class="trump-stat-val trump-high">71%</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Morning Person</span><span class="trump-stat-val trump-high">☀️ Yes</span></div>
       </div>
     </div>
 
+  </div>
+
+  <div class="trump-shared reveal">
+    <span class="trump-shared-badge">Directions Without Google Maps — Both: 0%</span>
   </div>
 </section>
 
@@ -997,6 +944,19 @@
       <button type="submit" class="gold-btn">Send Your Rec</button>
     </form>
     <div class="thanks" id="rec-thanks"></div>
+  </div>
+
+  <div class="divider" style="width:60%;margin:3.5rem auto;"></div>
+
+  <div class="recs-wrap reveal">
+    <h3>Date Night Ideas</h3>
+    <p>We love a good night out — tell us your favourite spots and what to do!</p>
+    <form id="date-form">
+      <div class="fg"><label for="d-area">Area / Neighbourhood</label><input type="text" id="d-area" placeholder="Where in London (or beyond)?" required></div>
+      <div class="fg"><label for="d-ideas">What to Do</label><textarea id="d-ideas" placeholder="Restaurant, activity, hidden gem…" required></textarea></div>
+      <button type="submit" class="gold-btn">Share Your Idea</button>
+    </form>
+    <div class="thanks" id="date-thanks"></div>
   </div>
 </section>
 
@@ -1100,18 +1060,7 @@ const ro = new IntersectionObserver(entries => {
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-// ——— STAT BARS ———
-const barObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.querySelectorAll('.bar[data-w]').forEach(b => b.style.width = b.dataset.w + '%');
-      barObs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.2 });
-document.querySelectorAll('.stat-card').forEach(c => barObs.observe(c));
-
-// ——— QUIZ — ONE AT A TIME ———
+// ——— QUIZ — ONE AT A TIME (card flip + confetti) ———
 const QUESTIONS = [
   { q: 'Who likes to plan things more?', ans: 'Nasser' },
   { q: 'Who is funnier?', ans: 'Farzana' },
@@ -1120,29 +1069,74 @@ const QUESTIONS = [
   { q: 'Who is more fashionable?', ans: 'Farzana' },
   { q: 'Who is more organised?', ans: 'Nasser' },
 ];
-let qIdx = 0, quizScore = 0;
+let qIdx = 0, quizScore = 0, quizRevealed = false;
+
+function burstConfetti(originEl) {
+  const rect = originEl.getBoundingClientRect();
+  const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
+  document.body.appendChild(canvas);
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  const cols = ['#C9A96E','#E8D5A3','#FFD700','#F5EFE6','#D4C4B0'];
+  const pts = Array.from({length:55}, () => ({
+    x:cx, y:cy, vx:(Math.random()-0.5)*15, vy:(Math.random()-0.75)*13,
+    size:Math.random()*5+3, color:cols[Math.floor(Math.random()*cols.length)],
+    rot:Math.random()*360, rotV:(Math.random()-0.5)*10, alpha:1
+  }));
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    let alive = false;
+    pts.forEach(p => {
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.42; p.rot+=p.rotV; p.alpha-=0.015;
+      if (p.alpha > 0) {
+        alive = true;
+        ctx.save(); ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.translate(p.x, p.y); ctx.rotate(p.rot*Math.PI/180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size/2, -p.size*0.3, p.size, p.size*0.55);
+        ctx.restore();
+      }
+    });
+    if (alive) requestAnimationFrame(draw); else canvas.remove();
+  }
+  draw();
+}
 
 function showQuestion(i) {
   const q = QUESTIONS[i];
-  const cardEl = document.getElementById('quiz-card');
-  document.getElementById('quiz-q-text').textContent = q.q;
-  document.getElementById('quiz-prog-label').textContent = 'Question ' + (i + 1) + ' of ' + QUESTIONS.length;
-  document.getElementById('quiz-prog-fill').style.width = ((i / QUESTIONS.length) * 100) + '%';
-  ['qbtn-nasser', 'qbtn-farzana'].forEach(id => {
-    const b = document.getElementById(id);
-    b.className = 'qbtn'; b.disabled = false;
-  });
-  cardEl.style.animation = 'none';
-  void cardEl.offsetHeight;
-  cardEl.style.animation = 'fadeUp 0.4s ease';
+  const card = document.getElementById('quiz-card');
+  document.getElementById('quiz-prog-label').textContent = 'Question '+(i+1)+' of '+QUESTIONS.length;
+  document.getElementById('quiz-prog-fill').style.width = ((i/QUESTIONS.length)*100)+'%';
+  function loadContent() {
+    document.getElementById('quiz-q-text').textContent = q.q;
+    ['qbtn-nasser','qbtn-farzana'].forEach(id => {
+      const b = document.getElementById(id); b.className = 'qbtn'; b.disabled = false;
+    });
+  }
+  if (!quizRevealed) {
+    loadContent();
+  } else {
+    card.classList.remove('revealed');
+    card.classList.add('flip-out');
+    setTimeout(() => {
+      loadContent();
+      card.classList.remove('flip-out');
+      requestAnimationFrame(() => requestAnimationFrame(() => card.classList.add('revealed')));
+    }, 280);
+  }
 }
 
 function handleQuizAnswer(chosen) {
   const q = QUESTIONS[qIdx];
-  if (chosen === q.ans) quizScore++;
-  document.getElementById('qbtn-nasser').className = 'qbtn ' + (q.ans === 'Nasser' ? 'correct' : 'wrong');
-  document.getElementById('qbtn-farzana').className = 'qbtn ' + (q.ans === 'Farzana' ? 'correct' : 'wrong');
-  ['qbtn-nasser', 'qbtn-farzana'].forEach(id => { document.getElementById(id).disabled = true; });
+  if (chosen === q.ans) {
+    quizScore++;
+    burstConfetti(document.getElementById('qbtn-'+q.ans.toLowerCase()));
+  }
+  document.getElementById('qbtn-nasser').className = 'qbtn '+(q.ans==='Nasser'?'correct':'wrong');
+  document.getElementById('qbtn-farzana').className = 'qbtn '+(q.ans==='Farzana'?'correct':'wrong');
+  ['qbtn-nasser','qbtn-farzana'].forEach(id => { document.getElementById(id).disabled = true; });
   setTimeout(() => {
     qIdx++;
     if (qIdx < QUESTIONS.length) {
@@ -1152,11 +1146,10 @@ function handleQuizAnswer(chosen) {
       document.getElementById('quiz-prog-label').textContent = 'Complete!';
       document.getElementById('quiz-card').style.display = 'none';
       const msgs = ['Please re-read the invitation. And maybe this whole website.','Please re-read the invitation. And maybe this whole website.','Hmm. Did we even invite you?','Hmm. Did we even invite you?','Not bad — you\'ve clearly been paying attention','Not bad — you\'ve clearly been paying attention','You really know us! Save us a seat at the top table 👀'];
-      document.getElementById('sc-num').textContent = quizScore + ' / ' + QUESTIONS.length;
+      document.getElementById('sc-num').textContent = quizScore+' / '+QUESTIONS.length;
       document.getElementById('sc-msg').textContent = msgs[quizScore];
-      const box = document.getElementById('quiz-score');
-      box.classList.add('show');
-      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const box = document.getElementById('quiz-score'); box.classList.add('show');
+      box.scrollIntoView({ behavior:'smooth', block:'nearest' });
     }
   }, 1100);
 }
@@ -1165,12 +1158,22 @@ document.getElementById('qbtn-nasser').addEventListener('click', () => handleQui
 document.getElementById('qbtn-farzana').addEventListener('click', () => handleQuizAnswer('Farzana'));
 showQuestion(0);
 
+// Flip card into view on scroll
+const quizRevealObs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting && !quizRevealed) {
+    quizRevealed = true;
+    setTimeout(() => document.getElementById('quiz-card').classList.add('revealed'), 350);
+    quizRevealObs.disconnect();
+  }
+}, { threshold: 0.3 });
+quizRevealObs.observe(document.getElementById('quiz'));
+
 // ——— MAP ———
 const locs = [
   { name:"Boston, USA",                 coords:[42.36,-71.06],  date:"May 2026",      note:"The trip that started it all 🇺🇸" },
   { name:"Rome, Italy",                 coords:[41.90,12.50],   date:"May 2026",      note:"Pasta, piazzas, and very sore feet 🇮🇹" },
   { name:"Haugesund, Norway",           coords:[59.41,5.27],    date:"August 2026",   note:"Midnight sun and fjord walks 🇳🇴" },
-  { name:"Cape Town & Kruger, South Africa", coords:[-29.0,25.0], date:"October 2026", note:"The honeymoon :)" },
+  { name:"Cape Town & Kruger, South Africa", coords:[-33.92,18.42], date:"October 2026", note:"The honeymoon :)" },
   { name:"Seychelles 🌴",              coords:[-4.68,55.49],   date:"October 2025",  note:"The honeymoon :)", honeymoon:true },
   { name:"Sicily, Italy",               coords:[37.60,14.01],   date:"November 2025", note:"Arancini. Etna. More arancini 🍊" },
   { name:"Dhaka, Bangladesh",           coords:[23.81,90.41],   date:"December 2025", note:"Family, food, and chaos (the good kind) 🇧🇩" },
@@ -1197,9 +1200,48 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 setTimeout(() => map.invalidateSize(), 300);
 
-// Dashed polyline through non-honeymoon stops
-const polyCoords = locs.filter(l => !l.honeymoon).map(l => l.coords);
-L.polyline(polyCoords, { color:'#C9A96E', weight:1.5, opacity:0.28, dashArray:'6,9' }).addTo(map);
+// Flight path: faint dotted line + animated plane
+const routeCoords = locs.filter(l => !l.honeymoon).map(l => l.coords);
+L.polyline(routeCoords, { color:'#C9A96E', weight:1.5, opacity:0.18, dashArray:'6,9' }).addTo(map);
+
+(function() {
+  const planeStyle = document.createElement('style');
+  planeStyle.textContent = '.map-plane{font-size:20px;transform-origin:center;display:block;filter:drop-shadow(0 0 5px rgba(201,169,110,0.9));}';
+  document.head.appendChild(planeStyle);
+
+  const steps = 50;
+  const fullPath = [];
+  for (let i = 0; i < routeCoords.length - 1; i++) {
+    const a = routeCoords[i], b = routeCoords[i+1];
+    for (let s = 0; s < steps; s++) {
+      fullPath.push([a[0]+(b[0]-a[0])*s/steps, a[1]+(b[1]-a[1])*s/steps]);
+    }
+  }
+  fullPath.push(routeCoords[routeCoords.length-1]);
+
+  const planeIcon = L.divIcon({
+    className: '', html: '<span class="map-plane">✈</span>',
+    iconSize:[24,24], iconAnchor:[12,12]
+  });
+
+  let idx = 0;
+  const plane = L.marker(fullPath[0], { icon: planeIcon, zIndexOffset:500 }).addTo(map);
+
+  function step() {
+    if (idx >= fullPath.length) { setTimeout(() => plane.remove(), 800); return; }
+    plane.setLatLng(fullPath[idx]);
+    if (idx > 0) {
+      const p = fullPath[idx-1], c = fullPath[idx];
+      const angle = Math.atan2(-(c[0]-p[0]), c[1]-p[1]) * 180/Math.PI;
+      const el = plane.getElement();
+      if (el) el.querySelector('.map-plane').style.transform = 'rotate('+angle+'deg)';
+    }
+    idx++;
+    setTimeout(step, 30);
+  }
+
+  setTimeout(step, locs.length * 200 + 800);
+})();
 
 locs.forEach((loc, i) => {
   setTimeout(() => {
@@ -1225,15 +1267,6 @@ locs.forEach((loc, i) => {
       }));
     }
   }, i * 200);
-});
-
-// ——— TRAVEL FORM ———
-document.getElementById('rec-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const t = document.getElementById('rec-thanks');
-  t.textContent = "Thanks! We'll add it to the list 🌍";
-  t.style.display = 'block';
-  this.style.display = 'none';
 });
 
 // ——— POLAROID PILE ———
@@ -1313,18 +1346,48 @@ document.getElementById('rec-form').addEventListener('submit', function(e) {
   });
 })();
 
-// ——— ACCORDION ———
+// ——— TRAVEL FORM ———
+document.getElementById('rec-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const t = document.getElementById('rec-thanks');
+  t.textContent = "Thanks! We'll add it to the list 🌍";
+  t.style.display = 'block';
+  this.style.display = 'none';
+});
+
+// ——— DATE NIGHT FORM ———
+document.getElementById('date-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const t = document.getElementById('date-thanks');
+  t.textContent = "We love it! Adding it to the date night list 💫";
+  t.style.display = 'block';
+  this.style.display = 'none';
+});
+
+// ——— ACCORDION (typewriter on open) ———
 document.querySelectorAll('.acc-head').forEach(head => {
   head.addEventListener('click', () => {
     const item = head.parentElement;
     const body = item.querySelector('.acc-body');
     const arrow = head.querySelector('.acc-arrow');
+    const ansEl = body.querySelector('.acc-a');
     const isOpen = body.classList.contains('open');
 
     document.querySelectorAll('.acc-body').forEach(b => b.classList.remove('open'));
     document.querySelectorAll('.acc-arrow').forEach(a => a.classList.remove('open'));
 
-    if (!isOpen) { body.classList.add('open'); arrow.classList.add('open'); }
+    if (!isOpen) {
+      body.classList.add('open');
+      arrow.classList.add('open');
+      if (!ansEl.dataset.text) ansEl.dataset.text = ansEl.textContent;
+      const chars = Array.from(ansEl.dataset.text);
+      ansEl.textContent = '';
+      let ci = 0;
+      const iv = setInterval(() => {
+        ansEl.textContent = chars.slice(0, ++ci).join('');
+        if (ci >= chars.length) clearInterval(iv);
+      }, 16);
+    }
   });
 });
 </script>
