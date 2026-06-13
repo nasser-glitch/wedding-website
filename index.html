@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -176,17 +175,35 @@
     .welcome-inner { position: relative; z-index: 1; width: 100%; }
 
     .welcome-logo {
-      height: 140px;
+      height: 200px;
       width: auto;
-      margin: 0 auto 1.6rem;
+      margin: 0 auto 1rem;
       filter: drop-shadow(0 0 20px rgba(201,169,110,0.4));
     }
+
+    .welcome-couple-img {
+      width: clamp(180px, 32vw, 300px);
+      margin: 0 auto 0.8rem;
+      filter: drop-shadow(0 8px 28px rgba(0,0,0,0.45));
+    }
+
+    /* ——— NAME TYPEWRITER ——— */
+    .amp-gold { color: var(--accent); }
+    .amp-gold.amp-pulse {
+      animation: ampPulse 2s ease-in-out infinite;
+    }
+    @keyframes ampPulse {
+      0%, 100% { color: var(--accent); text-shadow: none; }
+      50% { color: #FFD700; text-shadow: 0 0 22px rgba(255, 215, 0, 0.55); }
+    }
+
     .welcome-h1 {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(2.6rem, 6vw, 5rem);
       font-weight: 400;
       line-height: 1.05;
       margin-bottom: 1rem;
+      min-height: 1.1em;
     }
     .welcome-sub {
       font-size: clamp(1rem, 2.2vw, 1.45rem);
@@ -231,15 +248,21 @@
       padding-top: 0.05em;
     }
 
-    /* Hero arch — large, clean */
-    .hero-arch-wrap {
-      width: clamp(280px, 50vw, 560px);
+    /* Hero arch — outer frame larger than photo, inner clips */
+    .arch-outer {
+      width: clamp(296px, 52vw, 580px);
       aspect-ratio: 3/4;
       border-radius: 50% 50% 0 0 / 55% 55% 0 0;
-      overflow: hidden;
-      border: 2px solid rgba(245, 239, 230, 0.4);
+      border: 2px solid rgba(245, 239, 230, 0.5);
+      padding: 12px;
       margin: 1.5rem auto 0;
       box-shadow: 0 8px 70px rgba(0,0,0,0.35);
+    }
+    .hero-arch-wrap {
+      width: 100%;
+      height: 100%;
+      border-radius: 50% 50% 0 0 / 55% 55% 0 0;
+      overflow: hidden;
     }
     .hero-arch-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -302,7 +325,7 @@
     .polaroid-caption {
       font-family: 'Caveat', cursive;
       color: #2C1810;
-      font-size: 17px;
+      font-size: 15px;
       text-align: center;
       margin-top: 8px;
       line-height: 1.3;
@@ -543,47 +566,47 @@
       margin: 0 auto;
     }
 
-    .map-wrap {
-      width: 100%;
+    /* ——— DESTINATIONS GRID ——— */
+    .destinations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.2rem;
+      max-width: 860px;
+      margin: 2.8rem auto;
+    }
+    .dest-card {
+      background: var(--card);
+      border: 1px solid rgba(201,169,110,0.22);
       border-radius: 8px;
-      overflow: hidden;
-      margin: 2.8rem 0;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.32);
+      padding: 1.3rem 1.5rem;
+      transition: transform 0.25s ease, border-color 0.25s ease;
     }
-    #map { height: 500px; width: 100%; }
-
-    /* Leaflet popup override */
-    .leaflet-popup-content-wrapper {
-      background: var(--card) !important;
-      color: var(--text) !important;
-      border: 1px solid var(--accent) !important;
-      border-radius: 6px !important;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.45) !important;
-    }
-    .leaflet-popup-tip { background: var(--card) !important; }
-    .leaflet-popup-close-button { color: var(--accent) !important; font-size: 1.1rem !important; }
-    .pop-name {
+    .dest-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+    .dest-emoji { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .dest-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 600;
       color: var(--text);
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.2rem;
+      line-height: 1.3;
     }
-    .pop-date {
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
+    .dest-date {
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
     }
-    .pop-note { font-size: 0.87rem; color: var(--text-sec); }
+    .dest-note { font-size: 0.83rem; color: var(--text-sec); line-height: 1.55; }
+    .dest-special { border-color: rgba(255,215,0,0.35); }
 
-    /* Dark map — invert only tile layer, not markers */
-    #map .leaflet-tile-pane {
-      filter: invert(100%) hue-rotate(180deg) brightness(0.85) saturate(0.7);
+    @media (max-width: 600px) {
+      .destinations-grid { grid-template-columns: 1fr 1fr; gap: 0.9rem; }
     }
-
-    /* Marker CSS injected via JS */
+    @media (max-width: 420px) {
+      .destinations-grid { grid-template-columns: 1fr; }
+    }
 
     /* Recs form */
     .recs-wrap {
@@ -707,9 +730,7 @@
       letter-spacing: 0.08em;
       margin-bottom: 1.4rem;
     }
-    .foot-logo { height: 38px; width: auto; object-fit: contain; margin: 0 auto 1.4rem; opacity: 0.75; }
-    .foot-love { font-size: 0.78rem; letter-spacing: 0.1em; color: var(--text-sec); }
-    .foot-love span { color: var(--accent); }
+    .foot-logo { height: 38px; width: auto; object-fit: contain; margin: 0 auto; opacity: 0.75; }
 
     /* ——————————————————————————————
        RESPONSIVE
@@ -720,13 +741,11 @@
       .nav-links { display: none; }
       .hamburger { display: flex; }
 
-      .welcome-logo { height: 100px; }
-      .hero-arch-wrap { width: clamp(240px, 80vw, 380px); }
+      .welcome-logo { height: 140px; }
+      .arch-outer { width: clamp(240px, 80vw, 380px); padding: 8px; }
 
       .trump-grid { flex-direction: column; align-items: center; }
       .trump-card { max-width: 320px; width: 100%; }
-
-      #map { height: 300px; }
 
       section { padding: var(--pad) 1.3rem; }
       #welcome, #quiz, #stats, #travel, #qa { padding: var(--pad) 1.3rem; }
@@ -769,7 +788,8 @@
 <section id="welcome">
   <div class="welcome-inner">
     <img src="images/logo-removebg-preview.png" alt="Nasser &amp; Farzana" class="welcome-logo">
-    <h1 class="welcome-h1">Nasser &amp; Farzana</h1>
+    <img src="images/Screenshot_2026-06-13_at_10.17.49-removebg-preview.png" alt="Nasser &amp; Farzana" class="welcome-couple-img">
+    <h1 class="welcome-h1"></h1>
     <p class="welcome-sub">19th July 2026 &middot; 12pm &middot; Quendon Hall, Essex</p>
 
     <div class="countdown" id="cd">
@@ -782,8 +802,10 @@
       <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><span class="cd-label">Seconds</span></div>
     </div>
 
-    <div class="hero-arch-wrap">
-      <img src="images/story-proposal-DZoLDB8e.png" alt="Nasser and Farzana">
+    <div class="arch-outer">
+      <div class="hero-arch-wrap">
+        <img src="images/story-proposal-DZoLDB8e.png" alt="Nasser and Farzana">
+      </div>
     </div>
   </div>
 </section>
@@ -803,27 +825,27 @@
       <div class="polaroid-stage">
         <div class="polaroid" id="pol-0">
           <img src="images/story-0-first-met-Cm6GVSR3.png" alt="Colonel Saab">
-          <p class="polaroid-caption">Colonel Saab, London</p>
+          <p class="polaroid-caption">The first time we met, at Colonel Saab</p>
         </div>
         <div class="polaroid" id="pol-1">
           <img src="images/story-1-first-meeting-B3S9t4nP.png" alt="Meeting family">
-          <p class="polaroid-caption">Meeting the fam 👨‍👩‍👧‍👦</p>
+          <p class="polaroid-caption">The first time Nasser met Farzana's family</p>
         </div>
         <div class="polaroid" id="pol-2">
           <img src="images/story-2-family-meeting-BvdDXYb-.png" alt="Meeting Nasser's family">
-          <p class="polaroid-caption">Meeting Nasser's crew 🏡</p>
+          <p class="polaroid-caption">The first time Farzana met Nasser's family</p>
         </div>
         <div class="polaroid" id="pol-3">
           <img src="images/story-proposal-DZoLDB8e.png" alt="The proposal">
-          <p class="polaroid-caption">The Proposal ✨</p>
+          <p class="polaroid-caption">The proposal — St John's College, Cambridge</p>
         </div>
         <div class="polaroid" id="pol-4">
           <img src="images/story-3-nikkah-CBoetaIk.png" alt="Our Nikkah">
-          <p class="polaroid-caption">Our Nikkah 🕌</p>
+          <p class="polaroid-caption">Our Nikkah at Cambridge Central Mosque</p>
         </div>
         <div class="polaroid" id="pol-5">
           <img src="images/story-4-sicily-DQdG4XAA.png" alt="Sicily">
-          <p class="polaroid-caption">Sicily, baby 🍊</p>
+          <p class="polaroid-caption">Our first holiday together - Sicily</p>
         </div>
       </div>
     </div>
@@ -865,7 +887,7 @@
 —————————————————————————————— -->
 <section id="stats">
   <h2 class="section-title reveal">Nasser vs Farzana</h2>
-  <p class="section-sub reveal">The official stats. Independently verified. Mostly.</p>
+  <p class="section-sub reveal">Choose your fighter</p>
 
   <div class="trump-grid" id="sgrid">
 
@@ -925,12 +947,65 @@
   <h2 class="section-title reveal">Our Adventures</h2>
 
   <div class="trip-hero reveal">
-    <p class="trip-text">9 countries &middot; 1 forever to go</p>
+    <p class="trip-text">9 countries down &middot; 194 to go</p>
     <div class="trip-rule"></div>
   </div>
 
-  <div class="map-wrap reveal">
-    <div id="map"></div>
+  <div class="destinations-grid reveal">
+    <div class="dest-card">
+      <div class="dest-emoji">🇺🇸</div>
+      <div class="dest-name">Boston, USA</div>
+      <div class="dest-date">May 2026</div>
+      <div class="dest-note">The trip that started it all</div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-emoji">🇮🇹</div>
+      <div class="dest-name">Rome, Italy</div>
+      <div class="dest-date">May 2026</div>
+      <div class="dest-note">Pasta, piazzas, and very sore feet</div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-emoji">🇳🇴</div>
+      <div class="dest-name">Haugesund, Norway</div>
+      <div class="dest-date">August 2026</div>
+      <div class="dest-note">Midnight sun and fjord walks</div>
+    </div>
+    <div class="dest-card dest-special">
+      <div class="dest-emoji">🇿🇦</div>
+      <div class="dest-name">Cape Town &amp; Kruger, South Africa</div>
+      <div class="dest-date">October 2026</div>
+      <div class="dest-note">The honeymoon 🌅</div>
+    </div>
+    <div class="dest-card dest-special">
+      <div class="dest-emoji">🌴</div>
+      <div class="dest-name">Seychelles</div>
+      <div class="dest-date">October 2025</div>
+      <div class="dest-note">The honeymoon 🌅</div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-emoji">🇮🇹</div>
+      <div class="dest-name">Sicily, Italy</div>
+      <div class="dest-date">November 2025</div>
+      <div class="dest-note">Arancini. Etna. More arancini 🍊</div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-emoji">🇧🇩</div>
+      <div class="dest-name">Dhaka, Bangladesh</div>
+      <div class="dest-date">December 2025</div>
+      <div class="dest-note">Family, food, and chaos (the good kind)</div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-emoji">🇪🇸</div>
+      <div class="dest-name">Valencia, Spain</div>
+      <div class="dest-date">February 2026</div>
+      <div class="dest-note">Paella at the source. Undefeated 🥘</div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-emoji">🇫🇷</div>
+      <div class="dest-name">Paris, France</div>
+      <div class="dest-date">April 2026</div>
+      <div class="dest-note">Cliché? Yes. Perfect? Also yes 🗼</div>
+    </div>
   </div>
 
   <div class="divider" style="margin-bottom:3.5rem;"></div>
@@ -1012,10 +1087,8 @@
 <footer>
   <p class="foot-name">Nasser &amp; Farzana &middot; 19.07.2026</p>
   <img src="images/logo-removebg-preview.png" alt="Logo" class="foot-logo">
-  <p class="foot-love">Made with <span>♥</span> love</p>
 </footer>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 // ——— NAV scroll + hamburger ———
 const navEl = document.getElementById('nav');
@@ -1034,6 +1107,29 @@ mob.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   mob.classList.remove('open');
   document.body.style.overflow = '';
 }));
+
+// ——— TYPEWRITER: "Nasser & Farzana" ———
+(function() {
+  const h1 = document.querySelector('.welcome-h1');
+  const full = 'Nasser & Farzana';
+  h1.innerHTML = ' '; // reserve height
+  let ci = 0;
+  const iv = setInterval(() => {
+    ci++;
+    const typed = full.slice(0, ci);
+    const ai = typed.indexOf('&');
+    if (ai === -1) {
+      h1.textContent = typed;
+    } else {
+      h1.innerHTML = typed.slice(0, ai) + '<span class="amp-gold">&amp;</span>' + typed.slice(ai + 1);
+    }
+    if (ci >= full.length) {
+      clearInterval(iv);
+      const amp = h1.querySelector('.amp-gold');
+      if (amp) setTimeout(() => amp.classList.add('amp-pulse'), 300);
+    }
+  }, 75);
+})();
 
 // ——— COUNTDOWN ———
 function tick() {
@@ -1167,107 +1263,6 @@ const quizRevealObs = new IntersectionObserver(entries => {
   }
 }, { threshold: 0.3 });
 quizRevealObs.observe(document.getElementById('quiz'));
-
-// ——— MAP ———
-const locs = [
-  { name:"Boston, USA",                 coords:[42.36,-71.06],  date:"May 2026",      note:"The trip that started it all 🇺🇸" },
-  { name:"Rome, Italy",                 coords:[41.90,12.50],   date:"May 2026",      note:"Pasta, piazzas, and very sore feet 🇮🇹" },
-  { name:"Haugesund, Norway",           coords:[59.41,5.27],    date:"August 2026",   note:"Midnight sun and fjord walks 🇳🇴" },
-  { name:"Cape Town & Kruger, South Africa", coords:[-33.92,18.42], date:"October 2026", note:"The honeymoon :)" },
-  { name:"Seychelles 🌴",              coords:[-4.68,55.49],   date:"October 2025",  note:"The honeymoon :)", honeymoon:true },
-  { name:"Sicily, Italy",               coords:[37.60,14.01],   date:"November 2025", note:"Arancini. Etna. More arancini 🍊" },
-  { name:"Dhaka, Bangladesh",           coords:[23.81,90.41],   date:"December 2025", note:"Family, food, and chaos (the good kind) 🇧🇩" },
-  { name:"Valencia, Spain",             coords:[39.47,-0.38],   date:"February 2026", note:"Paella at the source. Undefeated 🥘" },
-  { name:"Paris, France",               coords:[48.85,2.35],    date:"April 2026",    note:"Cliché? Yes. Perfect? Also yes 🗼" }
-];
-
-// Inject marker CSS
-const mstyle = document.createElement('style');
-mstyle.textContent = `
-.gm{width:28px;height:28px;position:relative;}
-.gm-dot{width:14px;height:14px;background:#C9A96E;border-radius:50%;border:2px solid #E8D5A3;position:absolute;top:7px;left:7px;box-shadow:0 0 8px rgba(201,169,110,.6);z-index:2;}
-.gm-pulse{width:28px;height:28px;background:rgba(201,169,110,.35);border-radius:50%;position:absolute;top:0;left:0;animation:gpulse 2s ease-out infinite;}
-.hm .gm-dot{width:18px;height:18px;background:#FFD700;border-color:#fff;box-shadow:0 0 16px rgba(255,215,0,.9);top:5px;left:5px;}
-.hm .gm-pulse{background:rgba(255,215,0,.35);animation:gpulse 1.4s ease-out infinite;}
-@keyframes gpulse{0%{transform:scale(.8);opacity:1}70%{transform:scale(2.2);opacity:0}100%{transform:scale(2.2);opacity:0}}
-`;
-document.head.appendChild(mstyle);
-
-const map = L.map('map', { center:[30,15], zoom:2, zoomControl:true });
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  maxZoom: 19
-}).addTo(map);
-setTimeout(() => map.invalidateSize(), 300);
-
-// Flight path: faint dotted line + animated plane
-const routeCoords = locs.filter(l => !l.honeymoon).map(l => l.coords);
-L.polyline(routeCoords, { color:'#C9A96E', weight:1.5, opacity:0.18, dashArray:'6,9' }).addTo(map);
-
-(function() {
-  const planeStyle = document.createElement('style');
-  planeStyle.textContent = '.map-plane{font-size:20px;transform-origin:center;display:block;filter:drop-shadow(0 0 5px rgba(201,169,110,0.9));}';
-  document.head.appendChild(planeStyle);
-
-  const steps = 50;
-  const fullPath = [];
-  for (let i = 0; i < routeCoords.length - 1; i++) {
-    const a = routeCoords[i], b = routeCoords[i+1];
-    for (let s = 0; s < steps; s++) {
-      fullPath.push([a[0]+(b[0]-a[0])*s/steps, a[1]+(b[1]-a[1])*s/steps]);
-    }
-  }
-  fullPath.push(routeCoords[routeCoords.length-1]);
-
-  const planeIcon = L.divIcon({
-    className: '', html: '<span class="map-plane">✈</span>',
-    iconSize:[24,24], iconAnchor:[12,12]
-  });
-
-  let idx = 0;
-  const plane = L.marker(fullPath[0], { icon: planeIcon, zIndexOffset:500 }).addTo(map);
-
-  function step() {
-    if (idx >= fullPath.length) { setTimeout(() => plane.remove(), 800); return; }
-    plane.setLatLng(fullPath[idx]);
-    if (idx > 0) {
-      const p = fullPath[idx-1], c = fullPath[idx];
-      const angle = Math.atan2(-(c[0]-p[0]), c[1]-p[1]) * 180/Math.PI;
-      const el = plane.getElement();
-      if (el) el.querySelector('.map-plane').style.transform = 'rotate('+angle+'deg)';
-    }
-    idx++;
-    setTimeout(step, 30);
-  }
-
-  setTimeout(step, locs.length * 200 + 800);
-})();
-
-locs.forEach((loc, i) => {
-  setTimeout(() => {
-    const icon = L.divIcon({
-      className: loc.honeymoon ? 'gm hm' : 'gm',
-      html: '<div class="gm-pulse"></div><div class="gm-dot"></div>',
-      iconSize:[28,28], iconAnchor:[14,14], popupAnchor:[0,-16]
-    });
-    const marker = L.marker(loc.coords, { icon }).addTo(map);
-    marker.bindPopup(
-      `<div class="pop-name">${loc.name}</div><div class="pop-date">${loc.date}</div><div class="pop-note">${loc.note}</div>`,
-      { maxWidth:220 }
-    );
-    // Drop-in animation
-    const el = marker.getElement();
-    if (el) {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(-18px)';
-      el.style.transition = 'opacity .5s ease, transform .5s ease';
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
-      }));
-    }
-  }, i * 200);
-});
 
 // ——— POLAROID PILE ———
 (function() {
