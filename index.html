@@ -711,6 +711,57 @@
       .polaroid img { width: 240px; height: 240px; }
       .polaroid { padding: 12px 12px 56px; }
     }
+    /* ----- ADMIN ----- */
+    #admin-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(14,9,5,0.96); z-index: 10000;
+      overflow-y: auto; padding: 2rem 1rem;
+    }
+    .admin-close {
+      position: fixed; top: 1.1rem; right: 1.4rem;
+      background: none; border: none; color: var(--text-sec);
+      font-size: 1.8rem; cursor: pointer; line-height: 1; padding: 0.3rem 0.5rem;
+    }
+    .admin-close:hover { color: var(--gold); }
+    .admin-panel { max-width: 680px; margin: 0 auto; font-family: 'Jost', sans-serif; }
+    #admin-login-box { text-align: center; margin-top: 28vh; }
+    .admin-pw-row { display: flex; gap: 0.5rem; justify-content: center; max-width: 340px; margin: 0 auto 0.75rem; }
+    .admin-pw-input {
+      flex: 1; background: var(--card); border: 1px solid rgba(201,169,110,0.3);
+      color: var(--text); padding: 0.7rem 1rem; border-radius: 4px;
+      font-family: 'Jost', sans-serif; font-size: 0.95rem;
+    }
+    .admin-pw-input:focus { outline: none; border-color: var(--gold); }
+    .admin-submit {
+      background: var(--gold); color: #1C1209; border: none;
+      padding: 0.7rem 1.4rem; font-family: 'Jost', sans-serif;
+      font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
+      cursor: pointer; border-radius: 3px; white-space: nowrap;
+    }
+    .admin-submit:hover { background: var(--accent); }
+    .admin-err { color: #e07070; font-size: 0.82rem; }
+    .admin-section { margin-bottom: 3rem; }
+    .admin-section h3 {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; color: var(--gold);
+      border-bottom: 1px solid rgba(201,169,110,0.2); padding-bottom: 0.45rem; margin-bottom: 1.1rem;
+    }
+    .admin-entry {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); gap: 1rem;
+    }
+    .admin-entry-text { flex: 1; font-size: 0.88rem; line-height: 1.45; }
+    .admin-del-btn {
+      background: none; border: 1px solid rgba(200,80,80,0.35); color: rgba(200,80,80,0.75);
+      border-radius: 3px; padding: 0.18rem 0.5rem; font-size: 0.72rem; cursor: pointer; flex-shrink: 0;
+    }
+    .admin-del-btn:hover { background: rgba(200,80,80,0.12); border-color: rgba(200,80,80,0.65); color: #e07070; }
+    .quiz-score-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem;
+      margin-bottom: 1.4rem; text-align: center;
+    }
+    .qsg-cell { background: var(--card); border: 1px solid rgba(201,169,110,0.15); border-radius: 4px; padding: 0.5rem 0.2rem; }
+    .qsg-score { font-size: 0.7rem; color: var(--text-sec); letter-spacing: 0.08em; }
+    .qsg-count { font-size: 1.25rem; font-weight: 600; color: var(--gold); }
   </style>
 </head>
 <body>
@@ -1003,19 +1054,53 @@ const firebaseConfig = {
   <img src="images/Screenshot_2026-06-13_at_10.36.49-removebg-preview.png" alt="Logo" class="foot-logo">
 </footer>
 
+<div style="text-align:center;padding:1rem 0 2.5rem;">
+  <button onclick="document.getElementById('admin-overlay').style.display='block'" style="background:none;border:none;color:rgba(201,169,110,0.2);font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;padding:0.5rem 1rem;">admin</button>
+</div>
+
+<div id="admin-overlay">
+  <button class="admin-close" onclick="adminClose()">&#215;</button>
+  <div class="admin-panel">
+
+    <div id="admin-login-box">
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--gold);margin-bottom:1.5rem;letter-spacing:0.06em;">Admin</p>
+      <div class="admin-pw-row">
+        <input type="password" id="admin-pw" class="admin-pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')adminLogin()">
+        <button class="admin-submit" onclick="adminLogin()">Enter</button>
+      </div>
+      <p id="admin-err" class="admin-err" style="display:none">Incorrect password</p>
+    </div>
+
+    <div id="admin-content" style="display:none">
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.9rem;color:var(--gold);margin-bottom:2.5rem;letter-spacing:0.06em;">Admin Panel</p>
+
+      <div class="admin-section">
+        <h3>Quiz Attempts</h3>
+        <p id="admin-quiz-total" style="font-size:0.82rem;color:var(--text-sec);margin-bottom:1rem;"></p>
+        <div class="quiz-score-grid" id="admin-quiz-grid"></div>
+        <div id="admin-quiz-list"></div>
+      </div>
+
+      <div class="admin-section">
+        <h3>Travel Suggestions</h3>
+        <div id="admin-recs-list"></div>
+      </div>
+
+      <div class="admin-section">
+        <h3>Date Night Ideas</h3>
+        <div id="admin-dates-list"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="config.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
-  const firebaseConfig = {
-    apiKey: "PASTE_HERE",
-    authDomain: "PASTE_HERE",
-    projectId: "PASTE_HERE",
-    storageBucket: "PASTE_HERE",
-    messagingSenderId: "PASTE_HERE",
-    appId: "PASTE_HERE"
-  };
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(window.WEDDING_CONFIG.firebase);
   window._db = firebase.firestore();
 </script>
 <script>
@@ -1130,15 +1215,20 @@ document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
     }
     if (newDealt === lastDealt) return;
     lastDealt = newDealt;
+    var pileTopIdx = newDealt; // pile now sits at the next undealt card's natural position
     cards.forEach(function(card, i) {
       if (i < newDealt) {
+        // dealt: stays at own natural position
         card.style.transform = 'translateY(0px) ' + cardRots[i];
         card.style.opacity = '1';
         card.style.zIndex = i + 1;
       } else {
-        card.style.transform = 'translateY(' + pileOffsets[i] + 'px) rotate(' + (pileRots[i] || 0) + 'deg)';
-        card.style.zIndex = cards.length - i;
-        card.style.opacity = i < 4 ? String(1 - i * 0.04) : '0';
+        // undealt: stack at pileTopIdx's natural position
+        var depth = i - pileTopIdx;
+        var offset = naturalTops[pileTopIdx] - naturalTops[i];
+        card.style.transform = 'translateY(' + offset + 'px) rotate(' + (pileRots[depth] || 0) + 'deg)';
+        card.style.zIndex = cards.length - depth;
+        card.style.opacity = depth < 4 ? String(1 - depth * 0.04) : '0';
       }
     });
   }
@@ -1245,6 +1335,9 @@ function handleQuizAnswer(chosen) {
       document.getElementById('sc-msg').textContent = msgs[quizScore];
       const box = document.getElementById('quiz-score'); box.classList.add('show');
       box.scrollIntoView({ behavior:'smooth', block:'nearest' });
+      if (window._db) {
+        window._db.collection('quiz_attempts').add({ score: quizScore, total: QUESTIONS.length, ts: firebase.firestore.FieldValue.serverTimestamp() });
+      }
     }
   }, 1100);
 }
@@ -1345,7 +1438,7 @@ quizRevealObs.observe(document.getElementById('quiz'));
     { name: 'Haugesund, Norway',              lat: 59.41,  lng:   5.27, date: 'August 2026',   note: 'Midnight sun and fjord walks',               flag: '🇳🇴', planned: true },
     { name: 'Cape Town & Kruger, S. Africa',  lat:-33.92,  lng:  18.42, date: 'October 2026',  note: 'The honeymoon 🌅',                           flag: '🇿🇦', planned: true },
     { name: 'Seychelles',                     lat: -4.68,  lng:  55.49, date: 'October 2025',  note: 'The honeymoon 🌅',                           flag: '🇸🇨' },
-    { name: 'Sicily, Italy',                  lat: 37.60,  lng:  14.01, date: 'November 2025', note: 'Arancini. Etna. More arancini 🍊',            flag: '🇮🇹' },
+    { name: 'Sicily, Italy',                  lat: 37.60,  lng:  14.01, date: 'October 2026',  note: 'Arancini. Etna. More arancini 🍊',            flag: '🇮🇹', planned: true },
     { name: 'Dhaka, Bangladesh',              lat: 23.81,  lng:  90.41, date: 'December 2025', note: 'Family, food, and chaos (the good kind)',    flag: '🇧🇩' },
     { name: 'Gothenburg, Sweden',             lat: 57.70,  lng:  11.97, date: 'December 2025', note: 'Christmas markets and Scandinavian charm ❄️',  flag: '🇸🇪' },
     { name: 'Valencia, Spain',                lat: 39.47,  lng:  -0.38, date: 'February 2026', note: 'Paella at the source. Undefeated 🥘',        flag: '🇪🇸' },
@@ -1456,6 +1549,108 @@ document.querySelectorAll('.acc-head').forEach(head => {
     }
   });
 });
+
+// --- ADMIN ---
+(function() {
+  var unsubs = [];
+
+  function escHtml(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  async function sha256(msg) {
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+    return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
+  }
+
+  window.adminLogin = async function() {
+    var pw = document.getElementById('admin-pw').value;
+    var hash = await sha256(pw);
+    if (hash === window.WEDDING_CONFIG.adminHash) {
+      document.getElementById('admin-login-box').style.display = 'none';
+      document.getElementById('admin-content').style.display = 'block';
+      loadAdminData();
+    } else {
+      var err = document.getElementById('admin-err');
+      err.style.display = 'block';
+      setTimeout(function() { err.style.display = 'none'; }, 3000);
+    }
+  };
+
+  window.adminClose = function() {
+    document.getElementById('admin-overlay').style.display = 'none';
+    document.getElementById('admin-pw').value = '';
+    document.getElementById('admin-err').style.display = 'none';
+    document.getElementById('admin-login-box').style.display = 'block';
+    document.getElementById('admin-content').style.display = 'none';
+    unsubs.forEach(function(u) { u(); });
+    unsubs = [];
+  };
+
+  window.adminDelete = function(col, id) {
+    if (!confirm('Delete this entry?')) return;
+    window._db.collection(col).doc(id).delete();
+  };
+
+  function loadAdminData() {
+    // Quiz attempts
+    unsubs.push(
+      window._db.collection('quiz_attempts').orderBy('ts', 'desc').onSnapshot(function(snap) {
+        var totalEl = document.getElementById('admin-quiz-total');
+        var gridEl = document.getElementById('admin-quiz-grid');
+        var listEl = document.getElementById('admin-quiz-list');
+        totalEl.textContent = snap.size + ' total attempt' + (snap.size !== 1 ? 's' : '');
+        var counts = [0,0,0,0,0,0,0];
+        snap.forEach(function(doc) { var s = doc.data().score; if (s >= 0 && s <= 6) counts[s]++; });
+        gridEl.innerHTML = '';
+        for (var s = 0; s <= 6; s++) {
+          gridEl.innerHTML += '<div class="qsg-cell"><div class="qsg-score">' + s + '/6</div><div class="qsg-count">' + counts[s] + '</div></div>';
+        }
+        listEl.innerHTML = snap.empty ? '<p style="color:var(--text-sec);font-size:.85rem">No attempts yet</p>' : '';
+        snap.forEach(function(doc) {
+          var d = doc.data();
+          var ts = d.ts ? new Date(d.ts.seconds * 1000).toLocaleString('en-GB') : '-';
+          var el = document.createElement('div');
+          el.className = 'admin-entry';
+          el.innerHTML = '<span class="admin-entry-text">Score: <strong>' + d.score + ' / ' + d.total + '</strong> &nbsp;<span style="opacity:.45;font-size:.78em">' + ts + '</span></span>';
+          listEl.appendChild(el);
+        });
+      })
+    );
+
+    // Travel suggestions
+    unsubs.push(
+      window._db.collection('recs').orderBy('ts').onSnapshot(function(snap) {
+        var listEl = document.getElementById('admin-recs-list');
+        listEl.innerHTML = snap.empty ? '<p style="color:var(--text-sec);font-size:.85rem">No suggestions yet</p>' : '';
+        snap.forEach(function(doc) {
+          var d = doc.data();
+          var el = document.createElement('div');
+          el.className = 'admin-entry';
+          el.innerHTML = '<span class="admin-entry-text"><strong>' + escHtml(d.destination) + '</strong><br><span style="opacity:.65">' + escHtml(d.things_to_do) + '</span></span>' +
+            '<button class="admin-del-btn" onclick="adminDelete(\'recs\',\'' + doc.id + '\')">Delete</button>';
+          listEl.appendChild(el);
+        });
+      })
+    );
+
+    // Date night ideas
+    unsubs.push(
+      window._db.collection('date_nights').orderBy('ts').onSnapshot(function(snap) {
+        var listEl = document.getElementById('admin-dates-list');
+        listEl.innerHTML = snap.empty ? '<p style="color:var(--text-sec);font-size:.85rem">No ideas yet</p>' : '';
+        snap.forEach(function(doc) {
+          var d = doc.data();
+          var el = document.createElement('div');
+          el.className = 'admin-entry';
+          el.innerHTML = '<span class="admin-entry-text">' + escHtml(d.idea) + '</span>' +
+            '<button class="admin-del-btn" onclick="adminDelete(\'date_nights\',\'' + doc.id + '\')">Delete</button>';
+          listEl.appendChild(el);
+        });
+      })
+    );
+  }
+})();
 </script>
 </body>
 </html>
