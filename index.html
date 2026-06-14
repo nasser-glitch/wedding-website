@@ -405,7 +405,7 @@
       max-width: 740px;
       margin: 0 auto;
       justify-content: center;
-      align-items: flex-start;
+      align-items: stretch;
     }
     .trump-card {
       flex: 1;
@@ -743,7 +743,7 @@
 
     <div class="arch-outer">
       <div class="hero-arch-wrap">
-        <img src="images/IMG_7308.JPG" alt="Nasser and Farzana">
+        <img src="images/IMG_2325 2.jpg" alt="Nasser and Farzana">
       </div>
     </div>
   </div>
@@ -828,9 +828,7 @@
     <!-- NASSER -->
     <div class="trump-card">
       <div class="trump-photo">
-        <div class="trump-photo-ph">
-          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.35)" stroke-width="1" width="80" height="80"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        </div>
+        <img src="images/Screenshot 2026-06-14 at 19.00.20.png" alt="Nasser">
       </div>
       <div class="trump-name-bar"><span>Nasser</span></div>
       <div class="trump-stats">
@@ -849,9 +847,7 @@
     <!-- FARZANA -->
     <div class="trump-card">
       <div class="trump-photo">
-        <div class="trump-photo-ph">
-          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.35)" stroke-width="1" width="80" height="80"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        </div>
+        <img src="images/Screenshot 2026-06-14 at 19.01.06.png" alt="Farzana">
       </div>
       <div class="trump-name-bar"><span>Farzana</span></div>
       <div class="trump-stats">
@@ -1040,16 +1036,20 @@ document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
   const container = document.querySelector('.polaroid-column');
   if (!container) return;
   const cards = [...container.querySelectorAll('.polaroid')];
-  let pileDealt = false;
   const pileRots = [-2, 4, -5, 3, -3, 6];
+  const pileOffsets = [];
+  let isDealt = false;
+  let activeTimeouts = [];
+
+  function clearTimers() { activeTimeouts.forEach(clearTimeout); activeTimeouts = []; }
 
   function setupPile() {
     const firstRect = cards[0].getBoundingClientRect();
     cards.forEach(function(card, i) {
       const rect = card.getBoundingClientRect();
-      const dy = firstRect.top - rect.top;
+      pileOffsets[i] = firstRect.top - rect.top;
       card.style.transition = 'none';
-      card.style.transform = 'translateY(' + dy + 'px) rotate(' + (pileRots[i] || 0) + 'deg)';
+      card.style.transform = 'translateY(' + pileOffsets[i] + 'px) rotate(' + (pileRots[i] || 0) + 'deg)';
       card.style.zIndex = cards.length - i;
       card.style.opacity = i < 4 ? String(1 - i * 0.04) : '0';
     });
@@ -1058,19 +1058,40 @@ document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
     });
   }
 
+  function peel() {
+    clearTimers();
+    isDealt = true;
+    cards.forEach(function(card, i) {
+      const rot = (card.style.getPropertyValue('--rot') || 'rotate(0deg)').trim();
+      activeTimeouts.push(setTimeout(function() {
+        card.style.transform = 'translateY(0px) ' + rot;
+        card.style.opacity = '1';
+        card.style.zIndex = '';
+      }, i * 420));
+    });
+  }
+
+  function repile() {
+    clearTimers();
+    isDealt = false;
+    // Reverse stagger: bottom card returns first, top card last
+    cards.slice().reverse().forEach(function(card, i) {
+      const origIdx = cards.length - 1 - i;
+      activeTimeouts.push(setTimeout(function() {
+        card.style.transform = 'translateY(' + pileOffsets[origIdx] + 'px) rotate(' + (pileRots[origIdx] || 0) + 'deg)';
+        card.style.zIndex = cards.length - origIdx;
+        card.style.opacity = origIdx < 4 ? String(1 - origIdx * 0.04) : '0';
+      }, i * 280));
+    });
+  }
+
   requestAnimationFrame(function() { requestAnimationFrame(setupPile); });
 
   const obs = new IntersectionObserver(function(entries) {
-    if (entries[0].isIntersecting && !pileDealt) {
-      pileDealt = true;
-      obs.disconnect();
-      cards.forEach(function(card, i) {
-        const rot = (card.style.getPropertyValue('--rot') || 'rotate(0deg)').trim();
-        setTimeout(function() {
-          card.style.transform = 'translateY(0px) ' + rot;
-          card.style.opacity = '1';
-        }, i * 420);
-      });
+    if (entries[0].isIntersecting && !isDealt) {
+      peel();
+    } else if (!entries[0].isIntersecting && isDealt) {
+      repile();
     }
   }, { threshold: 0.15 });
   obs.observe(container);
@@ -1194,13 +1215,21 @@ quizRevealObs.observe(document.getElementById('quiz'));
   const grid = document.getElementById('sgrid');
   if (!grid) return;
   const cards = [...grid.querySelectorAll('.trump-card')];
-  let dealtCards = false;
+  let activeTimeouts = [];
+
+  function clearTimers() { activeTimeouts.forEach(clearTimeout); activeTimeouts = []; }
+
   const obs = new IntersectionObserver(function(entries) {
-    if (entries[0].isIntersecting && !dealtCards) {
-      dealtCards = true;
-      obs.disconnect();
+    if (entries[0].isIntersecting) {
+      clearTimers();
       cards.forEach(function(card, i) {
-        setTimeout(function() { card.classList.add('card-in'); }, i * 280);
+        activeTimeouts.push(setTimeout(function() { card.classList.add('card-in'); }, i * 280));
+      });
+    } else {
+      clearTimers();
+      // Reverse stagger: right card slides out first, then left
+      cards.slice().reverse().forEach(function(card, i) {
+        activeTimeouts.push(setTimeout(function() { card.classList.remove('card-in'); }, i * 180));
       });
     }
   }, { threshold: 0.2 });
