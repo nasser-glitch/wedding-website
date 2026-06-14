@@ -167,17 +167,26 @@
 
     .welcome-inner { position: relative; z-index: 1; width: 100%; }
 
-    .welcome-logo {
-      height: 300px;
-      width: auto;
-      margin: 0 auto 1rem;
-      filter: drop-shadow(0 0 20px rgba(201,169,110,0.4));
+    .welcome-venue-img {
+      width: clamp(240px, 45vw, 420px);
+      margin: 0.6rem auto 0.5rem;
+      filter: drop-shadow(0 8px 28px rgba(0,0,0,0.45));
     }
 
-    .welcome-couple-img {
-      width: clamp(180px, 32vw, 300px);
-      margin: 0 auto 0.8rem;
-      filter: drop-shadow(0 8px 28px rgba(0,0,0,0.45));
+    .welcome-address {
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      margin-bottom: 0.35rem;
+    }
+
+    .welcome-datetime {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      margin-bottom: 2.5rem;
     }
 
     /* ——— NAME TYPEWRITER ——— */
@@ -293,13 +302,8 @@
     }
 
     .polaroid-column .polaroid {
-      opacity: 0;
-      transform: translateY(24px) var(--rot, rotate(0deg));
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .polaroid-column .polaroid.in {
-      opacity: 1;
-      transform: translateY(0) var(--rot, rotate(0deg));
+      transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+      position: relative;
     }
 
     /* ——————————————————————————————
@@ -411,9 +415,16 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 12px 60px rgba(0,0,0,0.38);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease, box-shadow 0.3s ease;
     }
-    .trump-card:hover { transform: translateY(-6px); box-shadow: 0 20px 80px rgba(0,0,0,0.45); }
+    #sgrid .trump-card:nth-child(1) { transform: translateX(-120px) rotate(-4deg); }
+    #sgrid .trump-card:nth-child(2) { transform: translateX(120px) rotate(4deg); }
+    #sgrid .trump-card.card-in { opacity: 1; transform: none; }
+    #sgrid .trump-card.card-in:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 80px rgba(0,0,0,0.45);
+    }
     .trump-photo {
       width: 100%;
       aspect-ratio: 3/4;
@@ -669,7 +680,6 @@
       #nav { padding: 1rem 1.4rem; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
-      .welcome-logo { height: 200px; }
       .arch-outer { width: clamp(180px, 68vw, 260px); padding: 8px; }
       #travel-map { height: 340px; }
       .trump-grid { flex-direction: column; align-items: center; }
@@ -716,10 +726,10 @@
 —————————————————————————————— -->
 <section id="welcome">
   <div class="welcome-inner">
-    <img src="images/Screenshot_2026-06-13_at_10.36.49-removebg-preview.png" alt="Nasser &amp; Farzana" class="welcome-logo">
-    <img src="images/Screenshot_2026-06-13_at_10.17.49-removebg-preview.png" alt="Nasser &amp; Farzana" class="welcome-couple-img">
     <h1 class="welcome-h1"></h1>
-    <p class="welcome-sub">19th July 2026 &middot; 12pm &middot; Quendon Hall, Essex</p>
+    <img src="images/Screenshot_2026-06-13_at_10.17.49-removebg-preview.png" alt="Quendon Hall" class="welcome-venue-img">
+    <p class="welcome-address">Parklands, Quendon Hall, Quendon, Essex, CB11 3XN</p>
+    <p class="welcome-datetime">19th July 2026 &middot; 12pm</p>
 
     <div class="countdown" id="cd">
       <div class="cd-unit"><span class="cd-num" id="cd-d">000</span><span class="cd-label">Days</span></div>
@@ -816,7 +826,7 @@
   <div class="trump-grid" id="sgrid">
 
     <!-- NASSER -->
-    <div class="trump-card reveal">
+    <div class="trump-card">
       <div class="trump-photo">
         <div class="trump-photo-ph">
           <svg viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.35)" stroke-width="1" width="80" height="80"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
@@ -837,7 +847,7 @@
     </div>
 
     <!-- FARZANA -->
-    <div class="trump-card reveal">
+    <div class="trump-card">
       <div class="trump-photo">
         <div class="trump-photo-ph">
           <svg viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.35)" stroke-width="1" width="80" height="80"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
@@ -898,8 +908,7 @@
     <h3>Date Night Ideas</h3>
     <p>We love a good night out — tell us your favourite spots and what to do!</p>
     <form id="date-form">
-      <div class="fg"><label for="d-area">Area / Neighbourhood</label><input type="text" id="d-area" placeholder="Where in London (or beyond)?" required></div>
-      <div class="fg"><label for="d-ideas">What to Do</label><textarea id="d-ideas" placeholder="Restaurant, activity, hidden gem…" required></textarea></div>
+      <div class="fg"><label for="d-ideas">Your Date Night Idea</label><textarea id="d-ideas" placeholder="Restaurant, activity, hidden gem — anywhere in London or beyond…" required></textarea></div>
       <button type="submit" class="gold-btn">Share Your Idea</button>
     </form>
     <div class="thanks" id="date-thanks"></div>
@@ -1026,12 +1035,45 @@ const ro = new IntersectionObserver(entries => {
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-// ——— POLAROID REVEAL ———
+// ——— POLAROID PILE + PEEL ———
 (function() {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }});
-  }, { threshold: 0.2 });
-  document.querySelectorAll('.polaroid-column .polaroid').forEach(p => obs.observe(p));
+  const container = document.querySelector('.polaroid-column');
+  if (!container) return;
+  const cards = [...container.querySelectorAll('.polaroid')];
+  let pileDealt = false;
+  const pileRots = [-2, 4, -5, 3, -3, 6];
+
+  function setupPile() {
+    const firstRect = cards[0].getBoundingClientRect();
+    cards.forEach(function(card, i) {
+      const rect = card.getBoundingClientRect();
+      const dy = firstRect.top - rect.top;
+      card.style.transition = 'none';
+      card.style.transform = 'translateY(' + dy + 'px) rotate(' + (pileRots[i] || 0) + 'deg)';
+      card.style.zIndex = cards.length - i;
+      card.style.opacity = i < 4 ? String(1 - i * 0.04) : '0';
+    });
+    requestAnimationFrame(function() {
+      cards.forEach(function(card) { card.style.transition = ''; });
+    });
+  }
+
+  requestAnimationFrame(function() { requestAnimationFrame(setupPile); });
+
+  const obs = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !pileDealt) {
+      pileDealt = true;
+      obs.disconnect();
+      cards.forEach(function(card, i) {
+        const rot = (card.style.getPropertyValue('--rot') || 'rotate(0deg)').trim();
+        setTimeout(function() {
+          card.style.transform = 'translateY(0px) ' + rot;
+          card.style.opacity = '1';
+        }, i * 420);
+      });
+    }
+  }, { threshold: 0.15 });
+  obs.observe(container);
 })();
 
 // ——— QUIZ ———
@@ -1147,6 +1189,24 @@ const quizRevealObs = new IntersectionObserver(entries => {
 }, { threshold: 0.3 });
 quizRevealObs.observe(document.getElementById('quiz'));
 
+// ——— STATS CARD SLIDE-IN ———
+(function() {
+  const grid = document.getElementById('sgrid');
+  if (!grid) return;
+  const cards = [...grid.querySelectorAll('.trump-card')];
+  let dealtCards = false;
+  const obs = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !dealtCards) {
+      dealtCards = true;
+      obs.disconnect();
+      cards.forEach(function(card, i) {
+        setTimeout(function() { card.classList.add('card-in'); }, i * 280);
+      });
+    }
+  }, { threshold: 0.2 });
+  obs.observe(grid);
+})();
+
 // ——— TRAVEL MAP ———
 (function() {
   const map = L.map('travel-map', {
@@ -1175,7 +1235,7 @@ quizRevealObs.observe(document.getElementById('quiz'));
     { name: 'Rome, Italy',                    lat: 41.90,  lng:  12.50, date: 'May 2026',      note: 'Pasta, piazzas, and very sore feet',         flag: '🇮🇹' },
     { name: 'Haugesund, Norway',              lat: 59.41,  lng:   5.27, date: 'August 2026',   note: 'Midnight sun and fjord walks',               flag: '🇳🇴' },
     { name: 'Cape Town & Kruger, S. Africa',  lat:-33.92,  lng:  18.42, date: 'October 2026',  note: 'The honeymoon 🌅',                           flag: '🇿🇦' },
-    { name: 'Seychelles',                     lat: -4.68,  lng:  55.49, date: 'October 2025',  note: 'The honeymoon 🌅',                           flag: '🌴' },
+    { name: 'Seychelles',                     lat: -4.68,  lng:  55.49, date: 'October 2025',  note: 'The honeymoon 🌅',                           flag: '🇸🇨' },
     { name: 'Sicily, Italy',                  lat: 37.60,  lng:  14.01, date: 'November 2025', note: 'Arancini. Etna. More arancini 🍊',            flag: '🇮🇹' },
     { name: 'Dhaka, Bangladesh',              lat: 23.81,  lng:  90.41, date: 'December 2025', note: 'Family, food, and chaos (the good kind)',    flag: '🇧🇩' },
     { name: 'Valencia, Spain',                lat: 39.47,  lng:  -0.38, date: 'February 2026', note: 'Paella at the source. Undefeated 🥘',        flag: '🇪🇸' },
@@ -1186,8 +1246,7 @@ quizRevealObs.observe(document.getElementById('quiz'));
     L.marker([p.lat, p.lng], { icon: pinIcon })
       .bindPopup(
         '<div class="map-popup-name">' + p.flag + ' ' + p.name + '</div>' +
-        '<div class="map-popup-date">' + p.date + '</div>' +
-        '<div class="map-popup-note">' + p.note + '</div>'
+        '<div class="map-popup-date">' + p.date + '</div>'
       )
       .addTo(map);
   });
