@@ -36,7 +36,7 @@
 
     img { max-width: 100%; display: block; }
 
-    /* ——— TYPOGRAPHY ——— */
+    /* --- TYPOGRAPHY --- */
     .section-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(2.4rem, 5vw, 3.8rem);
@@ -54,7 +54,7 @@
       margin-bottom: 3rem;
     }
 
-    /* ——— DIVIDER ——— */
+    /* --- DIVIDER --- */
     .divider {
       width: 60%;
       height: 1px;
@@ -63,7 +63,7 @@
       margin: 0 auto;
     }
 
-    /* ——— REVEAL ——— */
+    /* --- REVEAL --- */
     .reveal {
       opacity: 0;
       transform: translateY(30px);
@@ -76,9 +76,9 @@
       * { animation: none !important; }
     }
 
-    /* ——————————————————————————————
+    /* ------------------------------
        NAV
-    —————————————————————————————— */
+    ------------------------------ */
     #nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -150,9 +150,9 @@
     }
     #mob-menu a:hover { color: var(--accent); }
 
-    /* ——————————————————————————————
+    /* ------------------------------
        WELCOME
-    —————————————————————————————— */
+    ------------------------------ */
     #welcome {
       position: relative;
       min-height: 100vh;
@@ -189,7 +189,7 @@
       margin-bottom: 2.5rem;
     }
 
-    /* ——— NAME TYPEWRITER ——— */
+    /* --- NAME TYPEWRITER --- */
     .amp-gold { color: var(--accent); }
     .amp-gold.amp-pulse { animation: ampPulse 2s ease-in-out infinite; }
     @keyframes ampPulse {
@@ -264,11 +264,11 @@
       border-radius: 50% 50% 0 0 / 55% 55% 0 0;
       overflow: hidden;
     }
-    .hero-arch-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-arch-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.18); }
 
-    /* ——————————————————————————————
-       OUR STORY — VERTICAL POLAROIDS
-    —————————————————————————————— */
+    /* ------------------------------
+       OUR STORY - VERTICAL POLAROIDS
+    ------------------------------ */
     #story { padding: var(--pad) 2.5rem; }
 
     .polaroid-column {
@@ -306,9 +306,9 @@
       position: relative;
     }
 
-    /* ——————————————————————————————
-       QUIZ — ONE AT A TIME
-    —————————————————————————————— */
+    /* ------------------------------
+       QUIZ - ONE AT A TIME
+    ------------------------------ */
     #quiz { padding: var(--pad) 2.5rem; }
     .quiz-wrap { max-width: 560px; margin: 0 auto; perspective: 1200px; }
     .quiz-prog-bar {
@@ -395,9 +395,9 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ——————————————————————————————
-       STATS — TOP TRUMPS
-    —————————————————————————————— */
+    /* ------------------------------
+       STATS - TOP TRUMPS
+    ------------------------------ */
     #stats { padding: var(--pad) 2.5rem; }
     .trump-grid {
       display: flex;
@@ -489,9 +489,9 @@
       color: var(--text-sec);
     }
 
-    /* ——————————————————————————————
+    /* ------------------------------
        TRAVEL
-    —————————————————————————————— */
+    ------------------------------ */
     #travel { padding: var(--pad) 2.5rem; }
     .trip-hero { text-align: center; margin-bottom: 1.5rem; }
     .trip-text {
@@ -508,7 +508,7 @@
       margin: 0 auto;
     }
 
-    /* ——— TRAVEL MAP ——— */
+    /* --- TRAVEL MAP --- */
     #travel-map {
       width: 100%;
       max-width: 860px;
@@ -558,6 +558,23 @@
     }
     .map-popup-note { font-size: 0.82rem; color: #D4C4B0; line-height: 1.5; }
     .leaflet-control-attribution { display: none !important; }
+    .map-pin--planned .pin-inner {
+      background: #E8D5A3;
+      border-color: #FFD700;
+      box-shadow: 0 2px 10px rgba(255,215,0,0.45);
+    }
+    .map-popup-planned {
+      display: inline-block;
+      background: #C9A96E;
+      color: #1C1209;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.12rem 0.45rem;
+      border-radius: 3px;
+      margin-top: 0.35rem;
+      font-weight: 700;
+    }
 
     /* Recs form */
     .recs-wrap { max-width: 580px; margin: 0 auto; text-align: center; }
@@ -619,9 +636,9 @@
       font-style: italic;
     }
 
-    /* ——————————————————————————————
+    /* ------------------------------
        Q&A
-    —————————————————————————————— */
+    ------------------------------ */
     #qa { padding: var(--pad) 2.5rem; }
     .accordion { max-width: 680px; margin: 0 auto; }
     .acc-item { border-bottom: 1px solid rgba(201,169,110,0.22); }
@@ -656,9 +673,9 @@
     .acc-body.open { max-height: 400px; padding-bottom: 1.3rem; }
     .acc-a { font-weight: 300; color: var(--text-sec); font-size: 0.93rem; line-height: 1.7; }
 
-    /* ——————————————————————————————
+    /* ------------------------------
        FOOTER
-    —————————————————————————————— */
+    ------------------------------ */
     footer {
       text-align: center;
       padding: 3rem 2rem 4rem;
@@ -672,9 +689,9 @@
     }
     .foot-logo { height: 38px; width: auto; object-fit: contain; margin: 0 auto; opacity: 0.75; }
 
-    /* ——————————————————————————————
+    /* ------------------------------
        RESPONSIVE
-    —————————————————————————————— */
+    ------------------------------ */
     @media (max-width: 768px) {
       :root { --pad: 60px; }
       #nav { padding: 1rem 1.4rem; }
@@ -698,15 +715,16 @@
 </head>
 <body>
 
-<!-- ——— NAV ——— -->
+<!-- --- NAV --- -->
 <nav id="nav">
   <img src="images/Screenshot_2026-06-13_at_10.36.49-removebg-preview.png" alt="Nasser &amp; Farzana" class="nav-logo">
   <ul class="nav-links">
     <li><a href="#welcome">Welcome</a></li>
     <li><a href="#story">Our Story</a></li>
+    <li><a href="#quiz">Who's Who?</a></li>
     <li><a href="#stats">Nasser vs Farzana</a></li>
     <li><a href="#travel">Travel</a></li>
-    <li><a href="#qa">Q&amp;A</a></li>
+    <li><a href="#qa">FAQs</a></li>
   </ul>
   <button class="hamburger" id="ham" aria-label="Open menu">
     <span></span><span></span><span></span>
@@ -716,14 +734,15 @@
 <div id="mob-menu">
   <a href="#welcome">Welcome</a>
   <a href="#story">Our Story</a>
+  <a href="#quiz">Who's Who?</a>
   <a href="#stats">Nasser vs Farzana</a>
   <a href="#travel">Travel</a>
-  <a href="#qa">Q&amp;A</a>
+  <a href="#qa">FAQs</a>
 </div>
 
-<!-- ——————————————————————————————
+<!-- ------------------------------
      1. WELCOME
-—————————————————————————————— -->
+------------------------------ -->
 <section id="welcome">
   <div class="welcome-inner">
     <h1 class="welcome-h1"></h1>
@@ -751,9 +770,9 @@
 
 <div class="divider"></div>
 
-<!-- ——————————————————————————————
-     2. OUR STORY — VERTICAL POLAROIDS
-—————————————————————————————— -->
+<!-- ------------------------------
+     2. OUR STORY - VERTICAL POLAROIDS
+------------------------------ -->
 <section id="story">
   <h2 class="section-title reveal">Our Story</h2>
   <p class="section-sub reveal">A few moments that made us, us.</p>
@@ -773,7 +792,7 @@
     </div>
     <div class="polaroid" id="pol-3" style="--rot: rotate(2deg)">
       <img src="images/story-proposal-DZoLDB8e.png" alt="The proposal">
-      <p class="polaroid-caption">The proposal — St John's College, Cambridge</p>
+      <p class="polaroid-caption">The proposal - St John's College, Cambridge</p>
     </div>
     <div class="polaroid" id="pol-4" style="--rot: rotate(-2.5deg)">
       <img src="images/story-3-nikkah-CBoetaIk.png" alt="Our Nikkah">
@@ -788,9 +807,9 @@
 
 <div class="divider"></div>
 
-<!-- ——————————————————————————————
-     3. QUIZ — ONE AT A TIME
-—————————————————————————————— -->
+<!-- ------------------------------
+     3. QUIZ - ONE AT A TIME
+------------------------------ -->
 <section id="quiz">
   <h2 class="section-title reveal">Who's Who?</h2>
   <p class="section-sub reveal">Think you know us? See if you agree…</p>
@@ -816,9 +835,9 @@
 
 <div class="divider"></div>
 
-<!-- ——————————————————————————————
+<!-- ------------------------------
      4. NASSER VS FARZANA
-—————————————————————————————— -->
+------------------------------ -->
 <section id="stats">
   <h2 class="section-title reveal">Nasser vs Farzana</h2>
   <p class="section-sub reveal">Choose your fighter</p>
@@ -828,19 +847,22 @@
     <!-- NASSER -->
     <div class="trump-card">
       <div class="trump-photo">
-        <img src="images/Screenshot 2026-06-14 at 19.00.20.png" alt="Nasser">
+        <img src="images/Screenshot 2026-06-14 at 19.11.30.png" alt="Nasser">
       </div>
       <div class="trump-name-bar"><span>Nasser</span></div>
       <div class="trump-stats">
         <div class="trump-row"><span class="trump-stat-name">Crisp Addiction</span><span class="trump-stat-val trump-high">100</span></div>
         <div class="trump-row"><span class="trump-stat-name">Picks Restaurant</span><span class="trump-stat-val trump-high">80</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Arsenal Obsession</span><span class="trump-stat-val">78</span></div>
         <div class="trump-row"><span class="trump-stat-name">Wins Arguments</span><span class="trump-stat-val trump-italic">He can dream</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Avoiding Confrontation</span><span class="trump-stat-val trump-high">82</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Avoids conflict with strangers</span><span class="trump-stat-val trump-high">82</span></div>
         <div class="trump-row"><span class="trump-stat-name">Mayo Addiction</span><span class="trump-stat-val trump-high">100</span></div>
         <div class="trump-row"><span class="trump-stat-name">Lateness</span><span class="trump-stat-val">32</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Remembers Anniversaries</span><span class="trump-stat-val trump-italic">Occasionally</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Important dates</span><span class="trump-stat-val trump-italic">Occasionally</span></div>
         <div class="trump-row"><span class="trump-stat-name">Cooking</span><span class="trump-stat-val trump-italic">Makes good reservations</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Notes app organisation</span><span class="trump-stat-val trump-high">100</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Airport dad-ness</span><span class="trump-stat-val">10</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Likelihood of checking a score mid-wedding</span><span class="trump-stat-val">60</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Gift ideas</span><span class="trump-stat-val trump-italic">It's the effort that counts</span></div>
       </div>
     </div>
 
@@ -853,33 +875,33 @@
       <div class="trump-stats">
         <div class="trump-row"><span class="trump-stat-name">Chocolate Addiction</span><span class="trump-stat-val trump-high">91</span></div>
         <div class="trump-row"><span class="trump-stat-name">Vetoes Restaurant</span><span class="trump-stat-val">65</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Arsenal Obsession</span><span class="trump-stat-val trump-high">93</span></div>
         <div class="trump-row"><span class="trump-stat-name">Wins Arguments</span><span class="trump-stat-val trump-high">99</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Avoiding Confrontation</span><span class="trump-stat-val">20</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Avoids conflict with strangers</span><span class="trump-stat-val">20</span></div>
         <div class="trump-row"><span class="trump-stat-name">Ketchup Addiction</span><span class="trump-stat-val">59</span></div>
         <div class="trump-row"><span class="trump-stat-name">Lateness</span><span class="trump-stat-val">72</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Remembers Anniversaries</span><span class="trump-stat-val trump-high">95</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Important dates</span><span class="trump-stat-val trump-high">95</span></div>
         <div class="trump-row"><span class="trump-stat-name">Cooking</span><span class="trump-stat-val trump-high">85</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Notes app organisation</span><span class="trump-stat-val">75</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Airport dad-ness</span><span class="trump-stat-val trump-high">71</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Likelihood of checking a score mid-wedding</span><span class="trump-stat-val trump-italic">Please no</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Gift ideas</span><span class="trump-stat-val trump-high">90</span></div>
       </div>
     </div>
 
   </div>
 
-  <div class="trump-shared reveal">
-    <span class="trump-shared-badge">Directions Without Google Maps — Both: 0%</span>
-  </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ——————————————————————————————
+<!-- ------------------------------
      5. TRAVEL
-—————————————————————————————— -->
+------------------------------ -->
 <section id="travel">
   <h2 class="section-title reveal">Our Adventures</h2>
 
   <div class="trip-hero reveal">
-    <p class="trip-text">9 countries down &middot; 194 to go</p>
+    <p class="trip-text">6 countries down, 3 more planned, 186 to go inshAllah</p>
     <div class="trip-rule"></div>
   </div>
 
@@ -889,33 +911,41 @@
 
   <div class="recs-wrap reveal">
     <h3>Where Should We Go Next?</h3>
-    <p>We're always looking for new adventures — give us your best (and most rogue) travel recommendation!</p>
+    <p>We're always looking for new adventures - give us your best (and most rogue) travel recommendation!</p>
     <form id="rec-form">
       <div class="fg"><label for="r-dest">Destination</label><input type="text" id="r-dest" placeholder="Where should we go?" required></div>
       <div class="fg"><label for="r-why">Specific Things to Do</label><textarea id="r-why" placeholder="Restaurants, spots, experiences…" required></textarea></div>
       <button type="submit" class="gold-btn">Send Your Rec</button>
     </form>
     <div class="thanks" id="rec-thanks"></div>
+    <div id="rec-wall" style="margin-top:1.5rem;display:none;">
+      <p style="font-weight:600;margin-bottom:.75rem;color:var(--gold);">Suggestions so far</p>
+      <div id="rec-items"></div>
+    </div>
   </div>
 
   <div class="divider" style="width:60%;margin:3.5rem auto;"></div>
 
   <div class="recs-wrap reveal">
     <h3>Date Night Ideas</h3>
-    <p>We love a good night out — tell us your favourite spots and what to do!</p>
+    <p>We love a good night out - tell us your favourite spots and what to do!</p>
     <form id="date-form">
-      <div class="fg"><label for="d-ideas">Your Date Night Idea</label><textarea id="d-ideas" placeholder="Restaurant, activity, hidden gem — anywhere in London or beyond…" required></textarea></div>
+      <div class="fg"><label for="d-ideas">Your Date Night Idea</label><textarea id="d-ideas" placeholder="Restaurant, activity, hidden gem - anywhere in London or beyond…" required></textarea></div>
       <button type="submit" class="gold-btn">Share Your Idea</button>
     </form>
     <div class="thanks" id="date-thanks"></div>
+    <div id="date-wall" style="margin-top:1.5rem;display:none;">
+      <p style="font-weight:600;margin-bottom:.75rem;color:var(--gold);">Ideas so far</p>
+      <div id="date-items"></div>
+    </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ——————————————————————————————
+<!-- ------------------------------
      6. Q&A
-—————————————————————————————— -->
+------------------------------ -->
 <section id="qa">
   <h2 class="section-title reveal">Good to Know</h2>
   <div class="divider" style="margin-bottom:2.8rem;"></div>
@@ -927,7 +957,7 @@
         <span class="acc-q">What's the colour theme?</span>
         <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
-      <div class="acc-body"><p class="acc-a">Women: Pastels (except Pink). Men: Western suits — the lighter the better!</p></div>
+      <div class="acc-body"><p class="acc-a">Women: Pastels (except Pink). Men: Western suits - the lighter the better!</p></div>
     </div>
 
     <div class="acc-item reveal">
@@ -948,26 +978,48 @@
 
     <div class="acc-item reveal">
       <div class="acc-head">
-        <span class="acc-q">Who won the Premier League?</span>
+        <span class="acc-q">What do we think of Tottenham?</span>
         <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
-      <div class="acc-body"><p class="acc-a">ARSENAL. ⚽</p></div>
+      <div class="acc-body"><p class="acc-a">...</p></div>
     </div>
 
   </div>
 </section>
 
-<!-- ——————————————————————————————
-     FOOTER
-—————————————————————————————— -->
+<!-- ------------------------------
+const firebaseConfig = {
+  apiKey: "AIzaSyAEepcnyV3ZOciixRqZAUsUph63IyQS9Gk",
+  authDomain: "wedding-website-76fde.firebaseapp.com",
+  projectId: "wedding-website-76fde",
+  storageBucket: "wedding-website-76fde.firebasestorage.app",
+  messagingSenderId: "629971254185",
+  appId: "1:629971254185:web:2bc983ac2bdd53bcc9a2b8",
+  measurementId: "G-B5PYPWMPPN"
+};
+------------------------------ -->
 <footer>
   <p class="foot-name">Nasser &amp; Farzana &middot; 19.07.2026</p>
   <img src="images/Screenshot_2026-06-13_at_10.36.49-removebg-preview.png" alt="Logo" class="foot-logo">
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
-// ——— NAV ———
+  const firebaseConfig = {
+    apiKey: "PASTE_HERE",
+    authDomain: "PASTE_HERE",
+    projectId: "PASTE_HERE",
+    storageBucket: "PASTE_HERE",
+    messagingSenderId: "PASTE_HERE",
+    appId: "PASTE_HERE"
+  };
+  firebase.initializeApp(firebaseConfig);
+  window._db = firebase.firestore();
+</script>
+<script>
+// --- NAV ---
 const navEl = document.getElementById('nav');
 const ham = document.getElementById('ham');
 const mob = document.getElementById('mob-menu');
@@ -983,7 +1035,7 @@ mob.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   document.body.style.overflow = '';
 }));
 
-// ——— TYPEWRITER ———
+// --- TYPEWRITER ---
 (function() {
   const h1 = document.querySelector('.welcome-h1');
   const full = 'Nasser & Farzana';
@@ -1006,7 +1058,7 @@ mob.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   }, 75);
 })();
 
-// ——— COUNTDOWN ———
+// --- COUNTDOWN ---
 function tick() {
   const target = new Date('2026-07-19T12:00:00');
   const diff = target - new Date();
@@ -1025,29 +1077,36 @@ function tick() {
 }
 tick(); setInterval(tick, 1000);
 
-// ——— SCROLL REVEAL ———
+// --- SCROLL REVEAL ---
 const ro = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); }});
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-// ——— POLAROID PILE + PEEL ———
+// --- POLAROID SCROLL-DRIVEN REVEAL ---
 (function() {
   const container = document.querySelector('.polaroid-column');
   if (!container) return;
   const cards = [...container.querySelectorAll('.polaroid')];
   const pileRots = [-2, 4, -5, 3, -3, 6];
+  const cardRots = cards.map(function(c) {
+    return (c.style.getPropertyValue('--rot') || 'rotate(0deg)').trim();
+  });
+  const naturalTops = [];
   const pileOffsets = [];
-  let isDealt = false;
-  let activeTimeouts = [];
+  let lastDealt = -1;
 
-  function clearTimers() { activeTimeouts.forEach(clearTimeout); activeTimeouts = []; }
-
-  function setupPile() {
-    const firstRect = cards[0].getBoundingClientRect();
+  function init() {
+    // Record natural (pre-transform) absolute scroll positions
     cards.forEach(function(card, i) {
-      const rect = card.getBoundingClientRect();
-      pileOffsets[i] = firstRect.top - rect.top;
+      naturalTops[i] = card.getBoundingClientRect().top + window.scrollY;
+    });
+    // How far each card needs to translate up to sit on top of card 0
+    for (var i = 0; i < cards.length; i++) {
+      pileOffsets[i] = naturalTops[0] - naturalTops[i];
+    }
+    // Snap all cards to pile without transition
+    cards.forEach(function(card, i) {
       card.style.transition = 'none';
       card.style.transform = 'translateY(' + pileOffsets[i] + 'px) rotate(' + (pileRots[i] || 0) + 'deg)';
       card.style.zIndex = cards.length - i;
@@ -1055,55 +1114,47 @@ document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
     });
     requestAnimationFrame(function() {
       cards.forEach(function(card) { card.style.transition = ''; });
+      update();
     });
   }
 
-  function peel() {
-    clearTimers();
-    isDealt = true;
-    cards.forEach(function(card, i) {
-      const rot = (card.style.getPropertyValue('--rot') || 'rotate(0deg)').trim();
-      activeTimeouts.push(setTimeout(function() {
-        card.style.transform = 'translateY(0px) ' + rot;
-        card.style.opacity = '1';
-        card.style.zIndex = '';
-      }, i * 420));
-    });
-  }
-
-  function repile() {
-    clearTimers();
-    isDealt = false;
-    // Reverse stagger: bottom card returns first, top card last
-    cards.slice().reverse().forEach(function(card, i) {
-      const origIdx = cards.length - 1 - i;
-      activeTimeouts.push(setTimeout(function() {
-        card.style.transform = 'translateY(' + pileOffsets[origIdx] + 'px) rotate(' + (pileRots[origIdx] || 0) + 'deg)';
-        card.style.zIndex = cards.length - origIdx;
-        card.style.opacity = origIdx < 4 ? String(1 - origIdx * 0.04) : '0';
-      }, i * 280));
-    });
-  }
-
-  requestAnimationFrame(function() { requestAnimationFrame(setupPile); });
-
-  const obs = new IntersectionObserver(function(entries) {
-    if (entries[0].isIntersecting && !isDealt) {
-      peel();
-    } else if (!entries[0].isIntersecting && isDealt) {
-      repile();
+  function update() {
+    var scrollMid = window.scrollY + window.innerHeight * 0.68;
+    var newDealt = 0;
+    for (var i = 0; i < cards.length; i++) {
+      if (scrollMid >= naturalTops[i]) {
+        newDealt = i + 1;
+      } else {
+        break;
+      }
     }
-  }, { threshold: 0.15 });
-  obs.observe(container);
+    if (newDealt === lastDealt) return;
+    lastDealt = newDealt;
+    cards.forEach(function(card, i) {
+      if (i < newDealt) {
+        card.style.transform = 'translateY(0px) ' + cardRots[i];
+        card.style.opacity = '1';
+        card.style.zIndex = i + 1;
+      } else {
+        card.style.transform = 'translateY(' + pileOffsets[i] + 'px) rotate(' + (pileRots[i] || 0) + 'deg)';
+        card.style.zIndex = cards.length - i;
+        card.style.opacity = i < 4 ? String(1 - i * 0.04) : '0';
+      }
+    });
+  }
+
+  requestAnimationFrame(function() { requestAnimationFrame(init); });
+  window.addEventListener('scroll', update, { passive: true });
 })();
 
-// ——— QUIZ ———
+// --- QUIZ ---
 const QUESTIONS = [
   { q: 'Who likes to plan things more?', ans: 'Nasser' },
   { q: 'Who is funnier?', ans: 'Farzana' },
   { q: 'Who is more outgoing?', ans: 'Nasser' },
-  { q: 'Who takes nicer photos?', ans: 'Nasser' },
+  { q: "Who's better with money?", ans: 'Farzana' },
   { q: 'Who is more organised?', ans: 'Nasser' },
+  { q: "Who's the bigger romantic?", ans: 'Farzana' },
 ];
 let qIdx = 0, quizScore = 0, quizRevealed = false;
 
@@ -1186,8 +1237,9 @@ function handleQuizAnswer(chosen) {
         'Please re-read the invitation. And maybe this whole website.',
         'Hmm. Did we even invite you?',
         'Hmm. Did we even invite you?',
-        "Not bad — you've clearly been paying attention",
-        'You really know us! Save us a seat at the top table 👀'
+        "Not bad - you've clearly been paying attention",
+        'You really know us! Save us a seat at the top table 👀',
+        'Absolute legends. Front row. Best man / maid of honour energy.'
       ];
       document.getElementById('sc-num').textContent = quizScore+' / '+QUESTIONS.length;
       document.getElementById('sc-msg').textContent = msgs[quizScore];
@@ -1210,7 +1262,7 @@ const quizRevealObs = new IntersectionObserver(entries => {
 }, { threshold: 0.3 });
 quizRevealObs.observe(document.getElementById('quiz'));
 
-// ——— STATS CARD SLIDE-IN ———
+// --- STATS CARD SLIDE-IN ---
 (function() {
   const grid = document.getElementById('sgrid');
   if (!grid) return;
@@ -1236,7 +1288,27 @@ quizRevealObs.observe(document.getElementById('quiz'));
   obs.observe(grid);
 })();
 
-// ——— TRAVEL MAP ———
+// Equalise stat row heights so border lines align across both cards
+(function() {
+  function equaliseRows() {
+    var stats = document.querySelectorAll('#sgrid .trump-stats');
+    if (stats.length < 2) return;
+    var rowsA = stats[0].querySelectorAll('.trump-row');
+    var rowsB = stats[1].querySelectorAll('.trump-row');
+    var n = Math.min(rowsA.length, rowsB.length);
+    for (var i = 0; i < n; i++) {
+      rowsA[i].style.minHeight = '';
+      rowsB[i].style.minHeight = '';
+      var h = Math.max(rowsA[i].offsetHeight, rowsB[i].offsetHeight);
+      rowsA[i].style.minHeight = h + 'px';
+      rowsB[i].style.minHeight = h + 'px';
+    }
+  }
+  window.addEventListener('load', equaliseRows);
+  window.addEventListener('resize', equaliseRows);
+})();
+
+// --- TRAVEL MAP ---
 (function() {
   const map = L.map('travel-map', {
     zoomAnimation: false,
@@ -1259,47 +1331,106 @@ quizRevealObs.observe(document.getElementById('quiz'));
     popupAnchor: [0, -10]
   });
 
+  const plannedIcon = L.divIcon({
+    className: 'map-pin map-pin--planned',
+    html: '<div class="pin-inner"></div>',
+    iconSize: [14, 14],
+    iconAnchor: [7, 7],
+    popupAnchor: [0, -10]
+  });
+
   const places = [
     { name: 'Boston, USA',                    lat: 42.36,  lng: -71.06, date: 'May 2026',      note: 'The trip that started it all',              flag: '🇺🇸' },
     { name: 'Rome, Italy',                    lat: 41.90,  lng:  12.50, date: 'May 2026',      note: 'Pasta, piazzas, and very sore feet',         flag: '🇮🇹' },
-    { name: 'Haugesund, Norway',              lat: 59.41,  lng:   5.27, date: 'August 2026',   note: 'Midnight sun and fjord walks',               flag: '🇳🇴' },
-    { name: 'Cape Town & Kruger, S. Africa',  lat:-33.92,  lng:  18.42, date: 'October 2026',  note: 'The honeymoon 🌅',                           flag: '🇿🇦' },
+    { name: 'Haugesund, Norway',              lat: 59.41,  lng:   5.27, date: 'August 2026',   note: 'Midnight sun and fjord walks',               flag: '🇳🇴', planned: true },
+    { name: 'Cape Town & Kruger, S. Africa',  lat:-33.92,  lng:  18.42, date: 'October 2026',  note: 'The honeymoon 🌅',                           flag: '🇿🇦', planned: true },
     { name: 'Seychelles',                     lat: -4.68,  lng:  55.49, date: 'October 2025',  note: 'The honeymoon 🌅',                           flag: '🇸🇨' },
     { name: 'Sicily, Italy',                  lat: 37.60,  lng:  14.01, date: 'November 2025', note: 'Arancini. Etna. More arancini 🍊',            flag: '🇮🇹' },
     { name: 'Dhaka, Bangladesh',              lat: 23.81,  lng:  90.41, date: 'December 2025', note: 'Family, food, and chaos (the good kind)',    flag: '🇧🇩' },
+    { name: 'Gothenburg, Sweden',             lat: 57.70,  lng:  11.97, date: 'December 2025', note: 'Christmas markets and Scandinavian charm ❄️',  flag: '🇸🇪' },
     { name: 'Valencia, Spain',                lat: 39.47,  lng:  -0.38, date: 'February 2026', note: 'Paella at the source. Undefeated 🥘',        flag: '🇪🇸' },
     { name: 'Paris, France',                  lat: 48.86,  lng:   2.35, date: 'April 2026',    note: 'Cliché? Yes. Perfect? Also yes 🗼',          flag: '🇫🇷' },
   ];
 
   places.forEach(p => {
-    L.marker([p.lat, p.lng], { icon: pinIcon })
+    L.marker([p.lat, p.lng], { icon: p.planned ? plannedIcon : pinIcon })
       .bindPopup(
         '<div class="map-popup-name">' + p.flag + ' ' + p.name + '</div>' +
-        '<div class="map-popup-date">' + p.date + '</div>'
+        '<div class="map-popup-date">' + p.date + '</div>' +
+        (p.planned ? '<div class="map-popup-planned">Planned</div>' : '')
       )
       .addTo(map);
   });
 })();
 
-// ——— TRAVEL FORM ———
-document.getElementById('rec-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const t = document.getElementById('rec-thanks');
-  t.textContent = "Thanks! We'll add it to the list 🌍";
-  t.style.display = 'block';
-  this.style.display = 'none';
-});
+// --- TRAVEL FORM ---
+(function() {
+  var form = document.getElementById('rec-form');
+  var wall = document.getElementById('rec-wall');
+  var items = document.getElementById('rec-items');
 
-// ——— DATE NIGHT FORM ———
-document.getElementById('date-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const t = document.getElementById('date-thanks');
-  t.textContent = "We love it! Adding it to the date night list 💫";
-  t.style.display = 'block';
-  this.style.display = 'none';
-});
+  window._db.collection('recs').orderBy('ts').onSnapshot(function(snap) {
+    if (snap.empty) return;
+    wall.style.display = 'block';
+    items.innerHTML = '';
+    snap.forEach(function(doc) {
+      var d = doc.data();
+      var el = document.createElement('div');
+      el.style.cssText = 'padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.1);';
+      el.innerHTML = '<strong>' + d.destination + '</strong><br><span style="opacity:.8;font-size:.9em">' + d.things_to_do + '</span>';
+      items.appendChild(el);
+    });
+  });
 
-// ——— ACCORDION ———
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var dest = document.getElementById('r-dest').value.trim();
+    var why  = document.getElementById('r-why').value.trim();
+    window._db.collection('recs').add({ destination: dest, things_to_do: why, ts: firebase.firestore.FieldValue.serverTimestamp() })
+      .then(function() {
+        var t = document.getElementById('rec-thanks');
+        t.textContent = "Thanks! We'll add it to the list 🌍";
+        t.style.display = 'block';
+        form.reset();
+        setTimeout(function() { t.style.display = 'none'; }, 4000);
+      });
+  });
+})();
+
+// --- DATE NIGHT FORM ---
+(function() {
+  var form = document.getElementById('date-form');
+  var wall = document.getElementById('date-wall');
+  var items = document.getElementById('date-items');
+
+  window._db.collection('date_nights').orderBy('ts').onSnapshot(function(snap) {
+    if (snap.empty) return;
+    wall.style.display = 'block';
+    items.innerHTML = '';
+    snap.forEach(function(doc) {
+      var d = doc.data();
+      var el = document.createElement('div');
+      el.style.cssText = 'padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.1);';
+      el.innerHTML = '<span style="opacity:.9">' + d.idea + '</span>';
+      items.appendChild(el);
+    });
+  });
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var idea = document.getElementById('d-ideas').value.trim();
+    window._db.collection('date_nights').add({ idea: idea, ts: firebase.firestore.FieldValue.serverTimestamp() })
+      .then(function() {
+        var t = document.getElementById('date-thanks');
+        t.textContent = "We love it! Adding it to the date night list 💫";
+        t.style.display = 'block';
+        form.reset();
+        setTimeout(function() { t.style.display = 'none'; }, 4000);
+      });
+  });
+})();
+
+// --- ACCORDION ---
 document.querySelectorAll('.acc-head').forEach(head => {
   head.addEventListener('click', () => {
     const item = head.parentElement;
