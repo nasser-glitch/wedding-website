@@ -308,23 +308,6 @@
       width: 280px;
       height: 280px;
       object-fit: cover;
-      filter: brightness(2.5) contrast(0.4) saturate(0.1);
-      transition: filter 1.8s ease;
-    }
-
-    .polaroid.is-dealt img {
-      filter: brightness(1) contrast(1) saturate(1);
-    }
-
-    @keyframes polaroid-wobble {
-      0%   { rotate: 0deg; }
-      20%  { rotate: 4deg; }
-      50%  { rotate: -3deg; }
-      75%  { rotate: 2deg; }
-      100% { rotate: 0deg; }
-    }
-    .polaroid.wobbling {
-      animation: polaroid-wobble 0.5s ease;
     }
 
     .polaroid-caption {
@@ -1206,9 +1189,6 @@ document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
     return rot ? rot.trim() : 'rotate(0deg)';
   });
 
-  var developTimers = cards.map(function() { return null; });
-  var dealtState = cards.map(function() { return false; });
-
   // Stack all cards at same position, top card (index 0) has highest z-index
   cards.forEach(function(card, i) {
     card.style.transition = 'none';
@@ -1241,23 +1221,6 @@ document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
       card.style.transform = 'translateY(' + yVh + 'vh) ' + cardRots[i];
       card.style.opacity = opacity;
-
-      // develop: card 0 on section approach, card i when card above starts leaving
-      var isTop = i === 0
-        ? stageTop > -VH * 0.3
-        : (stageTop - (i - 1) * VH) / VH > 0;
-
-      if (isTop && !dealtState[i]) {
-        dealtState[i] = true;
-        developTimers[i] = setTimeout(function(idx) {
-          return function() { cards[idx].classList.add('is-dealt'); };
-        }(i), i === 0 ? 400 : 200);
-      }
-      if (!isTop && dealtState[i]) {
-        dealtState[i] = false;
-        clearTimeout(developTimers[i]);
-        card.classList.remove('is-dealt');
-      }
     });
   }
 
@@ -1271,17 +1234,6 @@ document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
     update();
   });
 
-  cards.forEach(function(card, i) {
-    card.addEventListener('mouseenter', function() {
-      if (!dealtState[i]) return;
-      if (!card.classList.contains('wobbling')) {
-        card.classList.add('wobbling');
-        card.addEventListener('animationend', function() {
-          card.classList.remove('wobbling');
-        }, { once: true });
-      }
-    });
-  });
 })();
 
 // --- QUIZ ---
