@@ -427,7 +427,7 @@
     }
     .trump-photo {
       width: 100%;
-      aspect-ratio: 3/4;
+      height: 320px;
       background: linear-gradient(160deg, #6B4F3C 0%, #4A3328 100%);
       display: flex;
       align-items: center;
@@ -908,7 +908,7 @@
         <div class="trump-row"><span class="trump-stat-name">Avoids conflict with strangers</span><span class="trump-stat-val trump-high">82</span></div>
         <div class="trump-row"><span class="trump-stat-name">Mayo Addiction</span><span class="trump-stat-val trump-high">100</span></div>
         <div class="trump-row"><span class="trump-stat-name">Lateness</span><span class="trump-stat-val">32</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Important dates</span><span class="trump-stat-val trump-italic">Occasionally</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Remembers important dates</span><span class="trump-stat-val trump-italic">Occasionally</span></div>
         <div class="trump-row"><span class="trump-stat-name">Cooking</span><span class="trump-stat-val trump-italic">Makes good reservations</span></div>
         <div class="trump-row"><span class="trump-stat-name">Notes app organisation</span><span class="trump-stat-val trump-high">100</span></div>
         <div class="trump-row"><span class="trump-stat-name">Airport dad-ness</span><span class="trump-stat-val">10</span></div>
@@ -930,7 +930,7 @@
         <div class="trump-row"><span class="trump-stat-name">Avoids conflict with strangers</span><span class="trump-stat-val">20</span></div>
         <div class="trump-row"><span class="trump-stat-name">Ketchup Addiction</span><span class="trump-stat-val">59</span></div>
         <div class="trump-row"><span class="trump-stat-name">Lateness</span><span class="trump-stat-val">72</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Important dates</span><span class="trump-stat-val trump-high">95</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Remembers important dates</span><span class="trump-stat-val trump-high">95</span></div>
         <div class="trump-row"><span class="trump-stat-name">Cooking</span><span class="trump-stat-val trump-high">85</span></div>
         <div class="trump-row"><span class="trump-stat-name">Notes app organisation</span><span class="trump-stat-val">75</span></div>
         <div class="trump-row"><span class="trump-stat-name">Airport dad-ness</span><span class="trump-stat-val trump-high">71</span></div>
@@ -1437,8 +1437,8 @@ quizRevealObs.observe(document.getElementById('quiz'));
     { name: 'Rome, Italy',                    lat: 41.90,  lng:  12.50, date: 'May 2026',      note: 'Pasta, piazzas, and very sore feet',         flag: '🇮🇹' },
     { name: 'Haugesund, Norway',              lat: 59.41,  lng:   5.27, date: 'August 2026',   note: 'Midnight sun and fjord walks',               flag: '🇳🇴', planned: true },
     { name: 'Cape Town & Kruger, S. Africa',  lat:-33.92,  lng:  18.42, date: 'October 2026',  note: 'The honeymoon 🌅',                           flag: '🇿🇦', planned: true },
-    { name: 'Seychelles',                     lat: -4.68,  lng:  55.49, date: 'October 2025',  note: 'The honeymoon 🌅',                           flag: '🇸🇨' },
-    { name: 'Sicily, Italy',                  lat: 37.60,  lng:  14.01, date: 'October 2026',  note: 'Arancini. Etna. More arancini 🍊',            flag: '🇮🇹', planned: true },
+    { name: 'Seychelles',                     lat: -4.68,  lng:  55.49, date: 'October 2026',  note: 'The honeymoon 🌅',                           flag: '🇸🇨', planned: true },
+    { name: 'Sicily, Italy',                  lat: 37.60,  lng:  14.01, date: 'November 2025', note: 'Arancini. Etna. More arancini 🍊',            flag: '🇮🇹' },
     { name: 'Dhaka, Bangladesh',              lat: 23.81,  lng:  90.41, date: 'December 2025', note: 'Family, food, and chaos (the good kind)',    flag: '🇧🇩' },
     { name: 'Gothenburg, Sweden',             lat: 57.70,  lng:  11.97, date: 'December 2025', note: 'Christmas markets and Scandinavian charm ❄️',  flag: '🇸🇪' },
     { name: 'Valencia, Spain',                lat: 39.47,  lng:  -0.38, date: 'February 2026', note: 'Paella at the source. Undefeated 🥘',        flag: '🇪🇸' },
@@ -1462,21 +1462,24 @@ quizRevealObs.observe(document.getElementById('quiz'));
   var wall = document.getElementById('rec-wall');
   var items = document.getElementById('rec-items');
 
-  window._db.collection('recs').orderBy('ts').onSnapshot(function(snap) {
-    if (snap.empty) return;
-    wall.style.display = 'block';
-    items.innerHTML = '';
-    snap.forEach(function(doc) {
-      var d = doc.data();
-      var el = document.createElement('div');
-      el.style.cssText = 'padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.1);';
-      el.innerHTML = '<strong>' + d.destination + '</strong><br><span style="opacity:.8;font-size:.9em">' + d.things_to_do + '</span>';
-      items.appendChild(el);
+  if (window._db) {
+    window._db.collection('recs').orderBy('ts').onSnapshot(function(snap) {
+      if (snap.empty) return;
+      wall.style.display = 'block';
+      items.innerHTML = '';
+      snap.forEach(function(doc) {
+        var d = doc.data();
+        var el = document.createElement('div');
+        el.style.cssText = 'padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.1);';
+        el.innerHTML = '<strong>' + d.destination + '</strong><br><span style="opacity:.8;font-size:.9em">' + d.things_to_do + '</span>';
+        items.appendChild(el);
+      });
     });
-  });
+  }
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
+    if (!window._db) return;
     var dest = document.getElementById('r-dest').value.trim();
     var why  = document.getElementById('r-why').value.trim();
     window._db.collection('recs').add({ destination: dest, things_to_do: why, ts: firebase.firestore.FieldValue.serverTimestamp() })
@@ -1496,21 +1499,24 @@ quizRevealObs.observe(document.getElementById('quiz'));
   var wall = document.getElementById('date-wall');
   var items = document.getElementById('date-items');
 
-  window._db.collection('date_nights').orderBy('ts').onSnapshot(function(snap) {
-    if (snap.empty) return;
-    wall.style.display = 'block';
-    items.innerHTML = '';
-    snap.forEach(function(doc) {
-      var d = doc.data();
-      var el = document.createElement('div');
-      el.style.cssText = 'padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.1);';
-      el.innerHTML = '<span style="opacity:.9">' + d.idea + '</span>';
-      items.appendChild(el);
+  if (window._db) {
+    window._db.collection('date_nights').orderBy('ts').onSnapshot(function(snap) {
+      if (snap.empty) return;
+      wall.style.display = 'block';
+      items.innerHTML = '';
+      snap.forEach(function(doc) {
+        var d = doc.data();
+        var el = document.createElement('div');
+        el.style.cssText = 'padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.1);';
+        el.innerHTML = '<span style="opacity:.9">' + d.idea + '</span>';
+        items.appendChild(el);
+      });
     });
-  });
+  }
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
+    if (!window._db) return;
     var idea = document.getElementById('d-ideas').value.trim();
     window._db.collection('date_nights').add({ idea: idea, ts: firebase.firestore.FieldValue.serverTimestamp() })
       .then(function() {
