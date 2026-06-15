@@ -174,7 +174,7 @@
     }
 
     .welcome-address {
-      font-size: 0.78rem;
+      font-size: 1rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--text-sec);
@@ -271,18 +271,36 @@
     ------------------------------ */
     #story { padding: var(--pad) 2.5rem; }
 
-    .polaroid-column {
+    .polaroid-stage {
+      position: relative;
+      height: calc(7 * 100vh);
+      width: 100vw;
+      margin-left: -2.5rem;
+    }
+
+    .polaroid-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 3.5rem;
-      padding: 1rem 0 2rem;
+      justify-content: center;
+    }
+
+    .polaroid-pile {
+      position: relative;
+      width: 312px;
+      height: 370px;
     }
 
     .polaroid {
       background: #fff;
       padding: 16px 16px 64px;
       box-shadow: 5px 8px 32px rgba(0,0,0,0.42);
+      position: absolute;
+      top: 0;
+      left: 0;
+      will-change: transform, opacity;
     }
 
     .polaroid img {
@@ -290,6 +308,23 @@
       width: 280px;
       height: 280px;
       object-fit: cover;
+      filter: brightness(2.5) contrast(0.4) saturate(0.1);
+      transition: filter 1.8s ease;
+    }
+
+    .polaroid.is-dealt img {
+      filter: brightness(1) contrast(1) saturate(1);
+    }
+
+    @keyframes polaroid-wobble {
+      0%   { rotate: 0deg; }
+      20%  { rotate: 4deg; }
+      50%  { rotate: -3deg; }
+      75%  { rotate: 2deg; }
+      100% { rotate: 0deg; }
+    }
+    .polaroid.wobbling {
+      animation: polaroid-wobble 0.5s ease;
     }
 
     .polaroid-caption {
@@ -299,11 +334,6 @@
       text-align: center;
       margin-top: 10px;
       line-height: 1.3;
-    }
-
-    .polaroid-column .polaroid {
-      transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
-      position: relative;
     }
 
     /* ------------------------------
@@ -703,6 +733,8 @@
       .trump-card { max-width: 320px; width: 100%; }
       section { padding: var(--pad) 1.3rem; }
       #welcome, #quiz, #stats, #travel, #qa { padding: var(--pad) 1.3rem; }
+      .polaroid-stage { margin-left: -1.3rem; }
+      .polaroid-pile { width: 264px; height: 340px; }
     }
 
     @media (max-width: 480px) {
@@ -828,30 +860,34 @@
   <h2 class="section-title reveal">Our Story</h2>
   <p class="section-sub reveal">A few moments that made us, us.</p>
 
-  <div class="polaroid-column">
-    <div class="polaroid" id="pol-0" style="--rot: rotate(-2deg)">
-      <img src="images/story-0-first-met-Cm6GVSR3.png" alt="Colonel Saab">
-      <p class="polaroid-caption">The first time we met, at Colonel Saab</p>
-    </div>
-    <div class="polaroid" id="pol-1" style="--rot: rotate(1.5deg)">
-      <img src="images/story-1-first-meeting-B3S9t4nP.png" alt="Meeting family">
-      <p class="polaroid-caption">The first time Nasser met Farzana's family</p>
-    </div>
-    <div class="polaroid" id="pol-2" style="--rot: rotate(-1deg)">
-      <img src="images/story-2-family-meeting-BvdDXYb-.png" alt="Meeting Nasser's family">
-      <p class="polaroid-caption">The first time Farzana met Nasser's family</p>
-    </div>
-    <div class="polaroid" id="pol-3" style="--rot: rotate(2deg)">
-      <img src="images/story-proposal-DZoLDB8e.png" alt="The proposal">
-      <p class="polaroid-caption">The proposal - St John's College, Cambridge</p>
-    </div>
-    <div class="polaroid" id="pol-4" style="--rot: rotate(-2.5deg)">
-      <img src="images/story-3-nikkah-CBoetaIk.png" alt="Our Nikkah">
-      <p class="polaroid-caption">Our Nikkah at Cambridge Central Mosque</p>
-    </div>
-    <div class="polaroid" id="pol-5" style="--rot: rotate(1deg)">
-      <img src="images/story-4-sicily-DQdG4XAA.png" alt="Sicily">
-      <p class="polaroid-caption">Our first holiday together - Sicily</p>
+  <div class="polaroid-stage">
+    <div class="polaroid-sticky">
+      <div class="polaroid-pile">
+        <div class="polaroid" id="pol-0" style="--rot: rotate(-2deg)">
+          <img src="images/story-0-first-met-Cm6GVSR3.png" alt="Colonel Saab">
+          <p class="polaroid-caption">The first time we met, at Colonel Saab</p>
+        </div>
+        <div class="polaroid" id="pol-1" style="--rot: rotate(1.5deg)">
+          <img src="images/story-1-first-meeting-B3S9t4nP.png" alt="Meeting family">
+          <p class="polaroid-caption">The first time Nasser met Farzana's family</p>
+        </div>
+        <div class="polaroid" id="pol-2" style="--rot: rotate(-1deg)">
+          <img src="images/story-2-family-meeting-BvdDXYb-.png" alt="Meeting Nasser's family">
+          <p class="polaroid-caption">The first time Farzana met Nasser's family</p>
+        </div>
+        <div class="polaroid" id="pol-3" style="--rot: rotate(2deg)">
+          <img src="images/story-proposal-DZoLDB8e.png" alt="The proposal">
+          <p class="polaroid-caption">The proposal - St John's College, Cambridge</p>
+        </div>
+        <div class="polaroid" id="pol-4" style="--rot: rotate(-2.5deg)">
+          <img src="images/story-3-nikkah-CBoetaIk.png" alt="Our Nikkah">
+          <p class="polaroid-caption">Our Nikkah at Cambridge Central Mosque</p>
+        </div>
+        <div class="polaroid" id="pol-5" style="--rot: rotate(1deg)">
+          <img src="images/story-4-sicily-DQdG4XAA.png" alt="Sicily">
+          <p class="polaroid-caption">Our first holiday together - Sicily</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1157,73 +1193,95 @@ const ro = new IntersectionObserver(entries => {
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-// --- POLAROID SCROLL-DRIVEN REVEAL ---
+// --- POLAROID STICKY REVEAL ---
 (function() {
-  const container = document.querySelector('.polaroid-column');
-  if (!container) return;
-  const cards = [...container.querySelectorAll('.polaroid')];
-  const pileRots = [-2, 4, -5, 3, -3, 6];
-  const cardRots = cards.map(function(c) {
-    return (c.style.getPropertyValue('--rot') || 'rotate(0deg)').trim();
-  });
-  const naturalTops = [];
-  const pileOffsets = [];
-  let lastDealt = -1;
+  var stage = document.querySelector('.polaroid-stage');
+  var pile = document.querySelector('.polaroid-pile');
+  if (!stage || !pile) return;
 
-  function init() {
-    // Record natural (pre-transform) absolute scroll positions
-    cards.forEach(function(card, i) {
-      naturalTops[i] = card.getBoundingClientRect().top + window.scrollY;
-    });
-    // How far each card needs to translate up to sit on top of card 0
-    for (var i = 0; i < cards.length; i++) {
-      pileOffsets[i] = naturalTops[0] - naturalTops[i];
+  var cards = Array.from(pile.querySelectorAll('.polaroid'));
+  var N = cards.length;
+  var cardRots = cards.map(function(c) {
+    var rot = c.style.getPropertyValue('--rot');
+    return rot ? rot.trim() : 'rotate(0deg)';
+  });
+
+  var developTimers = cards.map(function() { return null; });
+  var dealtState = cards.map(function() { return false; });
+
+  // Stack all cards at same position, top card (index 0) has highest z-index
+  cards.forEach(function(card, i) {
+    card.style.transition = 'none';
+    card.style.zIndex = N - i;
+    card.style.transform = cardRots[i];
+    card.style.opacity = '1';
+  });
+
+  function sizePile() {
+    var r = cards[0].getBoundingClientRect();
+    if (r.width > 0) {
+      pile.style.width = r.width + 'px';
+      pile.style.height = r.height + 'px';
     }
-    // Snap all cards to pile without transition
-    cards.forEach(function(card, i) {
-      card.style.transition = 'none';
-      card.style.transform = 'translateY(' + pileOffsets[i] + 'px) rotate(' + (pileRots[i] || 0) + 'deg)';
-      card.style.zIndex = cards.length - i;
-      card.style.opacity = i < 4 ? String(1 - i * 0.04) : '0';
-    });
-    requestAnimationFrame(function() {
-      cards.forEach(function(card) { card.style.transition = ''; });
-      update();
-    });
   }
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
   function update() {
-    var scrollMid = window.scrollY + window.innerHeight * 0.68;
-    var newDealt = 0;
-    for (var i = 0; i < cards.length; i++) {
-      if (scrollMid >= naturalTops[i]) {
-        newDealt = i + 1;
-      } else {
-        break;
-      }
-    }
-    if (newDealt === lastDealt) return;
-    lastDealt = newDealt;
-    var pileTopIdx = newDealt; // pile now sits at the next undealt card's natural position
+    var rect = stage.getBoundingClientRect();
+    var stageTop = -rect.top; // px scrolled into the stage
+    var VH = window.innerHeight;
+
     cards.forEach(function(card, i) {
-      if (i < newDealt) {
-        // dealt: stays at own natural position
-        card.style.transform = 'translateY(0px) ' + cardRots[i];
-        card.style.opacity = '1';
-        card.style.zIndex = i + 1;
-      } else {
-        // undealt: stack at pileTopIdx's natural position
-        var depth = i - pileTopIdx;
-        var offset = naturalTops[pileTopIdx] - naturalTops[i];
-        card.style.transform = 'translateY(' + offset + 'px) rotate(' + (pileRots[depth] || 0) + 'deg)';
-        card.style.zIndex = cards.length - depth;
-        card.style.opacity = depth < 4 ? String(1 - depth * 0.04) : '0';
+      var raw = (stageTop - i * VH) / VH; // 0 = starts leaving, 1 = fully gone
+      var p = clamp(raw, 0, 1);
+      var yVh = easeOut(p) * 120;
+      var opacity = p >= 1 ? '0' : p > 0.7 ? String(1 - (p - 0.7) / 0.3) : '1';
+
+      card.style.transform = 'translateY(' + yVh + 'vh) ' + cardRots[i];
+      card.style.opacity = opacity;
+
+      // develop: card 0 on section approach, card i when card above starts leaving
+      var isTop = i === 0
+        ? stageTop > -VH * 0.3
+        : (stageTop - (i - 1) * VH) / VH > 0;
+
+      if (isTop && !dealtState[i]) {
+        dealtState[i] = true;
+        developTimers[i] = setTimeout(function(idx) {
+          return function() { cards[idx].classList.add('is-dealt'); };
+        }(i), i === 0 ? 400 : 200);
+      }
+      if (!isTop && dealtState[i]) {
+        dealtState[i] = false;
+        clearTimeout(developTimers[i]);
+        card.classList.remove('is-dealt');
       }
     });
   }
 
-  requestAnimationFrame(function() { requestAnimationFrame(init); });
+  requestAnimationFrame(function() {
+    sizePile();
+    update();
+  });
   window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', function() {
+    requestAnimationFrame(sizePile);
+    update();
+  });
+
+  cards.forEach(function(card, i) {
+    card.addEventListener('mouseenter', function() {
+      if (!dealtState[i]) return;
+      if (!card.classList.contains('wobbling')) {
+        card.classList.add('wobbling');
+        card.addEventListener('animationend', function() {
+          card.classList.remove('wobbling');
+        }, { once: true });
+      }
+    });
+  });
 })();
 
 // --- QUIZ ---
