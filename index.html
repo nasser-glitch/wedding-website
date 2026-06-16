@@ -929,7 +929,7 @@
         <div class="trump-row"><span class="trump-stat-name">Remembers important dates</span><span class="trump-stat-val trump-italic">Occasionally</span></div>
         <div class="trump-row"><span class="trump-stat-name">Cooking</span><span class="trump-stat-val trump-italic">Makes good reservations</span></div>
         <div class="trump-row"><span class="trump-stat-name">Notes app organisation</span><span class="trump-stat-val trump-high">100</span></div>
-        <div class="trump-row"><span class="trump-stat-name">Airport dad-ness</span><span class="trump-stat-val">10</span></div>
+        <div class="trump-row"><span class="trump-stat-name">Airport dad-ness</span><span class="trump-stat-val">-50</span></div>
         <div class="trump-row"><span class="trump-stat-name">Likelihood of checking a score mid-wedding</span><span class="trump-stat-val">60</span></div>
         <div class="trump-row"><span class="trump-stat-name">Tidiness</span><span class="trump-stat-val trump-high">80</span></div>
         <div class="trump-row"><span class="trump-stat-name">Ability to follow a map</span><span class="trump-stat-val trump-high">75</span></div>
@@ -1212,13 +1212,13 @@ document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
   function update() {
     var rect = stage.getBoundingClientRect();
-    var stageTop = -rect.top; // px scrolled into the stage
+    var stageTop = -rect.top;
     var VH = window.innerHeight;
 
     cards.forEach(function(card, i) {
-      var raw = (stageTop - i * VH) / VH; // 0 = starts leaving, 1 = fully gone
+      var raw = (stageTop - i * VH) / VH;
       var p = clamp(raw, 0, 1);
-      var yVh = easeOut(p) * 120;
+      var yVh = -(easeOut(p) * 120); // negative = slides up
       var opacity = p >= 1 ? '0' : p > 0.7 ? String(1 - (p - 0.7) / 0.3) : '1';
 
       card.style.transform = 'translateY(' + yVh + 'vh) ' + cardRots[i];
@@ -1226,14 +1226,25 @@ document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
     });
   }
 
+  var ticking = false;
+  function scheduleUpdate() {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(function() {
+        update();
+        ticking = false;
+      });
+    }
+  }
+
   requestAnimationFrame(function() {
     sizePile();
     update();
   });
-  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('scroll', scheduleUpdate, { passive: true });
   window.addEventListener('resize', function() {
     requestAnimationFrame(sizePile);
-    update();
+    scheduleUpdate();
   });
 
 })();
